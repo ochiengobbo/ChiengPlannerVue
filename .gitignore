@@ -1,1 +1,6 @@
-wwwroot
+/.vs
+/bin/Debug
+/ClientApp/.vscode
+/ClientApp/.vscode
+/obj
+/obj/Debug
