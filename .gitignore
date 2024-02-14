@@ -1,6 +1,6 @@
-/.vs
-/bin/Debug
-/ClientApp/.vscode
-/ClientApp/.vscode
-/obj
-/obj/Debug
+.vs
+bin/Debug
+ClientApp/.vscode
+ClientApp/.vscode
+obj
+obj/Debug
