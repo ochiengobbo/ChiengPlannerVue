@@ -1,0 +1,17 @@
+﻿@using ChiengPlannerVue.Utils
+@model List<int>
+
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+@section Scripts{
+    <script type="text/javascript">
+        var vm = @Model.ToJson();
+    </script>
+    <script type="text/javascript" src="~/js/home-index.bundle.js" asp-append-version="true"></script>
+}
+<body>
+    <i class="fa-solid fa-link"></i>
+</body>
+

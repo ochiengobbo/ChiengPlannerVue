@@ -1,0 +1,101 @@
+{
+  "Files": [
+    {
+      "Id": "C:\\Users\\Ochie\\OneDrive\\Documents\\Programming\\ChiengPlannerVue\\obj\\Debug\\net6.0\\scopedcss\\projectbundle\\ChiengPlannerVue.bundle.scp.css",
+      "PackagePath": "staticwebassets\\ChiengPlannerVue.bundle.scp.css"
+    },
+    {
+      "Id": "C:\\Users\\Ochie\\OneDrive\\Documents\\Programming\\ChiengPlannerVue\\wwwroot\\2fa92590afc057ab845d.png",
+      "PackagePath": "staticwebassets\\2fa92590afc057ab845d.png"
+    },
+    {
+      "Id": "C:\\Users\\Ochie\\OneDrive\\Documents\\Programming\\ChiengPlannerVue\\wwwroot\\css\\core.bundle.css",
+      "PackagePath": "staticwebassets\\css\\core.bundle.css"
+    },
+    {
+      "Id": "C:\\Users\\Ochie\\OneDrive\\Documents\\Programming\\ChiengPlannerVue\\wwwroot\\css\\core.bundle.css.map",
+      "PackagePath": "staticwebassets\\css\\core.bundle.css.map"
+    },
+    {
+      "Id": "C:\\Users\\Ochie\\OneDrive\\Documents\\Programming\\ChiengPlannerVue\\wwwroot\\css\\styles.bundle.css",
+      "PackagePath": "staticwebassets\\css\\styles.bundle.css"
+    },
+    {
+      "Id": "C:\\Users\\Ochie\\OneDrive\\Documents\\Programming\\ChiengPlannerVue\\wwwroot\\css\\styles.bundle.css.map",
+      "PackagePath": "staticwebassets\\css\\styles.bundle.css.map"
+    },
+    {
+      "Id": "C:\\Users\\Ochie\\OneDrive\\Documents\\Programming\\ChiengPlannerVue\\wwwroot\\css\\vendor.bundle.css",
+      "PackagePath": "staticwebassets\\css\\vendor.bundle.css"
+    },
+    {
+      "Id": "C:\\Users\\Ochie\\OneDrive\\Documents\\Programming\\ChiengPlannerVue\\wwwroot\\css\\vendor.bundle.css.map",
+      "PackagePath": "staticwebassets\\css\\vendor.bundle.css.map"
+    },
+    {
+      "Id": "C:\\Users\\Ochie\\OneDrive\\Documents\\Programming\\ChiengPlannerVue\\wwwroot\\js\\core.bundle.js",
+      "PackagePath": "staticwebassets\\js\\core.bundle.js"
+    },
+    {
+      "Id": "C:\\Users\\Ochie\\OneDrive\\Documents\\Programming\\ChiengPlannerVue\\wwwroot\\js\\core.bundle.js.map",
+      "PackagePath": "staticwebassets\\js\\core.bundle.js.map"
+    },
+    {
+      "Id": "C:\\Users\\Ochie\\OneDrive\\Documents\\Programming\\ChiengPlannerVue\\wwwroot\\js\\home-index.bundle.js",
+      "PackagePath": "staticwebassets\\js\\home-index.bundle.js"
+    },
+    {
+      "Id": "C:\\Users\\Ochie\\OneDrive\\Documents\\Programming\\ChiengPlannerVue\\wwwroot\\js\\home-index.bundle.js.map",
+      "PackagePath": "staticwebassets\\js\\home-index.bundle.js.map"
+    },
+    {
+      "Id": "C:\\Users\\Ochie\\OneDrive\\Documents\\Programming\\ChiengPlannerVue\\wwwroot\\js\\notes-index.bundle.js",
+      "PackagePath": "staticwebassets\\js\\notes-index.bundle.js"
+    },
+    {
+      "Id": "C:\\Users\\Ochie\\OneDrive\\Documents\\Programming\\ChiengPlannerVue\\wwwroot\\js\\notes-index.bundle.js.map",
+      "PackagePath": "staticwebassets\\js\\notes-index.bundle.js.map"
+    },
+    {
+      "Id": "C:\\Users\\Ochie\\OneDrive\\Documents\\Programming\\ChiengPlannerVue\\wwwroot\\js\\runtime.bundle.js",
+      "PackagePath": "staticwebassets\\js\\runtime.bundle.js"
+    },
+    {
+      "Id": "C:\\Users\\Ochie\\OneDrive\\Documents\\Programming\\ChiengPlannerVue\\wwwroot\\js\\runtime.bundle.js.map",
+      "PackagePath": "staticwebassets\\js\\runtime.bundle.js.map"
+    },
+    {
+      "Id": "C:\\Users\\Ochie\\OneDrive\\Documents\\Programming\\ChiengPlannerVue\\wwwroot\\js\\styles.bundle.js",
+      "PackagePath": "staticwebassets\\js\\styles.bundle.js"
+    },
+    {
+      "Id": "C:\\Users\\Ochie\\OneDrive\\Documents\\Programming\\ChiengPlannerVue\\wwwroot\\js\\styles.bundle.js.map",
+      "PackagePath": "staticwebassets\\js\\styles.bundle.js.map"
+    },
+    {
+      "Id": "C:\\Users\\Ochie\\OneDrive\\Documents\\Programming\\ChiengPlannerVue\\wwwroot\\js\\vendor.bundle.js",
+      "PackagePath": "staticwebassets\\js\\vendor.bundle.js"
+    },
+    {
+      "Id": "C:\\Users\\Ochie\\OneDrive\\Documents\\Programming\\ChiengPlannerVue\\wwwroot\\js\\vendor.bundle.js.map",
+      "PackagePath": "staticwebassets\\js\\vendor.bundle.js.map"
+    },
+    {
+      "Id": "obj\\Debug\\net6.0\\staticwebassets\\msbuild.ChiengPlannerVue.Microsoft.AspNetCore.StaticWebAssets.props",
+      "PackagePath": "build\\Microsoft.AspNetCore.StaticWebAssets.props"
+    },
+    {
+      "Id": "obj\\Debug\\net6.0\\staticwebassets\\msbuild.build.ChiengPlannerVue.props",
+      "PackagePath": "build\\ChiengPlannerVue.props"
+    },
+    {
+      "Id": "obj\\Debug\\net6.0\\staticwebassets\\msbuild.buildMultiTargeting.ChiengPlannerVue.props",
+      "PackagePath": "buildMultiTargeting\\ChiengPlannerVue.props"
+    },
+    {
+      "Id": "obj\\Debug\\net6.0\\staticwebassets\\msbuild.buildTransitive.ChiengPlannerVue.props",
+      "PackagePath": "buildTransitive\\ChiengPlannerVue.props"
+    }
+  ],
+  "ElementsToRemove": []
+}
