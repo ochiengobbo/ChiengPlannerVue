@@ -5,9 +5,9 @@
 }
 @section Scripts{
     <script type="text/javascript">
+        var vm = @Html.Raw(Model.ToJson());
+        var notesId = @Model.NotesId;
         $(document).ready(function () {
-            var vm = @Html.Raw(Model.ToJson());
-            var notesId = @Model.NotesId;
             $('#noteTitle').prepend("<h1>" + vm.title + "</h1>");
             $('#noteBody').html(vm.body);
 

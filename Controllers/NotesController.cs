@@ -27,6 +27,7 @@ namespace ChiengPlannerVue.Controllers
             _connection = connection.Value;
         }
 
+        [HttpGet]
         public IActionResult Index()
         {
             var vm = new NotesModel();
@@ -39,6 +40,26 @@ namespace ChiengPlannerVue.Controllers
                 vm.Title = recentNote.Title;
                 vm.Body = recentNote.Body;
                 vm.PlainText = recentNote.PlainText;
+            }
+            else
+            {
+                RedirectToAction("EditNote");
+            }
+            return View(vm);
+        }
+
+        [HttpGet]
+        public IActionResult EditNote(int? id)
+        {
+            var vm = new NotesModel();
+            vm.Notes = _context.Notes.ToList();
+            if(id.HasValue)
+            {
+                var note = _context.Notes.Where(x => x.NotesId == id.Value).FirstOrDefault();
+                vm.NotesId = note.NotesId;
+                vm.Title = note.Title;
+                vm.Body = note.Body;
+                vm.PlainText = note.PlainText;
             }
             return View(vm);
         }

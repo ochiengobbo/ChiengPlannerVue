@@ -18,6 +18,25 @@
     </div>
 </div>
 
+<div id="warningModal" class="modal" role="dialog">
+    <div class="modal-dialog modal-dialog-centered modal-sm">
+        <div class="modal-content bg-warning">
+            <div class="modal-header">
+                <button type="button" class="close" aria-label="Close" style="color: white;">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body text-white">
+                <p id="warningMsg" class="d-inline"></p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" id="continueAction" class="btn-primary">Ok</button>
+                <button type="button" id="cancelAction" class="btn-secondary">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <style>
 
     .modal {
@@ -34,9 +53,14 @@
     <script type="text/javascript">
         var vm = @Html.Raw(@Model.ToJson());
         var notesId = vm.notesId;
+        var selectedNote = null;
         $(document).ready(function () {
-            toastr.options.closeButton = true;
-            toastr.options.positionClass = "toast-top-center";
+            // toastr.options.closeButton = true;
+            // toastr.options.positionClass = "toast-top-center";
+            if (notesId != 0) {
+                selectedNote = $('.notes-list').children().first();
+                loadNote(selectedNote, notesId);
+            }
             $("#saveNote").click(function () {
                 var formData = {
                     Title: $('#noteTitle').val(),
@@ -172,16 +196,43 @@
 
             $('.notes-list-item').on('click', function (e) {
                 notesId = $(this).data("id");
+                selectedNote = $(this);
+                if ($('.tiptap').html() != "Type here..." || $('.tiptap').html() != "") {
+                    loadNote(selectedNote, notesId);
+                }
+                else {
+                    openWarningModal("<b><small>Are you sure you want to open this note? You will lose all your unsaved work.</small></b>", "load")
+                }
+                
+            });
+
+            $('#continueAction').on('click', function() {
+                $('#warningModal').modal('hide');
+                if ($(this).data("val") == "edit") {
+                    loadNote(selectedNote, notesId);
+                }
+                else if ($(this).data("val") == "home") {
+                    window.location.href("Home/Index");
+                }
+            })
+
+            function openWarningModal(warning, val) {
+                $('#warningMsg').html(warning);
+                $('#warningModal').modal('show');
+                $('#continueAction').data("val", val);
+            }
+
+            function loadNote(element, noteId) {
                 $.ajax({
                     type: "POST",
                     url: "/notes/loadnote",
-                    data: { id: notesId },
+                    data: { id: noteId },
                     success: function (data) {
                         if (data.success) {
-                            // Will end up a redirect, but for now just display message
                             $('#noteTitle').val(data.title);
                             $('.tiptap').html(data.body);
-                            $(this).addClass('notes-list-item--selected')
+                            $('.notes-list-item--selected').removeClass('notes-list-item--selected')
+                            element.addClass('notes-list-item--selected')
                         }
                         else {
                             $("#errorModal").css({ 'transition': 'opacity 3s' });
@@ -196,7 +247,7 @@
                         $('#errorModal').modal('show');
                     }
                 })
-            });
+            }
         });
     </script>
     <script type="text/javascript" src="~/js/notes-edit.bundle.js" asp-append-version="true"></script>
