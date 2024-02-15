@@ -3,11 +3,34 @@
 @{
     ViewData["Title"] = "Notes Index";
 }
-@section Scripts{
+@section Scripts {
     <script type="text/javascript">
         var vm = @Html.Raw(Model.ToJson());
         var notesId = @Model.NotesId;
+        var noteDeleted = @ViewData["DeletedNote"];
         $(document).ready(function () {
+            if (noteDeleted == "true") {
+                $("#deletedNoteSuccessModal").css({ 'transition': 'opacity 3s' });
+                $('#deletedNoteSuccessModal').modal('show');
+            }
+            $('#deletedNoteClose').on('click', function () {
+                $('#deletedNoteSuccessModal').css({ 'transition': '' })
+                $('#deletedNoteSuccessModal').fadeOut('slow');
+                setTimeout(function () {
+                    $("#deletedNoteSuccessModal").modal('hide');
+                }, 500);
+            });
+            $('#deletedNoteSuccessModal').on('shown.bs.modal', function (e) {
+                setTimeout(function () {
+                    $('#deletedNoteSuccessModal').css({ 'transition': '' })
+                    $('#deletedNoteSuccessModal').fadeOut('slow');
+                    setTimeout(function () {
+                        $("#deletedNoteSuccessModal").modal('hide');
+                    }, 500);
+                }, 5000);
+            });
+
+
             $('#noteTitle').prepend("<h1>" + vm.title + "</h1>");
             $('#noteBody').html(vm.body);
 

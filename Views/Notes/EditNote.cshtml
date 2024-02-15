@@ -9,7 +9,7 @@
         <div class="modal-content bg-danger">
             <div class="modal-body text-white">
                 <p id="errorMsg" class="d-inline" style="opacity: .75"></p>
-                <button type="button" class="close" aria-label="Close" style="color: white;">
+                <button type="button" id="errorClose" class="close" aria-label="Close" style="color: white;">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
@@ -21,17 +21,26 @@
 <div id="warningModal" class="modal" role="dialog">
     <div class="modal-dialog modal-dialog-centered modal-sm">
         <div class="modal-content bg-warning">
-            <div class="modal-header">
-                <button type="button" class="close" aria-label="Close" style="color: white;">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
             <div class="modal-body text-white">
                 <p id="warningMsg" class="d-inline"></p>
             </div>
             <div class="modal-footer">
                 <button type="button" id="continueAction" class="btn-primary">Ok</button>
                 <button type="button" id="cancelAction" class="btn-secondary">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="deleteWarningModal" class="modal" role="dialog">
+    <div class="modal-dialog modal-dialog-centered modal-sm">
+        <div class="modal-content bg-danger">
+            <div class="modal-body text-white">
+                <p class="d-inline"><b><small>Are you sure you want to delete this note? You won't be able to recover it.</small></b></p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" id="continueDelete" class="btn-primary">Ok</button>
+                <button type="button" id="cancelDelete" class="btn-secondary">Cancel</button>
             </div>
         </div>
     </div>
@@ -49,17 +58,40 @@
         }
 
 </style>
-@section Scripts{
+@section Scripts {
     <script type="text/javascript">
         var vm = @Html.Raw(@Model.ToJson());
         var notesId = vm.notesId;
         var selectedNote = null;
+        var deleteNoteId = 0;
+        var noteDeleted = @ViewData["DeletedNote"];
         $(document).ready(function () {
+            if (noteDeleted == "true") {
+                $("#deletedNoteSuccessModal").css({ 'transition': 'opacity 3s' });
+                $('#deletedNoteSuccessModal').modal('show');
+            }
+            $('#deletedNoteClose').on('click', function () {
+                $('#deletedNoteSuccessModal').css({ 'transition': '' })
+                $('#deletedNoteSuccessModal').fadeOut('slow');
+                setTimeout(function () {
+                    $("#deletedNoteSuccessModal").modal('hide');
+                }, 500);
+            });
+            $('#deletedNoteSuccessModal').on('shown.bs.modal', function (e) {
+                setTimeout(function () {
+                    $('#deletedNoteSuccessModal').css({ 'transition': '' })
+                    $('#deletedNoteSuccessModal').fadeOut('slow');
+                    setTimeout(function () {
+                        $("#deletedNoteSuccessModal").modal('hide');
+                    }, 500);
+                }, 5000);
+            });
             // toastr.options.closeButton = true;
             // toastr.options.positionClass = "toast-top-center";
             if (notesId != 0) {
                 selectedNote = $('.notes-list').children().first();
                 loadNote(selectedNote, notesId);
+                $('#deleteNoteBtn').show();
             }
             $("#saveNote").click(function () {
                 var formData = {
@@ -176,7 +208,7 @@
                 }
             });
 
-            $('.close').on('click', function () {
+            $('#errorClose').on('click', function () {
                 $('#errorModal').css({ 'transition': '' })
                 $('#errorModal').fadeOut('slow');
                 setTimeout(function () {
@@ -203,10 +235,10 @@
                 else {
                     openWarningModal("<b><small>Are you sure you want to open this note? You will lose all your unsaved work.</small></b>", "load")
                 }
-                
+
             });
 
-            $('#continueAction').on('click', function() {
+            $('#continueAction').on('click', function () {
                 $('#warningModal').modal('hide');
                 if ($(this).data("val") == "edit") {
                     loadNote(selectedNote, notesId);
@@ -214,6 +246,20 @@
                 else if ($(this).data("val") == "home") {
                     window.location.href("Home/Index");
                 }
+            })
+
+            $('#deleteNoteBtn').on('click', function () {
+                deleteNoteId = notesId
+                $('#deleteWarningModal').modal('show');
+            })
+
+            $('#deleteNoteSidebar').on('click', function () {
+                deleteNoteId = $(this).data("id");
+                $('#deleteWarningModal').modal('show');
+            })
+
+            $('#continueDelete').on('click', function () {
+                
             })
 
             function openWarningModal(warning, val) {
@@ -233,6 +279,9 @@
                             $('.tiptap').html(data.body);
                             $('.notes-list-item--selected').removeClass('notes-list-item--selected')
                             element.addClass('notes-list-item--selected')
+                            if ($('#deleteNoteBtn').is(":hidden")) {
+                                $('#deleteNoteBtn').show();
+                            }
                         }
                         else {
                             $("#errorModal").css({ 'transition': 'opacity 3s' });
@@ -244,6 +293,31 @@
                     error: function () {
                         $("#errorModal").css({ 'transition': 'opacity 3s' });
                         $('#errorMsg').html('<b><small>There was an error loading this note, please try again</small></b>');
+                        $('#errorModal').modal('show');
+                    }
+                })
+            }
+
+            function loadNote(element, noteId) {
+                $('#deleteWarningModal').modal('hide');
+                $.ajax({
+                    type: "POST",
+                    url: "/notes/deletenote",
+                    data: { id: noteId },
+                    success: function (data) {
+                        if (data.success) {
+                            window.location.href("Home/Index");
+                        }
+                        else {
+                            $("#errorModal").css({ 'transition': 'opacity 3s' });
+                            $('#errorMsg').html(data.message);
+                            $('#errorModal').modal('show');
+                        }
+
+                    },
+                    error: function () {
+                        $("#errorModal").css({ 'transition': 'opacity 3s' });
+                        $('#errorMsg').html('<b><small>There was an error deleting your note, please try again</small></b>');
                         $('#errorModal').modal('show');
                     }
                 })

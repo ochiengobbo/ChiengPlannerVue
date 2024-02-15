@@ -10,6 +10,8 @@ using System.Drawing.Imaging;
 using Microsoft.Extensions.Options;
 using ChiengPlannerVue.Models;
 using System;
+using Microsoft.AspNetCore.Http;
+using ChiengPlannerVue.Services.Interfaces;
 
 namespace ChiengPlannerVue.Controllers
 {
@@ -20,22 +22,23 @@ namespace ChiengPlannerVue.Controllers
         private static string LOCALDIR = "C:\\Users\\Ochie\\source\\img\\";
         private ChiengPlannerContext _context;
         private readonly AzureConnection _connection;
+        private readonly INotesService _notesService;
 
-        public NotesController(ChiengPlannerContext context, IOptions<AzureConnection> connection)
+        public NotesController(ChiengPlannerContext context, IOptions<AzureConnection> connection, INotesService notesService)
         {
             _context = context;
             _connection = connection.Value;
+            _notesService = notesService;
         }
 
         [HttpGet]
         public IActionResult Index()
         {
             var vm = new NotesModel();
-            vm.Notes = _context.Notes.ToList();
-            if(vm.Notes.Count() > 0)
+            if(_notesService.NotesCount() > 0)
             {
-                vm.Notes = vm.Notes.OrderByDescending(x => x.ModifiedDate).ToList();
-                var recentNote = vm.Notes.FirstOrDefault();
+                vm.Notes = _notesService.GetNotes().OrderByDescending(x => x.ModifiedDate).ToList();
+                var recentNote = vm.Notes.First();
                 vm.NotesId = recentNote.NotesId;
                 vm.Title = recentNote.Title;
                 vm.Body = recentNote.Body;
@@ -45,6 +48,7 @@ namespace ChiengPlannerVue.Controllers
             {
                 RedirectToAction("EditNote");
             }
+            CheckForDeletedNoteSessionString();
             return View(vm);
         }
 
@@ -52,53 +56,69 @@ namespace ChiengPlannerVue.Controllers
         public IActionResult EditNote(int? id)
         {
             var vm = new NotesModel();
-            vm.Notes = _context.Notes.ToList();
-            if(id.HasValue)
+            vm.Notes = _notesService.GetNotes();
+            if(id.HasValue && _notesService.NoteExists(id.Value))
             {
-                var note = _context.Notes.Where(x => x.NotesId == id.Value).FirstOrDefault();
+                var note = _notesService.GetNote(id.Value);
                 vm.NotesId = note.NotesId;
                 vm.Title = note.Title;
                 vm.Body = note.Body;
                 vm.PlainText = note.PlainText;
             }
+            CheckForDeletedNoteSessionString();
             return View(vm);
         }
 
         [HttpPost]
         public JsonResult SaveNote(NotesModel vm)
         {
-            var note = new Note();
             var errorMsg = "";
-
             if (string.IsNullOrEmpty(vm.Title))
             {
                 errorMsg = "<b>Note must have a title!</b>";
                 return Json(new { success = false, message = errorMsg }, new System.Text.Json.JsonSerializerOptions());
             }
-
-            note.Title = vm.Title;
-            note.Body = vm.Body;
-            // Keep UserId null until Users and Authentication process is complete.
-            note.UserId = null;
-            note.PlainText = vm.PlainText;
-            _context.Notes.Add(note);
-            _context.SaveChanges();
+            if(_notesService.NoteExists(vm.NotesId))
+            {
+                _notesService.UpdateNote(vm.NotesId, vm.Title, vm.Body, vm.PlainText, DateTime.Now);
+            }
+            else
+            {
+                _notesService.AddNote(null, vm.Title, vm.Body, vm.PlainText);
+            }
             return Json(new { success = true }, new System.Text.Json.JsonSerializerOptions());
         }
 
         [HttpPost]
         public JsonResult LoadNote(int id)
         {
-            var note = _context.Notes.Where(x => x.NotesId == id).FirstOrDefault();
             var errorMsg = "";
-
-            if (note == null)
+            Note note;
+            if (!_notesService.NoteExists(id))
             {
                 errorMsg = "<b>Note does not exist!</b>";
                 return Json(new { success = false, message = errorMsg }, new System.Text.Json.JsonSerializerOptions());
             }
-
+            else
+            {
+                note = _notesService.GetNote(id);
+            }
             return Json(new { success = true, body = note.Body, title = note.Title }, new System.Text.Json.JsonSerializerOptions());
+        }
+
+        [HttpPost]
+        public JsonResult DeleteNote(int id)
+        {
+            var errorMsg = "";
+            if (!_notesService.NoteExists(id))
+            {
+                errorMsg = "<b>Note does not exist!</b>";
+                return Json(new { success = false, message = errorMsg }, new System.Text.Json.JsonSerializerOptions());
+            }
+            _notesService.DeleteNote(id);
+            HttpContext.Session.SetString("_DeletedNote", "true");
+
+            return Json(new { success = true }, new System.Text.Json.JsonSerializerOptions());
         }
 
         [HttpPost]
@@ -190,6 +210,15 @@ namespace ChiengPlannerVue.Controllers
             
 
             return "";
+        }
+
+        private void CheckForDeletedNoteSessionString()
+        {
+            if(!string.IsNullOrEmpty(HttpContext.Session.GetString("_DeletedNote")))
+            {
+                ViewData["DeletedNote"] = "true";
+                HttpContext.Session.SetString("_DeletedNote", "");
+            }
         }
     }
 }
