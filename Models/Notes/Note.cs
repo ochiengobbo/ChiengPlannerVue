@@ -1,4 +1,6 @@
-﻿namespace ChiengPlannerVue.Models.Notes
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace ChiengPlannerVue.Models.Notes
 {
     public class Note
     {
@@ -6,7 +8,9 @@
             this.Title = string.Empty;
             this.Body = string.Empty;
             this.CreatedDate = DateTime.Now;
+            this.ModifiedDate = DateTime.Now;
         }
+        [Key]
         public int NotesId { get; set; }
         public int? UserId { get; set; }
         public string? Title { get; set; }

@@ -1,0 +1,203 @@
+﻿@model ChiengPlannerVue.Models.Notes.NotesModel;
+@using ChiengPlannerVue.Utils
+@{
+    ViewData["Title"] = "Edit Note";
+}
+
+<div id="errorModal" class="modal" data-backdrop="false" role="dialog">
+    <div class="modal-dialog modal-dialog-centered modal-sm">
+        <div class="modal-content bg-danger">
+            <div class="modal-body text-white">
+                <p id="errorMsg" class="d-inline" style="opacity: .75"></p>
+                <button type="button" class="close" aria-label="Close" style="color: white;">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<style>
+
+    .modal {
+        opacity: 0;
+    }
+
+
+        .modal.in {
+            opacity: 1;
+        }
+
+</style>
+@section Scripts{
+    <script type="text/javascript">
+        var vm = @Html.Raw(@Model.ToJson());
+        var notesId = vm.notesId;
+        $(document).ready(function () {
+            toastr.options.closeButton = true;
+            toastr.options.positionClass = "toast-top-center";
+            $("#saveNote").click(function () {
+                var formData = {
+                    Title: $('#noteTitle').val(),
+                    Body: $('.tiptap').html(),
+                    UserId: 1,
+                    NotesId: notesId,
+                    PlainText: $('.tiptap').text()
+                }
+                $.ajax({
+                    type: "POST",
+                    url: "/notes/savenote",
+                    data: formData,
+                    success: function (data) {
+                        if (data.success) {
+                            // Will end up a redirect, but for now just display message
+                            alert("Data has been added successfully.");
+                        }
+                        else {
+                            $("#errorModal").css({ 'transition': 'opacity 3s' });
+                            $('#errorMsg').html(data.message);
+                            $('#errorModal').modal('show');
+                        }
+
+                    },
+                    error: function () {
+                        $("#errorModal").css({ 'transition': 'opacity 3s' });
+                        $('#errorMsg').html('<b><small>There was an error saving your note, please try again</small></b>');
+                        $('#errorModal').modal('show');
+                    }
+                })
+            });
+
+            $("#imageInput").on("change", function () {
+                var width = $('#imageWidth').val();
+                var height = $('#imageHeight').val();
+                var formData = new FormData();
+                if (this.files && this.files[0]) {
+                    formData.append("file", this.files[0]);
+                }
+                formData.append("width", width);
+                formData.append("height", height);
+                $.ajax({
+                    type: 'POST',
+                    data: formData,
+                    contentType: false,
+                    processData: false,
+                    cache: false,
+                    url: '/Notes/SaveImage',
+                    success: function (data) {
+                        if (data.success == true && data.url != "") {
+                            $("#imageUrl").attr("value", data.url);
+                            $("#addImageBtn").trigger("click");
+                        }
+                        else {
+                            $("#errorModal").css({ 'transition': 'opacity 3s' });
+                            $('#errorMsg').html('<b>Failed to upload image, please try again</b>');
+                            $('#errorModal').modal('show');
+                        }
+                    },
+                    error: function () {
+                        toastr.error('Failed to upload image, please try again')
+                    },
+                });
+                $("#imageInput").val('');
+            });
+
+            $("#videoInput").on("change", function () {
+                var formData = new FormData();
+                if (this.files && this.files[0]) {
+                    formData.append("file", this.files[0]);
+                }
+                $.ajax({
+                    type: 'POST',
+                    data: formData,
+                    contentType: false,
+                    processData: false,
+                    cache: false,
+                    url: '/Notes/SaveVideo',
+                    success: function (data) {
+                        if (data.success == true && data.url != "") {
+                            $("#videoUrl").attr("value", data.url);
+                            $("#addVideoBtn").trigger("click");
+                        }
+                        else {
+                            $("#errorModal").css({ 'transition': 'opacity 3s' });
+                            $('#errorMsg').html('<b>Failed to upload video, please try again</b>');
+                            $('#errorModal').modal('show');
+                        }
+                    },
+                    error: function () {
+                    },
+                });
+            });
+
+            $("#imgButton").on("click", function () {
+                $("#imageInput").trigger("click");
+            });
+
+            $("#videoButton").on("click", function () {
+                $("#videoInput").trigger("click");
+            });
+
+            $('#resizable').resizable();
+
+            $(window).scroll(function (e) {
+                var $el = $('#toolbarMenu');
+                var isPositionFixed = ($el.css('position') == 'fixed');
+                if ($(this).scrollTop() > 200 && !isPositionFixed) {
+                    $el.css({ 'position': 'fixed', 'top': '0px', 'width': '75%' });
+                }
+                if ($(this).scrollTop() < 150 && isPositionFixed) {
+                    $el.css({ 'position': 'static', 'top': '0px', 'width': '100%' });
+                }
+            });
+
+            $('.close').on('click', function () {
+                $('#errorModal').css({ 'transition': '' })
+                $('#errorModal').fadeOut('slow');
+                setTimeout(function () {
+                    $("#errorModal").modal('hide');
+                }, 500);
+            });
+
+            $('#errorModal').on('shown.bs.modal', function (e) {
+                setTimeout(function () {
+                    $('#errorModal').css({ 'transition': '' })
+                    $('#errorModal').fadeOut('slow');
+                    setTimeout(function () {
+                        $("#errorModal").modal('hide');
+                    }, 500);
+                }, 5000);
+            });
+
+            $('.notes-list-item').on('click', function (e) {
+                notesId = $(this).data("id");
+                $.ajax({
+                    type: "POST",
+                    url: "/notes/loadnote",
+                    data: { id: notesId },
+                    success: function (data) {
+                        if (data.success) {
+                            // Will end up a redirect, but for now just display message
+                            $('#noteTitle').val(data.title);
+                            $('.tiptap').html(data.body);
+                            $(this).addClass('notes-list-item--selected')
+                        }
+                        else {
+                            $("#errorModal").css({ 'transition': 'opacity 3s' });
+                            $('#errorMsg').html(data.message);
+                            $('#errorModal').modal('show');
+                        }
+
+                    },
+                    error: function () {
+                        $("#errorModal").css({ 'transition': 'opacity 3s' });
+                        $('#errorMsg').html('<b><small>There was an error loading this note, please try again</small></b>');
+                        $('#errorModal').modal('show');
+                    }
+                })
+            });
+        });
+    </script>
+    <script type="text/javascript" src="~/js/notes-edit.bundle.js" asp-append-version="true"></script>
+}

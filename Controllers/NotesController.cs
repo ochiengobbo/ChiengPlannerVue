@@ -30,6 +30,16 @@ namespace ChiengPlannerVue.Controllers
         public IActionResult Index()
         {
             var vm = new NotesModel();
+            vm.Notes = _context.Notes.ToList();
+            if(vm.Notes.Count() > 0)
+            {
+                vm.Notes = vm.Notes.OrderByDescending(x => x.ModifiedDate).ToList();
+                var recentNote = vm.Notes.FirstOrDefault();
+                vm.NotesId = recentNote.NotesId;
+                vm.Title = recentNote.Title;
+                vm.Body = recentNote.Body;
+                vm.PlainText = recentNote.PlainText;
+            }
             return View(vm);
         }
 
@@ -53,6 +63,21 @@ namespace ChiengPlannerVue.Controllers
             _context.Notes.Add(note);
             _context.SaveChanges();
             return Json(new { success = true }, new System.Text.Json.JsonSerializerOptions());
+        }
+
+        [HttpPost]
+        public JsonResult LoadNote(int id)
+        {
+            var note = _context.Notes.Where(x => x.NotesId == id).FirstOrDefault();
+            var errorMsg = "";
+
+            if (note == null)
+            {
+                errorMsg = "<b>Note does not exist!</b>";
+                return Json(new { success = false, message = errorMsg }, new System.Text.Json.JsonSerializerOptions());
+            }
+
+            return Json(new { success = true, body = note.Body, title = note.Title }, new System.Text.Json.JsonSerializerOptions());
         }
 
         [HttpPost]

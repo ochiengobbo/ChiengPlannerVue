@@ -1,4 +1,4 @@
-﻿
+﻿@model ChiengPlannerVue.Models.Notes.NotesModel;
 <style>
     .notes {
         display: flex;
@@ -64,40 +64,43 @@
     }
 
     /*.notes__preview {
-        display: flex;
-        flex-direction: column;
-        padding: 2em 3em;
-        flex-grow: 1;
-    }
+                display: flex;
+                flex-direction: column;
+                padding: 2em 3em;
+                flex-grow: 1;
+            }
 
-    .notes__title,
-    .notes__body {
-        border: none;
-        outline: none;
-        width: 100%;
-    }
+            .notes__title,
+            .notes__body {
+                border: none;
+                outline: none;
+                width: 100%;
+            }
 
-    .notes__title {
-        font-size: 3em;
-        font-weight: bold;
-    }
+            .notes__title {
+                font-size: 3em;
+                font-weight: bold;
+            }
 
-    .notes__body {
-        flex-grow: 1;
-        font-size: 1.2em;
-        line-height: 1.5;
-        margin-top: 2em;
-        resize: none;
-    }*/
+            .notes__body {
+                flex-grow: 1;
+                font-size: 1.2em;
+                line-height: 1.5;
+                margin-top: 2em;
+                resize: none;
+            }*/
 </style>
 
 <div class="notes-sidebar">
-    <button class="notes-add" type="button"><i class="fa-solid fa-plus"></i></button>
+    <a asp-controller="Notes" asp-action="EditNote" class="notes-add" type="button" style="text-align: center;"><i class="fa-solid fa-plus"></i></a>
     <div class="notes-list">
-        <div class="notes-list-item">
-            <div class="notes-small-title"></div>
-            <div class="notes-small-body"></div>
-            <div class="notes-small-updated"></div>
-        </div>
+        @foreach (var note in Model.Notes)
+        {
+            <div class="notes-list-item" data-id=@note.NotesId>
+                <div class="notes-small-title">@note.Title</div>
+                <div class="notes-small-body">@note.PlainText</div>
+                <div class="notes-small-updated">@note.ModifiedDate</div>
+            </div>
+        }
     </div>
 </div>
