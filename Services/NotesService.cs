@@ -18,9 +18,14 @@ namespace ChiengPlannerVue.Services
             return _context.Notes.ToList();
         }
 
-        public Note GetNote(int id)
+        public Note GetNoteById(int id)
         {
             return _context.Notes.Where(x => x.NotesId == id).First();
+        }
+
+        public Note GetNoteByGuid(string guid)
+        {
+            return _context.Notes.Where(x => string.Equals(x.Guid, guid)).First();
         }
 
         public int NotesCount()
@@ -33,7 +38,7 @@ namespace ChiengPlannerVue.Services
             return _context.Notes.Where(x => x.NotesId == id).Any();
         }
 
-        public void AddNote(int? userId, string title, string body, string plainText)
+        public int AddNote(int? userId, string title, string body, string plainText)
         {
             var note = new Note();
             note.Title = title;
@@ -41,13 +46,15 @@ namespace ChiengPlannerVue.Services
             // Keep UserId null until Users and Authentication process is complete.
             note.UserId = userId;
             note.PlainText = plainText;
+            note.Guid = Guid.NewGuid().ToString();
             _context.Notes.Add(note);
             _context.SaveChanges();
+            return GetNoteByGuid(note.Guid).NotesId;
         }
 
         public void UpdateNote(int noteId, string title, string body, string plainText, DateTime modifiedDate)
         {
-            var note = GetNote(noteId);
+            var note = GetNoteById(noteId);
             note.Title = title;
             note.Body = body;
             note.PlainText = plainText;
@@ -57,7 +64,7 @@ namespace ChiengPlannerVue.Services
 
         public void DeleteNote(int noteId)
         {
-            var note = GetNote(noteId);
+            var note = GetNoteById(noteId);
             _context.Notes.Remove(note);
             _context.SaveChanges();
         }

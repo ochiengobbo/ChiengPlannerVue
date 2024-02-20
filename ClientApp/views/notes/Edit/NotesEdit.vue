@@ -7,7 +7,7 @@
     <editor v-model="content" />
     <div class="container mx-auto" style="margin-top: 2rem; margin-bottom: 2rem;">
       <button id="saveNote" class="btn btn-outline-dark p-1">Save</button>
-      <button id="deleteNoteBtn" class="btn btn-outline-dark btn-danger p-1" hidden>Delete</button>
+      <button id="deleteNoteBtn" class="btn btn-outline-danger p-1" style="display: none;">Delete</button>
     </div>
   </div>
 </template>

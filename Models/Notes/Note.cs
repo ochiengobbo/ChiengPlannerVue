@@ -10,6 +10,7 @@ namespace ChiengPlannerVue.Models.Notes
             this.PlainText = string.Empty;
             this.CreatedDate = DateTime.Now;
             this.ModifiedDate = DateTime.Now;
+            this.Guid = string.Empty;
         }
         [Key]
         public int NotesId { get; set; }
@@ -19,5 +20,6 @@ namespace ChiengPlannerVue.Models.Notes
         public string PlainText { get; set; }
         public DateTime CreatedDate { get; set; }
         public DateTime? ModifiedDate { get; set; }
+        public string Guid { get; set; }
     }
 }

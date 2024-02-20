@@ -2,13 +2,14 @@
 @using ChiengPlannerVue.Utils
 @{
     ViewData["Title"] = "Edit Note";
+    var deletedNote = ViewData["DeletedNote"] == null ? false : true;
 }
 
 <div id="errorModal" class="modal" data-backdrop="false" role="dialog">
     <div class="modal-dialog modal-dialog-centered modal-sm">
         <div class="modal-content bg-danger">
             <div class="modal-body text-white">
-                <p id="errorMsg" class="d-inline" style="opacity: .75"></p>
+                <p id="errorMsg" class="d-inline"></p>
                 <button type="button" id="errorClose" class="close" aria-label="Close" style="color: white;">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -24,9 +25,9 @@
             <div class="modal-body text-white">
                 <p id="warningMsg" class="d-inline"></p>
             </div>
-            <div class="modal-footer">
-                <button type="button" id="continueAction" class="btn-primary">Ok</button>
-                <button type="button" id="cancelAction" class="btn-secondary">Cancel</button>
+            <div class="modal-footer" style="border-top: 0px;margin-top: -25px;">
+                <button type="button" id="continueAction" class="btn btn-danger">Ok</button>
+                <button type="button" id="cancelAction" class="btn btn-success">Cancel</button>
             </div>
         </div>
     </div>
@@ -38,10 +39,24 @@
             <div class="modal-body text-white">
                 <p class="d-inline"><b><small>Are you sure you want to delete this note? You won't be able to recover it.</small></b></p>
             </div>
-            <div class="modal-footer">
-                <button type="button" id="continueDelete" class="btn-primary">Ok</button>
-                <button type="button" id="cancelDelete" class="btn-secondary">Cancel</button>
+            <div class="modal-footer" style="border-top: 0px;margin-top: -25px;">
+                <button type="button" id="continueDelete" class="btn btn-danger">Ok</button>
+                <button type="button" id="cancelDelete" class="btn btn-success">Cancel</button>
             </div>
+        </div>
+    </div>
+</div>
+
+<div id="deletedNoteSuccessModal" class="modal" data-backdrop="false" role="dialog">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content bg-success">
+            <div class="modal-body text-white">
+                <p class="d-inline">Note was succesfully deleted.</p>
+                <button type="button" id="deletedNoteClose" class="close" aria-label="Close" style="color: white;">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+
         </div>
     </div>
 </div>
@@ -64,9 +79,19 @@
         var notesId = vm.notesId;
         var selectedNote = null;
         var deleteNoteId = 0;
-        var noteDeleted = @ViewData["DeletedNote"];
+        var noteDeleted = @deletedNote.ToJson();
+        var unsavedRedirect = "";
         $(document).ready(function () {
-            if (noteDeleted == "true") {
+            $('#deletedNoteSuccessModal').on('shown.bs.modal', function (e) {
+                setTimeout(function () {
+                    $('#deletedNoteSuccessModal').css({ 'transition': '' })
+                    $('#deletedNoteSuccessModal').fadeOut('slow');
+                    setTimeout(function () {
+                        $("#deletedNoteSuccessModal").modal('hide');
+                    }, 500);
+                }, 5000);
+            });
+            if (noteDeleted) {
                 $("#deletedNoteSuccessModal").css({ 'transition': 'opacity 3s' });
                 $('#deletedNoteSuccessModal').modal('show');
             }
@@ -77,22 +102,13 @@
                     $("#deletedNoteSuccessModal").modal('hide');
                 }, 500);
             });
-            $('#deletedNoteSuccessModal').on('shown.bs.modal', function (e) {
-                setTimeout(function () {
-                    $('#deletedNoteSuccessModal').css({ 'transition': '' })
-                    $('#deletedNoteSuccessModal').fadeOut('slow');
-                    setTimeout(function () {
-                        $("#deletedNoteSuccessModal").modal('hide');
-                    }, 500);
-                }, 5000);
-            });
-            // toastr.options.closeButton = true;
-            // toastr.options.positionClass = "toast-top-center";
+
             if (notesId != 0) {
-                selectedNote = $('.notes-list').children().first();
+                // selectedNote = $('.notes-list').children().first();
                 loadNote(selectedNote, notesId);
                 $('#deleteNoteBtn').show();
             }
+
             $("#saveNote").click(function () {
                 var formData = {
                     Title: $('#noteTitle').val(),
@@ -107,8 +123,7 @@
                     data: formData,
                     success: function (data) {
                         if (data.success) {
-                            // Will end up a redirect, but for now just display message
-                            alert("Data has been added successfully.");
+                            window.location.href = "/Notes/Index?Id=" + data.id;
                         }
                         else {
                             $("#errorModal").css({ 'transition': 'opacity 3s' });
@@ -226,17 +241,59 @@
                 }, 5000);
             });
 
-            $('.notes-list-item').on('click', function (e) {
-                notesId = $(this).data("id");
-                selectedNote = $(this);
-                if ($('.tiptap').html() != "Type here..." || $('.tiptap').html() != "") {
-                    loadNote(selectedNote, notesId);
+            // $('.notes-list-item').on('click', function (e) {
+            //     notesId = $(this).data("id");
+            //     selectedNote = $(this);
+            //     if (($('.tiptap').html() != "Type here..." || $('.tiptap').html() != "") && $('#noteTitle').val() == "") {
+            //         loadNote(selectedNote, notesId);
+            //     }
+            //     else {
+            //         openWarningModal("<b><small>Are you sure you want to open this note? You will lose all your unsaved work.</small></b>", "load")
+            //     }
+            // });
+
+            $('#homeNavLink').on('click', function (e) {
+                e.preventDefault();
+                unsavedRedirect = $(this).attr('href');
+                if (!hasNoteBeenModified()) {
+                    window.location.href = unsavedRedirect;
                 }
                 else {
-                    openWarningModal("<b><small>Are you sure you want to open this note? You will lose all your unsaved work.</small></b>", "load")
+                    openWarningModal("<b><small>Are you sure you want to leave this page? You will lose all your unsaved work.</small></b>", "home")
                 }
-
             });
+
+            $('#notesNavLink').on('click', function (e) {
+                e.preventDefault();
+                unsavedRedirect = $(this).attr('href');
+                if (!hasNoteBeenModified()) {
+                    window.location.href = unsavedRedirect;
+                }
+                else {
+                    openWarningModal("<b><small>Are you sure you want to leave this page? You will lose all your unsaved work.</small></b>", "notes")
+                }
+            });
+
+            function hasNoteBeenModified(){
+                if (($('.tiptap').html() == "<p>Type here...</p>" || $('.tiptap').html() == "") && $('#noteTitle').val() == "") {
+                    return false;
+                }
+                else if (($('.tiptap').html() == vm.body) && $('#noteTitle').val() == vm.title){
+                    return false;
+                }
+                return true;
+            }
+
+            // $('.notes-add').on('click', function (e) {
+            //     e.preventDefault();
+            //     unsavedRedirect = $(this).href;
+            //     if (($('.tiptap').html() != "Type here..." || $('.tiptap').html() != "") && $('#noteTitle').val() == "") {
+            //         window.location.href(unsavedRedirect);
+            //     }
+            //     else {
+            //         openWarningModal("<b><small>Are you sure you want to start a new note? You will lose all your unsaved work.</small></b>", "add")
+            //     }
+            // });
 
             $('#continueAction').on('click', function () {
                 $('#warningModal').modal('hide');
@@ -244,8 +301,18 @@
                     loadNote(selectedNote, notesId);
                 }
                 else if ($(this).data("val") == "home") {
-                    window.location.href("Home/Index");
+                    window.location.href = unsavedRedirect;
                 }
+                else if ($(this).data("val") == "notes") {
+                    window.location.href = unsavedRedirect;
+                }
+                // else if ($(this).data("val") == "add") {
+                //     window.location.href = unsavedRedirect;
+                // }
+            })
+
+            $('#cancelAction').on('click', function () {
+                $('#warningModal').modal('hide');
             })
 
             $('#deleteNoteBtn').on('click', function () {
@@ -253,13 +320,17 @@
                 $('#deleteWarningModal').modal('show');
             })
 
-            $('#deleteNoteSidebar').on('click', function () {
-                deleteNoteId = $(this).data("id");
-                $('#deleteWarningModal').modal('show');
-            })
+            // $('#deleteNoteSidebar').on('click', function () {
+            //     deleteNoteId = $(this).data("id");
+            //     $('#deleteWarningModal').modal('show');
+            // })
 
             $('#continueDelete').on('click', function () {
-                
+                deleteNote(deleteNoteId)
+            })
+
+            $('#cancelDelete').on('click', function () {
+                $('#deleteWarningModal').modal('hide');
             })
 
             function openWarningModal(warning, val) {
@@ -277,8 +348,10 @@
                         if (data.success) {
                             $('#noteTitle').val(data.title);
                             $('.tiptap').html(data.body);
-                            $('.notes-list-item--selected').removeClass('notes-list-item--selected')
-                            element.addClass('notes-list-item--selected')
+                            if(element != null){
+                                $('.notes-list-item--selected').removeClass('notes-list-item--selected')
+                                element.addClass('notes-list-item--selected')
+                            }
                             if ($('#deleteNoteBtn').is(":hidden")) {
                                 $('#deleteNoteBtn').show();
                             }
@@ -298,7 +371,7 @@
                 })
             }
 
-            function loadNote(element, noteId) {
+            function deleteNote(noteId) {
                 $('#deleteWarningModal').modal('hide');
                 $.ajax({
                     type: "POST",
@@ -306,7 +379,7 @@
                     data: { id: noteId },
                     success: function (data) {
                         if (data.success) {
-                            window.location.href("Home/Index");
+                            window.location.href = "/Notes/Index";
                         }
                         else {
                             $("#errorModal").css({ 'transition': 'opacity 3s' });

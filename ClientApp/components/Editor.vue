@@ -1,14 +1,14 @@
 <template>
     <div v-if="editor" class="container mx-auto" style="margin-top: 2rem; margin-bottom: 2rem;">
         <bubble-menu :editor="editor" :tippy-options="{ duration: 100 }" v-if="editor">
-            <section class="buttons flex align-items-center flex-wrap gap-4 border border-1 p-4 bg-light">
-                <div class="d-sm-inline-flex p-4" id="rightBorder">
+            <section class="buttons d-sm-inline-flex border border-1 p-4 bg-light">
+                <div class="p-4 d-sm-inline-flex">
                     <input type="text" placeholder="Place URL Here" id="hyperLinkUrl" />
                     <button class="btn btn-light" @click="setLink">
                         <svg-icon type="mdi" :path="setupLink"></svg-icon>
                     </button>
                 </div>
-                <div class="d-sm-inline-flex p-4">
+                <div class="p-4 d-sm-inline-flex">
                     <button @click="editor.chain().focus().toggleBold().run()"
                         :class="{ 'btn-secondary': editor.isActive('bold'), 'btn-light': !editor.isActive('bold') }"
                         class="btn p-1">
@@ -374,8 +374,8 @@ export default {
         hyperlinkPopover() {
             $('#hyperlinkDiv').css('display', 'block');
             $('#hyperlinkDiv').css('position', 'absolute');
-            $('#hyperlinkDiv').css('left', event.clientX + 10);
-            $('#hyperlinkDiv').css('top', event.clientY + 15);
+            $('#hyperlinkDiv').css('left', window.Event.clientX + 10);
+            $('#hyperlinkDiv').css('top', window.Event.clientY - 15);
         },
     },
 
@@ -410,7 +410,11 @@ export default {
                             class: 'tiptap-title',
                         }
                     },
-                    horizontalRule: true,
+                    horizontalRule: {
+                        HTMLAttributes: {
+                            style: 'border-top: 1px solid black;',
+                        }
+                    },
                     orderedList: true,
                     listItem: true,
                     bold: true,

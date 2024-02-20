@@ -15,8 +15,7 @@ namespace ChiengPlannerVue.Controllers
 
         public IActionResult Index()
         {
-            var vm = new List<int> { 1, 2, 3 };
-            return View(vm);
+            return View();
         }
 
         public IActionResult Privacy()

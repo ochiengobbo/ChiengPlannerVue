@@ -1,5 +1,6 @@
 ﻿@{
     var controllerName = ViewContext.RouteData.Values["controller"].ToString();
+    var actionName = ViewContext.RouteData.Values["action"].ToString();
 }
 <!DOCTYPE html>
 <html lang="en">
@@ -31,14 +32,23 @@
     {
         @Html.Partial("~/Views/Shared/_Header.cshtml")
     }
-    <div class="d-flex h-100">
-        @if (string.Equals(controllerName, "Notes"))
-        {
-            @Html.Partial("~/Views/Notes/_NotesSidebar.cshtml")
-        }
+    @if (string.Equals(controllerName, "Notes") && !string.Equals(actionName, "EditNote"))
+    {
+        <div class="d-flex h-100">
+            @if (string.Equals(controllerName, "Notes") && !string.Equals(actionName, "EditNote"))
+            {
+                @Html.Partial("~/Views/Notes/_NotesSidebar.cshtml")
+            }
+            <div id="app" class="w-100"></div>
+            @RenderBody()
+        </div>
+    }
+    else
+    {
         <div id="app"></div>
         @RenderBody()
-    </div>
+    }
+
     @RenderSection("Scripts", required: false)
 
     <environment include="Development">

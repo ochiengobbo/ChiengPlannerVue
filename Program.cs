@@ -3,6 +3,8 @@ using Microsoft.Extensions.Configuration;
 using System.Reflection;
 using Microsoft.EntityFrameworkCore;
 using ChiengPlannerVue;
+using ChiengPlannerVue.Services.Interfaces;
+using ChiengPlannerVue.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,12 +16,19 @@ builder.Configuration.AddJsonFile("appsettings.json", optional: false, reloadOnC
 builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<ChiengPlannerContext>(options =>
             options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultDBConnection")));
+builder.Services.AddTransient<INotesService, NotesService>();
 builder.Services.Configure<AzureConnection>(builder.Configuration.GetSection("AzureConnection"));
 
 if (builder.Environment.IsDevelopment())
 {
-    builder.Services.AddMvc().AddRazorRuntimeCompilation();
+    builder.Services.AddMvc().AddSessionStateTempDataProvider().AddRazorRuntimeCompilation();
 }
+else
+{
+    builder.Services.AddMvc().AddSessionStateTempDataProvider();
+}
+
+builder.Services.AddSession();
 
 var app = builder.Build();
 
@@ -56,8 +65,10 @@ app.UseRouting();
 
 app.UseAuthorization();
 
+app.UseSession();
+
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Notes}/{action=Index}/{id?}");
+    pattern: "{controller=Home}/{action=Index}/{id?}");
 
 app.Run();

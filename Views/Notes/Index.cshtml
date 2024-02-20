@@ -2,14 +2,64 @@
 @using ChiengPlannerVue.Utils
 @{
     ViewData["Title"] = "Notes Index";
+    var deletedNote = ViewData["DeletedNote"] == null ? false : true;
 }
+<div id="deleteWarningModal" class="modal" role="dialog">
+    <div class="modal-dialog modal-dialog-centered modal-sm">
+        <div class="modal-content bg-danger">
+            <div class="modal-body text-white">
+                <p class="d-inline"><b><small>Are you sure you want to delete this note? You won't be able to recover it.</small></b></p>
+            </div>
+            <div class="modal-footer" style="border-top: 0px;margin-top: -25px;">
+                <button type="button" id="continueDelete" class="btn btn-danger">Ok</button>
+                <button type="button" id="cancelDelete" class="btn btn-success">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="deletedNoteSuccessModal" class="modal" data-backdrop="false" role="dialog">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content bg-success">
+            <div class="modal-body text-white">
+                <p class="d-inline">Note was succesfully deleted.</p>
+                <button type="button" id="deletedNoteClose" class="close" aria-label="Close" style="color: white;">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<style>
+
+    .modal {
+        opacity: 0;
+    }
+
+
+        .modal.in {
+            opacity: 1;
+        }
+
+</style>
 @section Scripts {
     <script type="text/javascript">
         var vm = @Html.Raw(Model.ToJson());
+        var deleteNoteId = 0;
         var notesId = @Model.NotesId;
-        var noteDeleted = @ViewData["DeletedNote"];
+        var noteDeleted = @deletedNote.ToJson();
         $(document).ready(function () {
-            if (noteDeleted == "true") {
+            $('#deletedNoteSuccessModal').on('shown.bs.modal', function (e) {
+                setTimeout(function () {
+                    $('#deletedNoteSuccessModal').css({ 'transition': '' })
+                    $('#deletedNoteSuccessModal').fadeOut('slow');
+                    setTimeout(function () {
+                        $("#deletedNoteSuccessModal").modal('hide');
+                    }, 500);
+                }, 5000);
+            });
+            if (noteDeleted) {
                 $("#deletedNoteSuccessModal").css({ 'transition': 'opacity 3s' });
                 $('#deletedNoteSuccessModal').modal('show');
             }
@@ -20,32 +70,29 @@
                     $("#deletedNoteSuccessModal").modal('hide');
                 }, 500);
             });
-            $('#deletedNoteSuccessModal').on('shown.bs.modal', function (e) {
-                setTimeout(function () {
-                    $('#deletedNoteSuccessModal').css({ 'transition': '' })
-                    $('#deletedNoteSuccessModal').fadeOut('slow');
-                    setTimeout(function () {
-                        $("#deletedNoteSuccessModal").modal('hide');
-                    }, 500);
-                }, 5000);
-            });
 
+            $('.delete-note-sidebar').on('click', function () {
+                deleteNoteId = $(this).data("id");
+                $('#deleteWarningModal').modal('show');
+            })
 
-            $('#noteTitle').prepend("<h1>" + vm.title + "</h1>");
-            $('#noteBody').html(vm.body);
+            $('#continueDelete').on('click', function () {
+                deleteNote(deleteNoteId)
+            })
 
-            $('.notes-list-item').on('click', function (e) {
-                notesId = $(this).data("id");
+            $('#cancelDelete').on('click', function () {
+                $('#deleteWarningModal').modal('hide');
+            })
+
+            function deleteNote(noteId) {
+                $('#deleteWarningModal').modal('hide');
                 $.ajax({
                     type: "POST",
-                    url: "/notes/loadnote",
-                    data: { id: notesId },
+                    url: "/notes/deletenote",
+                    data: { id: noteId },
                     success: function (data) {
                         if (data.success) {
-                            // Will end up a redirect, but for now just display message
-                            $('#noteTitle').val(data.title);
-                            $('.tiptap').html(data.body);
-                            $(this).addClass('notes-list-item--selected')
+                            window.location.href = "/Notes/Index";
                         }
                         else {
                             $("#errorModal").css({ 'transition': 'opacity 3s' });
@@ -56,10 +103,55 @@
                     },
                     error: function () {
                         $("#errorModal").css({ 'transition': 'opacity 3s' });
-                        $('#errorMsg').html('<b><small>There was an error loading this note, please try again</small></b>');
+                        $('#errorMsg').html('<b><small>There was an error deleting your note, please try again</small></b>');
                         $('#errorModal').modal('show');
                     }
                 })
+            }
+
+            var notesListItem = $("div").find('[data-id=\'' + notesId + '\']');
+            notesListItem.addClass('notes-list-item--selected')
+            $('#noteTitle').prepend("<hr style=\"border-top:4px solid white\"/>");
+            $('#noteTitle').prepend("<h1>" + vm.title + "</h1>");
+            $('#noteBody').html(vm.body);
+            $('#editLink').attr('href', '/Notes/EditNote?Id=' + notesId);
+
+
+            $('.notes-list-item').on('click', function (e) {
+                if (notesId != $(this).data("id")) {
+                    notesId = $(this).data("id");
+                    notesListItem = $(this);
+                    $.ajax({
+                        type: "POST",
+                        url: "/notes/loadnote",
+                        data: { id: notesId },
+                        success: function (data) {
+                            if (data.success) {
+                                // Will end up a redirect, but for now just display message
+                                notesId = data.id;
+                                $('#editLink').attr('href', '/Notes/EditNote?Id=' + notesId);
+                                $('#noteTitle').empty();
+                                $('#noteTitle').prepend("<hr style=\"border-top:4px solid white\"/>");
+                                $('#noteTitle').prepend("<h1>" + data.title + "</h1>");
+                                $('#noteBody').html(data.body);
+                                $("button").removeClass('notes-list-item--selected');
+                                $("div").removeClass('notes-list-item--selected');
+                                notesListItem.addClass('notes-list-item--selected');
+                            }
+                            else {
+                                $("#errorModal").css({ 'transition': 'opacity 3s' });
+                                $('#errorMsg').html(data.message);
+                                $('#errorModal').modal('show');
+                            }
+
+                        },
+                        error: function () {
+                            $("#errorModal").css({ 'transition': 'opacity 3s' });
+                            $('#errorMsg').html('<b><small>There was an error loading this note, please try again</small></b>');
+                            $('#errorModal').modal('show');
+                        }
+                    })
+                }
             });
         })
     </script>

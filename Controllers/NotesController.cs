@@ -32,10 +32,11 @@ namespace ChiengPlannerVue.Controllers
         }
 
         [HttpGet]
-        public IActionResult Index()
+        public IActionResult Index(int? id)
         {
             var vm = new NotesModel();
-            if(_notesService.NotesCount() > 0)
+            var notesCount = _notesService.NotesCount();
+            if (!id.HasValue && notesCount > 0)
             {
                 vm.Notes = _notesService.GetNotes().OrderByDescending(x => x.ModifiedDate).ToList();
                 var recentNote = vm.Notes.First();
@@ -44,9 +45,18 @@ namespace ChiengPlannerVue.Controllers
                 vm.Body = recentNote.Body;
                 vm.PlainText = recentNote.PlainText;
             }
+            else if (id.HasValue && notesCount > 0)
+            {
+                vm.Notes = _notesService.GetNotes().OrderByDescending(x => x.ModifiedDate).ToList();
+                var note = _notesService.GetNoteById(id.Value);
+                vm.NotesId = note.NotesId;
+                vm.Title = note.Title;
+                vm.Body = note.Body;
+                vm.PlainText = note.PlainText;
+            }
             else
             {
-                RedirectToAction("EditNote");
+                return RedirectToAction("EditNote");
             }
             CheckForDeletedNoteSessionString();
             return View(vm);
@@ -59,7 +69,7 @@ namespace ChiengPlannerVue.Controllers
             vm.Notes = _notesService.GetNotes();
             if(id.HasValue && _notesService.NoteExists(id.Value))
             {
-                var note = _notesService.GetNote(id.Value);
+                var note = _notesService.GetNoteById(id.Value);
                 vm.NotesId = note.NotesId;
                 vm.Title = note.Title;
                 vm.Body = note.Body;
@@ -73,6 +83,7 @@ namespace ChiengPlannerVue.Controllers
         public JsonResult SaveNote(NotesModel vm)
         {
             var errorMsg = "";
+            var id = 0;
             if (string.IsNullOrEmpty(vm.Title))
             {
                 errorMsg = "<b>Note must have a title!</b>";
@@ -80,13 +91,14 @@ namespace ChiengPlannerVue.Controllers
             }
             if(_notesService.NoteExists(vm.NotesId))
             {
+                id = vm.NotesId;
                 _notesService.UpdateNote(vm.NotesId, vm.Title, vm.Body, vm.PlainText, DateTime.Now);
             }
             else
             {
-                _notesService.AddNote(null, vm.Title, vm.Body, vm.PlainText);
+                id = _notesService.AddNote(null, vm.Title, vm.Body, vm.PlainText);
             }
-            return Json(new { success = true }, new System.Text.Json.JsonSerializerOptions());
+            return Json(new { success = true, id = id }, new System.Text.Json.JsonSerializerOptions());
         }
 
         [HttpPost]
@@ -101,9 +113,9 @@ namespace ChiengPlannerVue.Controllers
             }
             else
             {
-                note = _notesService.GetNote(id);
+                note = _notesService.GetNoteById(id);
             }
-            return Json(new { success = true, body = note.Body, title = note.Title }, new System.Text.Json.JsonSerializerOptions());
+            return Json(new { success = true, body = note.Body, title = note.Title, id = note.NotesId }, new System.Text.Json.JsonSerializerOptions());
         }
 
         [HttpPost]

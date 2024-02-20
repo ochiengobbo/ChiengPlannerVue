@@ -14,11 +14,11 @@
         flex-shrink: 0;
         overflow-y: auto;
         padding: 1em;
-        width: 300px;
+        width: 250px;
     }
 
     .notes-add {
-        background: #009578;
+        background: #7a0696;
         border: none;
         border-radius: 7px;
         color: #ffffff;
@@ -31,7 +31,7 @@
     }
 
         .notes-add:hover {
-            background: #00af8c;
+            background: #500263;
         }
 
     .notes-list-item {
@@ -64,31 +64,31 @@
     }
 
     /*.notes__preview {
-                    display: flex;
-                    flex-direction: column;
-                    padding: 2em 3em;
-                    flex-grow: 1;
-                }
+                                display: flex;
+                                flex-direction: column;
+                                padding: 2em 3em;
+                                flex-grow: 1;
+                            }
 
-                .notes__title,
-                .notes__body {
-                    border: none;
-                    outline: none;
-                    width: 100%;
-                }
+                            .notes__title,
+                            .notes__body {
+                                border: none;
+                                outline: none;
+                                width: 100%;
+                            }
 
-                .notes__title {
-                    font-size: 3em;
-                    font-weight: bold;
-                }
+                            .notes__title {
+                                font-size: 3em;
+                                font-weight: bold;
+                            }
 
-                .notes__body {
-                    flex-grow: 1;
-                    font-size: 1.2em;
-                    line-height: 1.5;
-                    margin-top: 2em;
-                    resize: none;
-                }*/
+                            .notes__body {
+                                flex-grow: 1;
+                                font-size: 1.2em;
+                                line-height: 1.5;
+                                margin-top: 2em;
+                                resize: none;
+                            }*/
 </style>
 
 <div class="notes-sidebar">
@@ -96,31 +96,27 @@
     <div class="notes-list">
         @foreach (var note in Model.Notes)
         {
-            <div class="notes-list-item" data-id=@note.NotesId>
-                <div class="d-inline right">
-                    <button class="btn btn-secondary" type="button" style="text-align: center;" id="deleteNoteSidebar" data-id=@note.NotesId>
+            <div class="notes-list-item d-inline-flex" data-id=@note.NotesId>
+                <div>
+                    <div class="notes-small-title"><b>@note.Title</b></div>
+                    @if (note.PlainText.Length > 120)
+                    {
+                        <div class="notes-small-body">@(note.PlainText.Substring(0, 120) + "...")</div>
+                    }
+                    else
+                    {
+                        <div class="notes-small-body">@note.PlainText</div>
+                    }
+                    <div class="notes-small-updated">@note.ModifiedDate</div>
+                </div>
+                <div style="margin-top: 35px;">
+                    <button class="btn btn-outline-dark text-danger delete-note-sidebar" type="button" style="text-align: center;" data-id=@note.NotesId>
                         <i class="fa-solid fa-trash-can"></i>
                     </button>
                 </div>
-                <div class="notes-small-title">@note.Title</div>
-                <div class="notes-small-body">@note.PlainText</div>
-                <div class="notes-small-updated">@note.ModifiedDate</div>
             </div>
         }
     </div>
 </div>
 
-<div id="deletedNoteSuccessModal" class="modal" data-backdrop="false" role="dialog">
-    <div class="modal-dialog modal-dialog-centered modal-sm">
-        <div class="modal-content bg-success">
-            <div class="modal-body text-white">
-                <p class="d-inline" style="opacity: .75">Note was succesfully deleted.</p>
-                <button type="button" id="deletedNoteClose" class="close" aria-label="Close" style="color: white;">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-
-        </div>
-    </div>
-</div>
 
