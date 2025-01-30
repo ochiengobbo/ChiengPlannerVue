@@ -1,0 +1,14 @@
+﻿@model List<ChiengPlannerVue.Models.Checklists.Checklist>;
+
+@foreach (var checklist in Model)
+{
+    <div>
+        <a>@checklist.Name</a>
+        @*@foreach (var task in checklist.Tasks)
+        {
+            <input type="checkbox">
+
+            <p>@task.Name</p>
+        }*@
+    </div>
+}

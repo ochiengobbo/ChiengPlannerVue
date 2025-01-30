@@ -17,6 +17,7 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<ChiengPlannerContext>(options =>
             options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultDBConnection")));
 builder.Services.AddTransient<INotesService, NotesService>();
+builder.Services.AddTransient<IChecklistsService, ChecklistsService>();
 builder.Services.Configure<AzureConnection>(builder.Configuration.GetSection("AzureConnection"));
 
 if (builder.Environment.IsDevelopment())

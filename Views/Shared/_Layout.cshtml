@@ -39,13 +39,17 @@
             {
                 @Html.Partial("~/Views/Notes/_NotesSidebar.cshtml")
             }
-            <div id="app" class="w-100"></div>
+            <div id="notes" class="w-100"></div>
             @RenderBody()
         </div>
     }
+    @if (string.Equals(controllerName, "Notes"))
+    {
+        <div id="notes"></div>
+        @RenderBody()
+    }
     else
     {
-        <div id="app"></div>
         @RenderBody()
     }
 

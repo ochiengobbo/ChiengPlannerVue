@@ -1,0 +1,16 @@
+﻿@model ChiengPlannerVue.Models.Checklists.Checklist;
+
+<div style="margin: 5%;">
+    <div style="margin: 10%; margin-bottom: 5%;">
+        <input id="ChecklistName" class="mx-auto form-control-lg inputGroup-sizing-lg border border-secondary border-1"
+               type="text" value="@Model.Name" placeholder="Checklist Name" style="width: 100%;" />
+        <input id="ChecklistId" type="hidden" value="@Model.ChecklistId" />
+        <p id="ChecklistValidation" style="display:none"></p>
+    </div>
+    <div style="float: right;">
+        <button id="SaveChecklist" class="save-checklist-button-inactive">Create</button>
+    </div>
+    <br />
+    <div id="AllTasks">
+    </div>
+</div>

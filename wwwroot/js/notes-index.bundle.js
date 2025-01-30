@@ -939,7 +939,7 @@ const _hoisted_2 = {
 const _hoisted_3 = /*#__PURE__*/_withScopeId(() => /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
   id: "noteTitle",
   class: "w-75"
-}, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h1")], -1 /* HOISTED */));
+}, null, -1 /* HOISTED */));
 const _hoisted_4 = {
   class: "text-right w-25"
 };
@@ -975,7 +975,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _NotesIndex_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./NotesIndex.vue */ "./views/notes/index/NotesIndex.vue");
 
 
-vue__WEBPACK_IMPORTED_MODULE_0__.createApp(_NotesIndex_vue__WEBPACK_IMPORTED_MODULE_1__["default"]).mount('#app');
+vue__WEBPACK_IMPORTED_MODULE_0__.createApp(_NotesIndex_vue__WEBPACK_IMPORTED_MODULE_1__["default"]).mount('#notes');
 
 /***/ }),
 

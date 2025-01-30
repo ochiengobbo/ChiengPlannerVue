@@ -9,7 +9,6 @@ namespace ChiengPlannerVue.Models.Notes
             this.Body = string.Empty;
             this.PlainText = string.Empty;
             this.CreatedDate = DateTime.Now;
-            this.ModifiedDate = DateTime.Now;
             this.Guid = string.Empty;
         }
         [Key]
