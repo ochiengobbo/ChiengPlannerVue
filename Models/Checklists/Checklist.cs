@@ -8,7 +8,9 @@ namespace ChiengPlannerVue.Models.Checklists
         {
             this.Name = string.Empty;
             this.CreatedDate = DateTime.Now;
+            this.ModifiedDate = DateTime.Now;
             this.Completed = false;
+            this.Guid = string.Empty;
         }
         [Key]
         public int ChecklistId { get; set; }
@@ -16,7 +18,9 @@ namespace ChiengPlannerVue.Models.Checklists
         public string Name { get; set; }
         public DateTime CreatedDate { get; set; }
         public DateTime? ModifiedDate { get; set; }
+        public DateTime? DueDate { get; set; }
         public bool Completed { get; set; }
-        // public List<Task> Tasks { get; set; }
+        public string Guid { get; set; }
+        public List<Task> Tasks { get; set; }
     }
 }

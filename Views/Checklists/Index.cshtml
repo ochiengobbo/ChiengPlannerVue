@@ -1,4 +1,4 @@
-﻿@model List<ChiengPlannerVue.Models.Checklists.Checklist>;
+﻿@model ChiengPlannerVue.Models.Checklists.ChecklistViewModel;
 <style>
     .page-size {
         width: 90%;
@@ -76,7 +76,7 @@
     .display-checklists {
         position: absolute;
         top: 35%;
-        width: 100%;
+        width: 90%;
         margin: 60px;
     }
 
@@ -204,7 +204,7 @@
         margin-right: 1% !important;
         border: solid 1px;
         border-color: lightgrey;
-        margin-bottom: 2%;
+        margin-bottom: -1%;
     }
 
     .task-input {
@@ -252,15 +252,136 @@
         border-radius: 5px;
     }
 
+
+    .error-modal.in {
+        opacity: 1;
+    }
+
+
+
+    .checklist-card {
+        margin: 2%;
+        width: 375px;
+        border: solid 1px;
+        overflow-y: auto;
+    }
+
+
+
+    .checklist-row {
+        padding: 5%;
+        display: inline-flex;
+        width: 100%;
+        height: 500px;
+        justify-content: center;
+        margin-top: -7%;
+        margin-bottom: -4%;
+    }
+
+    .task-checkbox-card {
+        margin-right: 1% !important;
+        border: solid 1px;
+        border-color: lightgrey;
+        margin-bottom: -1%;
+        margin-left: 8%;
+    }
+
+    .task-text-card {
+        width: 80%;
+        padding: 1%;
+    }
+
+    /* width */
+
+    .display-card-scrollbar::-webkit-scrollbar {
+        width: 10px;
+    }
+
+
+
+    /* Track */
+
+    .display-card-scrollbar::-webkit-scrollbar-track {
+        background: #f1f1f1;
+        -webkit-border-radius: 10px;
+        border-radius: 10px;
+    }
+
+
+
+    /* Handle */
+
+    .display-card-scrollbar::-webkit-scrollbar-thumb {
+        background: #7a0696;
+        -webkit-border-radius: 10px;
+        border-radius: 10px;
+        -webkit-box-shadow: inset 0 0 6px;
+    }
+
+
+
+        /* Handle on hover */
+
+        .display-card-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: #490470;
+        }
+
+    .show-more-button {
+        color: white;
+        border-radius: 5px;
+        font-size: 20px;
+        background: #7a0696;
+        border-color: #7a0696;
+        padding: 3px;
+        width: 300px;
+        height: 50px;
+    }
+
+        .show-more-button:hover {
+            background: #490470;
+            border-color: #490470;
+        }
+
+
+    .text-card-title {
+        margin-top: 10%;
+        margin-left: 5%;
+        margin-bottom: -10%;
+        display: infline-flex;
+    }
+
+    .chieng-modal-close {
+        float: right;
+    }
+
+    .completed-tag-modal {
+        color: white;
+        background-color: green;
+        padding: .5rem;
+        font-size: .75rem;
+        margin-right: 1rem;
+    }
+
+    .completed-tag-card {
+        color: white;
+        background-color: green;
+        padding: .5rem;
+        font-size: .50rem;
+        margin-left: 1rem;
+        margin-bottom: .75rem;
+    }
+
 </style>
-<div id="errorModal" class="modal" data-backdrop="false" role="dialog">
+<div id="errorModal" class="error-modal modal" data-backdrop="false" role="dialog">
     <div class="modal-dialog modal-dialog-centered modal-sm">
         <div class="modal-content bg-danger">
             <div class="modal-body text-white">
+                <div style="float: right;">
+                    <button type="button" id="errorClose" class="close" aria-label="Close" style="color: white;border: none;">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
                 <p id="errorMsg" class="d-inline"></p>
-                <button type="button" id="errorClose" class="close" aria-label="Close" style="color: white;">
-                    <span aria-hidden="true">&times;</span>
-                </button>
             </div>
 
         </div>
@@ -270,8 +391,8 @@
     <div class="modal-dialog modal-lg" style="width: 60%;">
         <div class="modal-content">
             <div class="modal-body">
-                <div style="float: right;">
-                    <button type="button" id="addOrEditClose" class="close" aria-label="Close">
+                <div class="chieng-modal-close">
+                    <button type="button" id="addOrEditClose" class="close" aria-label="Close" style="border: none;">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
@@ -281,8 +402,7 @@
                     <hr style="margin: 5%; border-color: black;" />
                     <br />
                 </div>
-                <div id="Tasks" style="display: none;">
-                </div>
+                <div id="Tasks" style="display: none;"></div>
             </div>
 
         </div>
@@ -309,26 +429,22 @@
     </div>
     @*<hr class="checklist-tab-bottom-line" />*@
     <div id="DisplayChecklists" class="display-checklists">
-        @if (Model.Count() > 0)
-        {
-            @*<partial name="_AddOrEditChecklist" model="Model" />*@
-        }
-        else
-        {
-            <p id="NoChecklists" class="no-checklists">NO CHECKLISTS YET...</p>
-        }
+        <partial name="_DisplayChecklist" model="Model" />
     </div>
 </div>
-<div id="DisplayChecklists">
-    @*<partial name="_AddOrEditChecklist" model="Model" />*@
-</div>
+@*<div id="DisplayChecklists">
+    <partial name="_AddOrEditChecklist" model="Model" />*
+</div>*@
 
 @section Scripts {
     <script type="text/javascript">
         $(document).ready(function () {
+            // If Task names are too long truncate task names to fit within the width of the checklist card
+            var checklistCardTasks = $('.task-text-card')
+            TruncateTasks(checklistCardTasks);
+
             $('#AddChecklist').on('click', function () {
                 AddOrEditChecklist(0)
-                Tasks(0)
                 $('#AddOrEditModal').modal('show');
             })
 
@@ -341,6 +457,12 @@
             // Task counter for 'AddOrEditChecklist' modal TO-DO: Task counter is useless, tasks will be numbered with the Id they are stored in the db with once those functions are wired up.
             var taskCounter = 1;
 
+            // Offset for Checklist "Show More" button
+            var offset = @Model.PageLimit;
+
+            // Determines if there has been any data modifications that require a reload
+            var reloadChecklists = false;
+
             $('#ActiveChecklists').on('click', function () {
                 if ($(this).hasClass("selected-tab")) {
                 }
@@ -349,11 +471,14 @@
                     $("#CompletedChecklists").removeClass("selected-tab");
                     var completed = false;
                     $.ajax({
-                        type: "POST",
-                        url: "@Url.Action("GetChecklists", "Checklists")",
+                        type: "GET",
+                        url: "@Url.Action("DisplayChecklists", "Checklists")",
                         data: { completed: completed },
                         success: function (data) {
                             $('#DisplayChecklists').html(data)
+                            offset = @Model.PageLimit;
+                            var checklistCardTasks = $('.task-text-card')
+                            TruncateTasks(checklistCardTasks);
                         },
                         error: function () {
                             $("#errorModal").css({ 'transition': 'opacity 3s' });
@@ -371,11 +496,14 @@
                     $("#ActiveChecklists").removeClass("selected-tab");
                     var completed = true;
                     $.ajax({
-                        type: "POST",
-                        url: "@Url.Action("GetChecklists", "Checklists")",
+                        type: "GET",
+                        url: "@Url.Action("DisplayChecklists", "Checklists")",
                         data: { completed: completed },
                         success: function (data) {
                             $('#DisplayChecklists').html(data)
+                            offset = @Model.PageLimit;
+                            var checklistCardTasks = $('.task-text-card')
+                            TruncateTasks(checklistCardTasks);
                         },
                         error: function () {
                             $("#errorModal").css({ 'transition': 'opacity 3s' });
@@ -385,32 +513,47 @@
                     })
                 }
             })
-            $('#CreateChecklist').on('click', function () {
-                var checklistName = ("#ChecklistName").val()
-                if (checklistName == "") {
-                    $("#ChecklistValidation").html("Checklist must have Title")
-                    $("#ChecklistValidation").css({ "display": "block" })
+            $('#DisplayChecklists').on('click', '#ShowMore', function () {
+                var completed = false;
+                if ($('#CompletedChecklists').hasClass("selected-tab")) {
+                    completed = true;
                 }
-                else {
-                    var checklistId = ("#ChecklistId").val()
-                    $.ajax({
-                        type: "POST",
-                        url: "@Url.Action("SaveChecklist", "Checklists")",
-                        data: { name: checklistName, id: checklistId },
-                        success: function (data) {
-                            if (checklistId == 0) {
-                                $('#AllTasks').html(data)
-                            }
+                $.ajax({
+                    type: "GET",
+                    url: "@Url.Action("DisplayChecklists", "Checklists")",
+                    data: { completed: completed, offset: offset },
+                    success: function (data) {
+                        $('#ShowMore').parent().replaceWith(data)
+                        offset = offset + @Model.PageLimit;
+                        var checklistCardTasks = $('.task-text-card')
+                        TruncateTasks(checklistCardTasks);
+                    },
+                    error: function () {
+                        $("#errorModal").css({ 'transition': 'opacity 3s' });
+                        $('#errorMsg').html('<b><small>There was an error retrieving your checklists, please try again</small></b>');
+                        $('#errorModal').modal('show');
+                    }
+                })
+            })
+            $('#DisplayChecklists').on('click', '.edit-checklist', function () {
+                var id = $(this).attr("data-id")
+                AddOrEditChecklist(id)
+                Tasks(id)
+                // Show Tasks display
+                if ($('#ChecklistTaskDivider').is(':hidden') && ($('#Tasks').is(':hidden') || $('#Tasks').html() == "")) {
+                    $('#ChecklistTaskDivider').css("display", "block")
+                    $('#Tasks').css("display", "block")
+                }
+                $('#AddOrEditModal').modal('show');
+            })
 
-                        },
-                        error: function () {
-                            $("#errorModal").css({ 'transition': 'opacity 3s' });
-                            $('#errorMsg').html('<b><small>There was an error retrieving your checklists, please try again</small></b>');
-                            $('#errorModal').modal('show');
-                        }
-                    })
-                }
+            $('#DisplayChecklists').on('click', '.delete-checklist', function () {
+                var id = $(this).attr("data-id")
+                DeleteChecklist(id)
+                
             })
+
+
             $('#errorClose').on('click', function () {
                 $('#errorModal').css({ 'transition': '' })
                 $('#errorModal').fadeOut('slow');
@@ -419,6 +562,7 @@
                 }, 500);
             });
             $('#addOrEditClose').on('click', function () {
+                $(document.activeElement).trigger('blur')
                 $('#AddOrEditModal').css({ 'transition': '' })
                 $('#AddOrEditModal').fadeOut('slow');
                 setTimeout(function () {
@@ -426,10 +570,36 @@
                 }, 500);
             });
             $('#AddOrEditModal').on('hidden.bs.modal', function () {
-                $('#AddOrEditChecklist').html()
-                var checklistNameModified = false;
-                var taskNameModified = false;
-                var taskCounter = 1;
+                $('#AddOrEditChecklist').html("");
+                $('#Tasks').html("");
+                $('#ChecklistTaskDivider').hide();
+                checklistNameModified = false;
+                taskNameModified = false;
+                taskCounter = 1;
+
+                if (reloadChecklists) {
+                    var completed = false;
+                    if ($('#CompletedChecklists').hasClass("selected-tab")) {
+                        completed = true;
+                    }
+                    $.ajax({
+                        type: "GET",
+                        url: "@Url.Action("DisplayChecklists", "Checklists")",
+                        data: { completed: completed },
+                        success: function (data) {
+                            $('#DisplayChecklists').html(data)
+                            offset = @Model.PageLimit;
+                            var checklistCardTasks = $('.task-text-card')
+                            TruncateTasks(checklistCardTasks);
+                        },
+                        error: function () {
+                            $("#errorModal").css({ 'transition': 'opacity 3s' });
+                            $('#errorMsg').html('<b><small>There was an error retrieving your checklists, please try again</small></b>');
+                            $('#errorModal').modal('show');
+                        }
+                    })
+                    reloadChecklists = false;
+                }
             })
 
             // If ChecklistName has been modified, activate the SaveChecklist button.
@@ -449,34 +619,28 @@
                 }
             })
 
+            // Save Checklist to DB and show Tasks if Checklist was just added
             $('#AddOrEditChecklist').on('click', '#SaveChecklist', function () {
+                var name = $('#ChecklistName').val()
                 // If button is not inactive, behave as intended
                 if (!$(this).hasClass('save-checklist-button-inactive')) {
-                    var name = $('#ChecklistName').val()
-                    var id = $('#ChecklistValue').val()
-                    // AJAX function for saving Checklist -- BEGIN
 
-                    // After saving ChecklistName, change 'Create' button to 'Save' if not already done -- BEGIN
-                    if ($(this).html() != 'Save') {
-                        $(this).html('Save')
-                    }
-
-                    // After saving ChecklistName, show tasks if not already shown for this Checklist. -- BEGIN
-                    if ($('#ChecklistTaskDivider').is(':hidden') && $('#Tasks').is(':hidden')) {
-                        $('#ChecklistTaskDivider').css("display", "block")
-                        $('#Tasks').css("display", "block")
-                    }
-
-
-                    // AJAX function for saving Checklist -- END
-
-                    // Reset SaveChecklist button to inactive because Checklist name has been saved and there have been no further modifications
+                    var id = $('#ChecklistId').val()
+                    // AJAX function for saving Checklist
+                    SaveChecklist(id, name, $(this));
                     checklistNameModified = false;
-                    $(this).removeClass('save-checklist-button')
-                    $(this).addClass('save-checklist-button-inactive')
+                    reloadChecklists = true;
                 }
                 else {
                     // TO DO: Pop error modal telling user to modify the Checklist Name before trying to save
+                    $("#errorModal").css({ 'transition': 'opacity 3s' });
+                    if ($(this).html() != 'Save' || name == "") {
+                        $('#errorMsg').html('<b><small>Need to have a Checklist Name in order to save</small></b>');
+                    }
+                    else {
+                        $('#errorMsg').html('<b><small>Must update Checklist Name to save!</small></b>');
+                    }
+                    $('#errorModal').modal('show');
                 }
 
 
@@ -487,11 +651,11 @@
                 if (!$(this).hasClass('add-task-button-inactive')) {
                     // If button is active, add Task input to TaskListItems
                     var task = '<li class="task">' +
-                        '<input type="checkbox" id="TaskCheckbox' + taskCounter + '" class="task-checkbox" hidden />' +
-                        '<input type="text" id="TaskName' + taskCounter + '" class="task-input"  />' +
+                        '<input type="checkbox" class="task-checkbox" hidden />' +
+                        '<input type="text" class="task-input"  />' +
                         '<div class="save-delete-task-buttons">' +
-                        '<button class="save-task-inactive"><i class="fa-solid fa-check"></i></span>' +
-                        '<button class="delete-task"><i class="fa-solid fa-trash-can"></i></span>' +
+                        '<button class="save-task-inactive"><i class="fa-solid fa-check"></i></button>' +
+                        '<button class="delete-task"><i class="fa-solid fa-trash-can"></i></button>' +
                         '</div>' +
                         '</li>';
                     $('#TaskListItems').append(task)
@@ -531,31 +695,22 @@
                 var taskCheckbox = $(this).parent().siblings("input[type=checkbox]");
                 var list = $(this).parent().parent();
                 var taskName = taskInput.val();
-                var taskText = '<p class="task-text">' + taskName + '</p>';
-                // Replace Task Input with <p> tag containing the Name of the Task
-                $(taskInput).replaceWith(taskText)
-                $(taskCheckbox).removeProp('hidden')
-                $(list).addClass('task-border-bottom')
+                var editButtonHtml = '<i class="fa-solid fa-edit"></i>';
+                // Save Task to DB and make dynamic changes if Task creation/modification succeeds
+                SaveTasks($(taskInput).attr("data-id"), $(taskInput).val(), $(taskInput), $(this), $(taskCheckbox), list, editButtonHtml)
                 taskNameModified = false;
-                // Replace Checkmark with Edit button
-                var editButtonHtml = '<i class="fa-solid fa-edit"></i>'
-                $(this).removeClass('save-task')
-                $(this).addClass('edit-task')
-                $(this).html(editButtonHtml)
-                // Enable Add Task and Edit buttons
-                $('#AddTask').removeClass('add-task-button-inactive')
-                $('#AddTask').addClass('add-task-button')
-                EnableEditButton($('.edit-task-inactive'))
+                reloadChecklists = true;
             })
 
             $('#Tasks').on('click', '.edit-task', function () {
                 // Grab <p> tag and checkbox sibling nodes
                 var pTag = $(this).parent().siblings(".task-text");
+                var taskId = $(pTag).attr('id')
                 var pTagText = $(pTag).html();
                 var taskCheckbox = $(this).parent().siblings("input[type=checkbox]");
                 var list = $(this).parent().parent();
                 // Write out input with the correct value added
-                var taskInput = '<input type="text" id="TaskName' + taskCounter + '" class="task-input" value="' + pTagText + '" />'
+                var taskInput = '<input type="text" id="TaskName' + taskCounter + '" class="task-input" value="' + pTagText + '" data-id="' + taskId + '" />'
                 // Replace Task Input with <p> tag containing the Name of the Task
                 $(pTag).replaceWith(taskInput)
                 $(taskInput).focus()
@@ -576,34 +731,64 @@
             $('#Tasks').on('click', '.delete-task', function () {
                 // Grab list node to which the clicked button belongs to.
                 var list = $(this).parent().parent();
-                // Remove list element
-                $(list).remove()
+                var taskInput = $(this).parent().siblings("input[type=text]");
+                DeleteTasks($(taskInput).attr("data-id"), list)
                 taskNameModified = false;
-                // TO-DO: Ajax function remove task from DB if necessary
-                // Enable Add Task and Edit buttons
-                $('#AddTask').addClass('add-task-button')
-                $('#AddTask').removeClass('add-task-button-inactive')
-                EnableEditButton($('.edit-task-inactive'))
             })
 
             $('#Tasks').on('click', 'input[type=checkbox]', function () {
                 if ($(this).prop('checked')) {
                     var taskText = $(this).siblings('p');
                     var taskButton = $(this).siblings('div').children('.edit-task');
-                    DisableEditButton(taskButton);
-                    $(taskText).addClass('checked-task');
+                    var taskTextTitle = taskText.parent().parent().parent().parent().parent().sibling('.chieng-modal-close');
                     // TO DO: Ajax function to mark task as complete.
+                    MarkTasks($(taskText).attr('id'), taskText, taskButton, taskTextTitle, true, true)
                     // Within Ajax func, add "Completed" badge ".completed-badge" to modal if all tasks are completed
                 }
                 else {
                     var taskText = $(this).siblings('p');
                     var taskButton = $(this).siblings('div').children('.edit-task-inactive');
-                    EnableEditButton(taskButton);
-                    $(taskText).removeClass('checked-task');
+                    var taskTextTitle = taskText.parent().parent().parent().parent().parent().sibling('.chieng-modal-close');
                     // TO DO: Ajax function to mark task as complete.
+                    MarkTasks($(taskText).attr('id'), taskText, taskButton, taskTextTitle, false, true)
                     // Within Ajax func, remove "Completed" badge ".completed-badge" from modal if checklist was previously completed.
                 }
             })
+
+            $('#DisplayChecklists').on('click', 'input[type=checkbox]', function () {
+                if ($(this).prop('checked')) {
+                    var taskText = $(this).siblings('p');
+                    var taskTextTitle = taskText.parent().parent().parent().sibling('.text-card-title');
+                    // TO DO: Ajax function to mark task as complete.
+                    MarkTasks($(taskText).attr('id'), taskText, taskTextTitle, null, true, false)
+                    // Within Ajax func, add "Completed" badge ".completed-badge" to modal if all tasks are completed
+                }
+                else {
+                    var taskText = $(this).siblings('p');
+                    var taskTextTitle = taskText.parent().parent().parent().sibling('.text-card-title');
+                    // TO DO: Ajax function to mark task as complete.
+                    MarkTasks($(taskText).attr('id'), taskText, taskTextTitle, null, true, false)
+                    // Within Ajax func, remove "Completed" badge ".completed-badge" from modal if checklist was previously completed.
+                }
+            })
+
+            $('#errorClose').on('click', function () {
+                $('#errorModal').css({ 'transition': '' })
+                $('#errorModal').fadeOut('slow');
+                setTimeout(function () {
+                    $("#errorModal").modal('hide');
+                }, 500);
+            });
+
+            $('#errorModal').on('shown.bs.modal', function (e) {
+                setTimeout(function () {
+                    $('#errorModal').css({ 'transition': '' })
+                    $('#errorModal').fadeOut('slow');
+                    setTimeout(function () {
+                        $("#errorModal").modal('hide');
+                    }, 500);
+                }, 5000);
+            });
         })
 
         function AddOrEditChecklist(id) {
@@ -626,6 +811,75 @@
                 }
             })
         }
+        function SaveChecklist(id, name, button) {
+            $.ajax({
+                type: "POST",
+                url: "@Url.Action("SaveChecklist", "Checklists")",
+                data: { name: name, id: id },
+                success: function (data) {
+                    if (id == 0) {
+                        Tasks(data.id)
+                        $('#ChecklistId').val(data.id)
+
+                        // After saving ChecklistName, change 'Create' button to 'Save' if not already done -- BEGIN
+                        if (button.html() != 'Save') {
+                            button.html('Save')
+                        }
+
+                        // Show Tasks display
+                        if ($('#ChecklistTaskDivider').is(':hidden') && ($('#Tasks').is(':hidden') || $('#Tasks').html() == "")) {
+                            $('#ChecklistTaskDivider').css("display", "block")
+                            $('#Tasks').css("display", "block")
+                        }
+                    }
+
+                    // Reset SaveChecklist button to inactive because Checklist name has been saved and there have been no further modifications
+                    button.removeClass('save-checklist-button')
+                    button.addClass('save-checklist-button-inactive')
+                },
+                error: function () {
+                    $("#errorModal").css({ 'transition': 'opacity 3s' });
+                    $('#errorMsg').html('<b><small>There was an error creating your Checklist, please try again</small></b>');
+                    $('#errorModal').modal('show');
+                }
+            });
+        }
+
+        function DeleteChecklist(id) {
+            $.ajax({
+                type: "POST",
+                url: "@Url.Action("DeleteChecklist", "Checklists")",
+                data: { id: id },
+                success: function (data) {
+                    var completed = false;
+                    if ($('#CompletedChecklists').hasClass("selected-tab")) {
+                        completed = true;
+                    }
+                    $.ajax({
+                        type: "GET",
+                        url: "@Url.Action("DisplayChecklists", "Checklists")",
+                        data: { completed: completed },
+                        success: function (data) {
+                            $('#DisplayChecklists').html(data)
+                            offset = @Model.PageLimit;
+                            var checklistCardTasks = $('.task-text-card')
+                            TruncateTasks(checklistCardTasks);
+                        },
+                        error: function () {
+                            $("#errorModal").css({ 'transition': 'opacity 3s' });
+                            $('#errorMsg').html('<b><small>There was an error retrieving your checklists, please try again</small></b>');
+                            $('#errorModal').modal('show');
+                        }
+                    })
+                },
+                error: function () {
+                    $("#errorModal").css({ 'transition': 'opacity 3s' });
+                    $('#errorMsg').html('<b><small>There was an error creating your Checklist, please try again</small></b>');
+                    $('#errorModal').modal('show');
+                }
+            });
+        }
+
         function Tasks(id) {
             $.ajax({
                 type: "GET",
@@ -647,6 +901,105 @@
             })
         }
 
+        function SaveTasks(id, name, input, button, checkbox, list, edit) {
+            var checklistId = $('#ChecklistId').val()
+            $.ajax({
+                type: "POST",
+                url: "@Url.Action("SaveTask", "Checklists")",
+                data: { name: name, id: id, checklistId: checklistId },
+                success: function (data) {
+                    var taskText = '<p class="task-text" id="' + data.taskId + '">' + name + '</p>';
+                    // Replace Task Input with <p> tag containing the Name of the Task
+                    input.replaceWith(taskText)
+
+                    checkbox.removeProp('hidden')
+                    $(list).addClass('task-border-bottom')
+                    // Replace Checkmark with Edit button
+                    button.removeClass('save-task')
+                    button.addClass('edit-task')
+                    button.html(edit)
+                    // Enable Add Task and Edit buttons
+                    $('#AddTask').removeClass('add-task-button-inactive')
+                    $('#AddTask').addClass('add-task-button')
+                    EnableEditButton($('.edit-task-inactive'))
+
+                },
+                error: function () {
+                    $("#errorModal").css({ 'transition': 'opacity 3s' });
+                    $('#errorMsg').html('<b><small>There was an error creating your Task, please try again</small></b>');
+                    $('#errorModal').modal('show');
+                }
+            });
+        }
+
+        function MarkTasks(id, text, button, textTitle, check, modal) {
+            var checklistId = $('#ChecklistId').val()
+            $.ajax({
+                type: "POST",
+                url: "@Url.Action("MarkTask", "Checklists")",
+                data: { id: id, check: check },
+                success: function (data) {
+                    if (checked) {
+                        DisableEditButton(button);
+                        $(text).addClass('checked-task');
+                        $(text).removeClass('checked-task');
+                        if (data.complete) {
+                            var span = '';
+                            if (modal) {
+                                span = '<span class="completed-tag-modal">COMPLETED</span>'
+                                $(textTitle).prepend(span)
+                            }
+                            else {
+                                span = '<span class="completed-tag-card">COMPLETED</span>'
+                                $(textTitle).append(span)
+                            }
+                        }
+                    }
+                    else {
+                        EnableEditButton(button);
+                        $(text).removeClass('checked-task');
+                        if (data.complete) {
+                            if (modal) {
+                                $(textTitle).children.remove('completed-tag-modal')
+                            }
+                            else {
+                                $(textTitle).children.remove('completed-tag-card')
+                            }
+                        }
+                    }
+                    
+                },
+                error: function () {
+                    $("#errorModal").css({ 'transition': 'opacity 3s' });
+                    $('#errorMsg').html('<b><small>There was an error marking your Task, please try again</small></b>');
+                    $('#errorModal').modal('show');
+                }
+            });
+        }
+
+        function DeleteTasks(id, list) {
+            $.ajax({
+                type: "POST",
+                url: "@Url.Action("DeleteTask", "Checklists")",
+                data: { id: id },
+                success: function (data) {
+                    // Remove list element
+                    $(list).remove()
+
+                    // Enable Add Task and Edit buttons
+                    $('#AddTask').addClass('add-task-button')
+                    $('#AddTask').removeClass('add-task-button-inactive')
+                    EnableEditButton($('.edit-task-inactive'))
+
+                },
+                error: function () {
+                    $("#errorModal").css({ 'transition': 'opacity 3s' });
+                    $('#errorMsg').html('<b><small>There was an error deleting your Task, please try again</small></b>');
+                    $('#errorModal').modal('show');
+                }
+            });
+        }
+
         function DisableEditButton(tasks) {
             for (var i = 0; i < tasks.length; i++) {
                 $(tasks[i]).removeClass('edit-task')
@@ -658,6 +1011,26 @@
             for (var i = 0; i < tasks.length; i++) {
                 $(tasks[i]).addClass('edit-task')
                 $(tasks[i]).removeClass('edit-task-inactive')
+            }
+        }
+
+        function TruncateTask(task) {
+            var taskText = task.html()
+            if (taskText.length > 31) {
+                var truncTask = taskText.substring(0, 29) + '...'
+                $(task).attr("data-val", taskText);
+                $(task).html(truncTask)
+            }
+        }
+
+
+
+        function TruncateTasks(tasks) {
+            for (j = 0; j < tasks.length; j++) {
+                TruncateTask($(tasks[j]));
+                if (j == (tasks.length - 1)) {
+                    $(tasks[j]).parent().removeClass('task-border-bottom')
+                }
             }
         }
     </script>

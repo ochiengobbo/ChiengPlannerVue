@@ -18,11 +18,11 @@ namespace ChiengPlannerVue.Models
         #region Required
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            //modelBuilder.Entity<Checklist>()
-            //    .HasMany(e => e.Tasks)
-            //    .WithOne(e => e.Checklist)
-            //    .HasForeignKey(e => e.ChecklistId)
-            //    .IsRequired();
+            modelBuilder.Entity<Checklist>()
+                .HasMany(e => e.Tasks)
+                .WithOne(e => e.Checklist)
+                .HasForeignKey(e => e.ChecklistId)
+                .IsRequired();
         }
         #endregion
     }

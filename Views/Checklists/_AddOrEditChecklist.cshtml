@@ -8,9 +8,14 @@
         <p id="ChecklistValidation" style="display:none"></p>
     </div>
     <div style="float: right;">
-        <button id="SaveChecklist" class="save-checklist-button-inactive">Create</button>
+        @if(Model.ChecklistId != 0)
+        {
+            <button id="SaveChecklist" class="save-checklist-button-inactive">Save</button>
+        }
+        else
+        {
+            <button id="SaveChecklist" class="save-checklist-button-inactive">Create</button>
+        }
     </div>
     <br />
-    <div id="AllTasks">
-    </div>
 </div>

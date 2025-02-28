@@ -1,14 +1,71 @@
-﻿@model List<ChiengPlannerVue.Models.Checklists.Checklist>;
+﻿@model ChiengPlannerVue.Models.Checklists.ChecklistViewModel;
 
-@foreach (var checklist in Model)
+@if (Model.Checklists.Count() > 0)
 {
-    <div>
-        <a>@checklist.Name</a>
-        @*@foreach (var task in checklist.Tasks)
-        {
-            <input type="checkbox">
-
-            <p>@task.Name</p>
-        }*@
-    </div>
+    @if (Model.Checklists.Count() > Model.PageLimit)
+    {
+        <div class="checklist-row">
+            @foreach (var checklist in Model.Checklists.GetRange(0, Model.PageLimit))
+            {
+                <div class="checklist-card display-card-scrollbar">
+                    <div style="float: right;padding: 8px;">
+                        <button type="button" class="add-task-button remove-checklist" data-id="@checklist.ChecklistId" style="background-color: red"><i class="fa-solid fa-trash"></i></button>
+                        <button type="button" class="add-task-button edit-checklist" data-id="@checklist.ChecklistId"><i class="fa-solid fa-edit"></i></button>
+                    </div>
+                    <div style=" margin-top: 10%;margin-left: 5%;margin-bottom: -10%;">
+                        <p>@checklist.Name</p>
+                    </div>
+                    <br />
+                    <hr style="border-color: black; width: 90%" />
+                    <div>
+                        <ul style="list-style-type: none; margin-left: -8%;margin-right: 9%">
+                            @foreach (var task in checklist.Tasks)
+                            {
+                                <li class="task task-border-bottom">
+                                    <input type="checkbox" class="task-checkbox-card" data-id="@task.TaskId">
+                                    <p class="task-text-card">@task.Name</p>
+                                </li>
+                            }
+                        </ul>
+                    </div>
+                </div>
+            }
+        </div>
+        <div class="checklist-row">
+            <button class="show-more-button" id="ShowMore">Show More</button>
+        </div>
+    }
+    else
+    {
+        <div class="checklist-row">
+            @foreach (var checklist in Model.Checklists)
+            {
+                <div class="checklist-card display-card-scrollbar">
+                    <div style="float: right;padding: 8px;">
+                        <button type="button" id="EditChecklist" class="add-task-button" data-id="@checklist.ChecklistId"><i class="fa-solid fa-edit"></i></button>
+                    </div>
+                    <div class="text-card-title">
+                        <p>@checklist.Name</p>
+                    </div>
+                    <br />
+                    <hr style="border-color: black; width: 90%" />
+                    <div>
+                        <ul style="list-style-type: none; margin-left: -8%;margin-right: 9%">
+                            @foreach (var task in checklist.Tasks)
+                            {
+                                <li class="task task-border-bottom">
+                                    <input type="checkbox" class="task-checkbox-card" data-id="@task.TaskId">
+                                    <p class="task-text-card">@task.Name</p>
+                                </li>
+                            }
+                        </ul>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+}
+else
+{
+    <p id="NoChecklists" class="no-checklists">NO CHECKLISTS YET...</p>
 }

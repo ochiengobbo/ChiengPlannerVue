@@ -13,6 +13,8 @@ using System;
 using Microsoft.AspNetCore.Http;
 using ChiengPlannerVue.Services.Interfaces;
 using ChiengPlannerVue.Models.Checklists;
+using ChiengPlannerVue.Services;
+using System.Threading.Tasks;
 
 namespace ChiengPlannerVue.Controllers
 {
@@ -21,6 +23,7 @@ namespace ChiengPlannerVue.Controllers
         private ChiengPlannerContext _context;
         private readonly AzureConnection _connection;
         private readonly IChecklistsService _checklistsService;
+        private static int PAGE_LIMIT = 3;
 
         public ChecklistsController(ChiengPlannerContext context, IOptions<AzureConnection> connection, IChecklistsService checklistsService)
         {
@@ -32,7 +35,9 @@ namespace ChiengPlannerVue.Controllers
         [HttpGet]
         public IActionResult Index(int? id)
         {
-            var vm = _checklistsService.GetChecklists();
+            var vm = new ChecklistViewModel();
+            vm.Checklists = _checklistsService.GetChecklists().OrderByDescending(x => x.ModifiedDate).ToList();
+            vm.PageLimit = PAGE_LIMIT;
             return View(vm);
         }
 
@@ -42,7 +47,7 @@ namespace ChiengPlannerVue.Controllers
             Checklist vm;
             if (id.HasValue && id != 0)
             {
-                vm = new Checklist();
+                vm = _checklistsService.GetChecklistById(id.Value);
             }
             else
             {
@@ -57,7 +62,7 @@ namespace ChiengPlannerVue.Controllers
             List<ChiengPlannerVue.Models.Checklists.Task> vm;
             if (id.HasValue && id != 0)
             {
-                vm = new List<ChiengPlannerVue.Models.Checklists.Task>();
+                vm = _checklistsService.GetTasksByChecklistId(id.Value);
             }
             else
             {
@@ -67,10 +72,122 @@ namespace ChiengPlannerVue.Controllers
         }
 
         [HttpGet]
-        public IActionResult GetChecklists(bool completed)
+        public IActionResult DisplayChecklists(bool completed = false, int offset = 0)
         {
-            var vm = _checklistsService.GetChecklists().Where(x => x.Completed == completed);
-            return View(vm);
+            var vm = new ChecklistViewModel();
+            vm.Checklists = _checklistsService.GetChecklists().Where(x => x.Completed == completed).OrderByDescending(x => x.ModifiedDate).ToList();
+            vm.PageLimit = PAGE_LIMIT + offset;
+            if (offset != 0 && vm.Checklists.Count() > PAGE_LIMIT)
+            {
+                vm.Checklists = vm.Checklists.GetRange(offset, (vm.Checklists.Count() - offset));
+            }
+            return PartialView("_DisplayChecklist", vm);
+        }
+
+        [HttpPost]
+        public IActionResult SaveChecklist(int id, string name)
+        {
+            try
+            {
+                if (_checklistsService.ChecklistExists(id))
+                {
+                    _checklistsService.UpdateChecklist(id, name, DateTime.Now);
+                }
+                else
+                {
+                    id = _checklistsService.AddChecklist(null, name);
+                }
+
+            }
+            catch (Exception ex) { }
+            return Json(new { success = true, id = id }, new System.Text.Json.JsonSerializerOptions());
+
+        }
+
+        [HttpPost]
+        public IActionResult SaveTask(int id, int checklistId, string name)
+        {
+            try
+            {
+                if (_checklistsService.TaskExists(id))
+                {
+                    _checklistsService.UpdateTask(id, name, DateTime.Now);
+                }
+                else
+                {
+                    id = _checklistsService.AddTask(checklistId, name);
+                }
+
+            }
+            catch (Exception ex) { }
+            return Json(new { success = true, taskId = id }, new System.Text.Json.JsonSerializerOptions());
+
+        }
+
+        [HttpPost]
+        public IActionResult DeleteTask(int taskId)
+        {
+            try
+            {
+                var errorMsg = "";
+                if (!_checklistsService.TaskExists(taskId))
+                {
+                    errorMsg = "<b>Task does not exist!</b>";
+                    return Json(new { success = false, message = errorMsg }, new System.Text.Json.JsonSerializerOptions());
+                }
+                _checklistsService.DeleteTask(taskId);
+                HttpContext.Session.SetString("_DeletedTask", "true");
+
+                return Json(new { success = true }, new System.Text.Json.JsonSerializerOptions());
+
+            }
+            catch (Exception ex) { }
+            return Json(new { success = true, taskId = taskId }, new System.Text.Json.JsonSerializerOptions());
+
+        }
+
+        [HttpPost]
+        public IActionResult DeleteChecklist(int checklistId)
+        {
+            try
+            {
+                var errorMsg = "";
+                if (!_checklistsService.ChecklistExists(checklistId))
+                {
+                    errorMsg = "<b>Checklist does not exist!</b>";
+                    return Json(new { success = false, message = errorMsg }, new System.Text.Json.JsonSerializerOptions());
+                }
+                _checklistsService.DeleteChecklist(checklistId);
+                HttpContext.Session.SetString("_DeletedChecklist", "true");
+                return Json(new { success = true }, new System.Text.Json.JsonSerializerOptions());
+            }
+            catch (Exception ex) { }
+            return Json(new { success = true, checklistId = checklistId }, new System.Text.Json.JsonSerializerOptions());
+
+        }
+
+        [HttpPost]
+        public IActionResult MarkTask(int id, bool check)
+        {
+            try
+            {
+                var errorMsg = "";
+                var completed = false;
+                if (_checklistsService.TaskExists(id))
+                {
+                   completed =  _checklistsService.MarkTask(id, check, DateTime.Now);
+                }
+                else
+                {
+                    errorMsg = "<b>Task does not exist!</b>";
+                    return Json(new { success = false, message = errorMsg }, new System.Text.Json.JsonSerializerOptions());
+                }
+                return Json(new { success = true, completed = completed }, new System.Text.Json.JsonSerializerOptions());
+
+            }
+            catch (Exception ex) { }
+            return Json(new { success = true, taskId = id }, new System.Text.Json.JsonSerializerOptions());
+
         }
     }
 }
