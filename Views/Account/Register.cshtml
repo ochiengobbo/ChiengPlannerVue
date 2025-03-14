@@ -1,0 +1,89 @@
+﻿@model ChiengPlannerVue.Models.Users.RegisterViewModel
+
+@{
+}
+
+<form asp-controller="Account" asp-action="Register" asp-route-returnurl="@ViewData["ReturnUrl"]" method="post" class="form-horizontal">
+    <h1>Create Account</h1>
+    <hr />
+
+    @if (!Model.IsEditMode)
+    {
+        <div class="alert alert-warning">
+            <p class="text-justify"><strong>Password Policy: </strong> Password must have at least @TempData["PasswordRequiredLength"] characters and contain the following: Upper Case Letters, Lower Case Letters, Number and Symbols.</p>
+        </div>
+    }
+
+    <div asp-validation-summary="All" class="text-danger"></div>
+    <input asp-for="IsEditMode" type="hidden" />
+
+    @*
+    @if (Model.IsEditMode)
+    {
+        <input asp-for="UserId" type="hidden" />
+        <input asp-for="Username" type="hidden" />
+    }
+    *@
+
+    <div class="row">
+        <div class="col-md-12 form-group required">
+            <label asp-for="UserName" class="control-label"></label>
+            <input asp-for="UserName" class="form-control" readonly />
+            <span asp-validation-for="UserName" class="text-danger"></span>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6">
+            <div class="form-group required">
+                <label asp-for="FirstName" class="control-label"></label>
+                <input asp-for="FirstName" type="text" class="form-control" />
+                <span asp-validation-for="FirstName" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group required col-md-6">
+            <label asp-for="LastName" class="control-label"></label>
+            <input asp-for="LastName" type="text" class="form-control" />
+            <span asp-validation-for="LastName" class="text-danger"></span>
+        </div>
+    </div>
+
+    @if (!Model.IsEditMode)
+    {
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group required">
+                    <label asp-for="Password" class="control-label"></label>
+                    <input asp-for="Password" class="form-control" type="password" />
+                    <span asp-validation-for="Password" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-group required col-md-6">
+                <label asp-for="ConfirmPassword" class="control-label"></label>
+                <input asp-for="ConfirmPassword" type="password" class="form-control" />
+                <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+            </div>
+        </div>
+    }
+    <div class="row form-group text-right">
+        <div class="col-md-12">
+            @if (Model.IsEditMode)
+            {
+                <button type="submit" class="btn btn-outline-primary">Create</button>
+            }
+            else
+            {
+                <button type="submit" class="btn btn-outline-primary">Register</button>
+            }
+        </div>
+    </div>
+</form>
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <script>
+    </script>
+}
+
+

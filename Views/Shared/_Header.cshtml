@@ -16,6 +16,41 @@
                     <a class="nav-link" asp-controller="Checklists" asp-action="Index" id="checklistNavLink">Checklists</a>
                 </li>
             </ul>
+
+            <div class="navbar-nav me-auto mb-2 mb-lg-0">
+                <ul class="">
+                    <li class="nav-item">
+                       <!-- TO-DO: Spell Out Full Name in Simplest Manner-->                           
+                    </li>
+
+                    <li class="nav-item">
+                    <div class="dropdown">
+                        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <span><i class="fa fa-user fa-lg"></i></span>
+                        </button>
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                <a class="dropdown-item" href="#">Update Profile</a>
+                                <!--@Html.ActionLink("Update Profile", "UpdateProfile", "Account", null)-->
+                            @if (User.Identity.IsAuthenticated)
+                            {
+                                    <a class="dropdown-item" href="#">Change Password</a>
+                                    <!--@Html.ActionLink("Change Password", "ChangePassword", "Account", null, new { @class = "usa-nav_link" })-->
+                                    <a class="dropdown-item" href="#">Update Profile</a>
+                                    <!--@Html.ActionLink("Update Profile", "UpdateProfile", "Account", null, new { @class = "usa-nav_link" })-->
+                                    <a class="dropdown-item" href="#">Sign Out</a>
+                                    <!--@Html.ActionLink("Sign Out", "SignOut", "Account", null, new { @class = "usa-nav_link" })-->
+                            }
+                            else
+                            {
+                                    <a class="dropdown-item" href="#">Sign In</a>
+                                    <!--@Html.ActionLink("Sign In", "SignIn", "Account", null, new { @class = "usa-nav_link" })-->
+                            }
+                        </div>
+                    </div>
+                    </li>
+                </ul>
+            </div>
+
         </div>
     </div>
 </nav>

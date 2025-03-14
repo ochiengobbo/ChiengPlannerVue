@@ -1,0 +1,38 @@
+﻿@model ChiengPlannerVue.Models.Users.SignInViewModel
+
+@{
+    ViewData["Title"] = "Sign In";
+    Layout = "~/Views/Shared/_LoginLayout";
+}
+
+<div class="card card-container">
+    <form asp-controller="Account" asp-action="SignIn" asp-route-return="@Context.Request.Query["returnUrl"]" method="post" class="">
+        <h4 class="text-center">Sign In</h4>
+        <br />
+
+        <div class="input-group mb-3">
+            <div class="input-group-prepend">
+                <span class="input-group-text">
+                    <i class="fas fa-user"></i>
+                </span>
+            </div>
+            <input type="text" asp-for="UserName" class="form-control" />
+            <span asp-validation-for="UserName" class="text-danger"></span>
+        </div>
+        <div class="input-group mb-3">
+            <div class="input-group-prepend">
+                <span class="input-group-text">
+                    <i class="fas fa-key"></i>
+                </span>
+            </div>
+            <input type="text" asp-for="Password" class="form-control" />
+            <span asp-validation-for="Password" class="text-danger"></span>
+        </div>
+
+        <button class="btn btn-lg btn-primary btn-block btn-signin mt-2" type="submit">
+            Sign In
+        </button>
+
+        <a href="@Url.Action("Account", "Register")" class="btn btn-lg btn-primary btn-block btn-signin mt-2">Create an Account</a>
+    </form>
+</div>

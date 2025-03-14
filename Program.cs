@@ -5,6 +5,10 @@ using Microsoft.EntityFrameworkCore;
 using ChiengPlannerVue;
 using ChiengPlannerVue.Services.Interfaces;
 using ChiengPlannerVue.Services;
+using ChiengPlannerVue.Models.Users;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity;
+using ChiengPlannerVue.Utils;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -16,9 +20,68 @@ builder.Configuration.AddJsonFile("appsettings.json", optional: false, reloadOnC
 builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<ChiengPlannerContext>(options =>
             options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultDBConnection")));
+builder.Services.AddDbContext<ApplicationContext>(options =>
+            options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultDBConnection")));
 builder.Services.AddTransient<INotesService, NotesService>();
 builder.Services.AddTransient<IChecklistsService, ChecklistsService>();
+builder.Services.AddTransient<IUserService, UserService>();
 builder.Services.Configure<AzureConnection>(builder.Configuration.GetSection("AzureConnection"));
+builder.Services.AddIdentity<User, Role>()
+    .AddEntityFrameworkStores<ApplicationContext>()
+    .AddRoleStore<RoleStore<Role, ChiengPlannerContext, int, UserRole, RoleClaim>>()
+    .AddDefaultTokenProviders();
+
+builder.Services.Configure<IdentityOptions>(options =>
+{
+    options.SignIn.RequireConfirmedEmail = false;
+    options.SignIn.RequireConfirmedPhoneNumber = false;
+
+    options.Lockout.MaxFailedAccessAttempts = 150;
+    options.Lockout.DefaultLockoutTimeSpan = TimeSpan.Zero;
+
+    options.Password.RequireDigit = false;
+    options.Password.RequireNonAlphanumeric = false;
+    options.Password.RequireUppercase = false;
+}
+
+);
+
+builder.Services.ConfigureApplicationCookie(options =>
+{
+    options.LoginPath = "";
+    options.LogoutPath = "";
+    options.Cookie.HttpOnly = true;
+    // options.ExpireTimeSpan = TimeSpan.FromMinutes(30);
+    options.Cookie.MaxAge = TimeSpan.FromHours(24);
+    options.AccessDeniedPath = "/Account/AccessDenied";
+    options.Cookie.Name = "ChiengPlanner.Identity";
+}
+
+);
+
+builder.Services.Configure<DataProtectionTokenProviderOptions>(options =>
+{
+    options.TokenLifespan = TimeSpan.FromHours(100);
+}
+
+);
+
+// Run pending migrations
+
+using var serviceScope = builder.Services.BuildServiceProvider().GetRequiredService<IServiceScopeFactory>().CreateScope();
+ApplicationContext dbContext = serviceScope.ServiceProvider.GetService<ApplicationContext>();
+try
+{
+    if (!dbContext.AllMigrationsApplied())
+    {
+        dbContext.Database.Migrate();
+    }
+    dbContext.EnsureSeeded();
+
+}
+catch (Exception ex)
+{
+}
 
 if (builder.Environment.IsDevelopment())
 {
