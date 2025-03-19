@@ -9,7 +9,7 @@ namespace ChiengPlannerVue.Services.Interfaces
         Note GetNoteByGuid(string guid);
         int NotesCount();
         bool NoteExists(int id);
-        int AddNote(int? userId, string title, string body, string plainText);
+        int AddNote(int userId, string title, string body, string plainText);
         void UpdateNote(int noteId, string title, string body, string plainText, DateTime modifiedDate);
         void DeleteNote(int noteId);
     }

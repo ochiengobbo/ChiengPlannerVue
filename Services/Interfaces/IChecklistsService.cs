@@ -10,7 +10,7 @@ namespace ChiengPlannerVue.Services.Interfaces
         Checklist GetChecklistByGuid(string guid);
         int ChecklistsCount();
         bool ChecklistExists(int id);
-        int AddChecklist(int? userId, string name, DateTime? dueDate = null);
+        int AddChecklist(int userId, string name, DateTime? dueDate = null);
         void UpdateChecklist(int checklistId, string name, DateTime modifiedDate, DateTime? dueDate = null);
         void DeleteChecklist(int checklistId);
         List<ChiengPlannerVue.Models.Checklists.Task> GetTasks();

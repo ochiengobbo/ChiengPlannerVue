@@ -15,6 +15,7 @@ using ChiengPlannerVue.Services.Interfaces;
 using ChiengPlannerVue.Models.Checklists;
 using ChiengPlannerVue.Services;
 using System.Threading.Tasks;
+using ChiengPlannerVue.Utils;
 
 namespace ChiengPlannerVue.Controllers
 {
@@ -95,7 +96,8 @@ namespace ChiengPlannerVue.Controllers
                 }
                 else
                 {
-                    id = _checklistsService.AddChecklist(null, name);
+                    var userId = HttpContext.User.GetIdentifier();
+                    id = _checklistsService.AddChecklist(userId, name);
                 }
 
             }

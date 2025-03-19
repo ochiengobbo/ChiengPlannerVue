@@ -22,4 +22,5 @@ namespace ChiengPlannerVue.Models
         public string Title { get; set; }
         public bool IsSuccesful { get; set; }
         public List<string> Messages { get; set; } = new List<string>();
+    }
 }

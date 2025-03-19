@@ -17,6 +17,11 @@ namespace ChiengPlannerVue.Utils
                 .Migrations
                 .Select(m => m.Key);
 
+            if (applied.Count() == 0 ||  total.Count() == 0 )
+            {
+                return false;
+            }
+
             return !total.Except(applied).Any();
         }
 

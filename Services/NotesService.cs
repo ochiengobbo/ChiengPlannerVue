@@ -38,7 +38,7 @@ namespace ChiengPlannerVue.Services
             return _context.Notes.Where(x => x.NotesId == id).Any();
         }
 
-        public int AddNote(int? userId, string title, string body, string plainText)
+        public int AddNote(int userId, string title, string body, string plainText)
         {
             var note = new Note();
             note.Title = title;

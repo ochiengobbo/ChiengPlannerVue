@@ -1,4 +1,6 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using ChiengPlannerVue.Models.Users;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ChiengPlannerVue.Models.Notes
 {
@@ -13,7 +15,9 @@ namespace ChiengPlannerVue.Models.Notes
         }
         [Key]
         public int NotesId { get; set; }
-        public int? UserId { get; set; }
+        public int UserId { get; set; }
+        [ForeignKey("UserId")]
+        public virtual User User { get; set; }
         public string Title { get; set; }
         public string Body { get; set; }
         public string PlainText { get; set; }

@@ -12,6 +12,9 @@ using ChiengPlannerVue.Models;
 using System;
 using Microsoft.AspNetCore.Http;
 using ChiengPlannerVue.Services.Interfaces;
+using ChiengPlannerVue.Models.Users;
+using Microsoft.AspNetCore.Identity;
+using ChiengPlannerVue.Utils;
 
 namespace ChiengPlannerVue.Controllers
 {
@@ -23,12 +26,16 @@ namespace ChiengPlannerVue.Controllers
         private ChiengPlannerContext _context;
         private readonly AzureConnection _connection;
         private readonly INotesService _notesService;
+        private readonly UserManager<User> _userManager;
+        private readonly IUserService _userService;
 
-        public NotesController(ChiengPlannerContext context, IOptions<AzureConnection> connection, INotesService notesService)
+        public NotesController(ChiengPlannerContext context, IOptions<AzureConnection> connection, INotesService notesService, UserManager<User> userManager, IUserService userService)
         {
             _context = context;
             _connection = connection.Value;
             _notesService = notesService;
+            _userManager = userManager;
+            _userService = userService;
         }
 
         [HttpGet]
@@ -96,7 +103,8 @@ namespace ChiengPlannerVue.Controllers
             }
             else
             {
-                id = _notesService.AddNote(null, vm.Title, vm.Body, vm.PlainText);
+                var userId = HttpContext.User.GetIdentifier();
+                id = _notesService.AddNote(userId, vm.Title, vm.Body, vm.PlainText);
             }
             return Json(new { success = true, id = id }, new System.Text.Json.JsonSerializerOptions());
         }

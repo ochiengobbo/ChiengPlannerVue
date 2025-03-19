@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using ChiengPlannerVue.Models.Checklists;
+using ChiengPlannerVue.Models.Notes;
+using Microsoft.AspNetCore.Identity;
 using System.ComponentModel;
 
 namespace ChiengPlannerVue.Models.Users
@@ -16,6 +18,8 @@ namespace ChiengPlannerVue.Models.Users
         public virtual ICollection<OldPassword> OldPasswords {  get; set; }
         public virtual ICollection<UserClaim> UserClaims {  get; set; }
         public virtual ICollection<UserToken> Tokens {  get; set; }
+        public virtual ICollection<Note> Notes {  get; set; }
+        public virtual ICollection<Checklist> Checklists {  get; set; }
 
         public string ModifiedBy { get; set; }
         public string FullName { get { return $"{FirstName} {LastName}"; } }

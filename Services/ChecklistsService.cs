@@ -45,7 +45,7 @@ namespace ChiengPlannerVue.Services
             return _context.Checklists.Where(x => x.ChecklistId == id).Any();
         }
 
-        public int AddChecklist(int? userId, string name, DateTime? dueDate = null)
+        public int AddChecklist(int userId, string name, DateTime? dueDate = null)
         {
             var checklist = new Checklist();
             // Keep UserId null until Users and Authentication process is complete.

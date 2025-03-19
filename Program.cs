@@ -48,8 +48,8 @@ builder.Services.Configure<IdentityOptions>(options =>
 
 builder.Services.ConfigureApplicationCookie(options =>
 {
-    options.LoginPath = "";
-    options.LogoutPath = "";
+    options.LoginPath = "/Account/SignIn";
+    options.LogoutPath = "/Account/SignOut";
     options.Cookie.HttpOnly = true;
     // options.ExpireTimeSpan = TimeSpan.FromMinutes(30);
     options.Cookie.MaxAge = TimeSpan.FromHours(24);
@@ -68,20 +68,23 @@ builder.Services.Configure<DataProtectionTokenProviderOptions>(options =>
 
 // Run pending migrations
 
-using var serviceScope = builder.Services.BuildServiceProvider().GetRequiredService<IServiceScopeFactory>().CreateScope();
-ApplicationContext dbContext = serviceScope.ServiceProvider.GetService<ApplicationContext>();
-try
-{
-    if (!dbContext.AllMigrationsApplied())
-    {
-        dbContext.Database.Migrate();
-    }
-    dbContext.EnsureSeeded();
+//using (var serviceScope = builder.Services.BuildServiceProvider().GetRequiredService<IServiceScopeFactory>().CreateScope())
+//{
+//    ApplicationContext dbContext = serviceScope.ServiceProvider.GetService<ApplicationContext>();
+//    try
+//    {
+//        if (!dbContext.AllMigrationsApplied())
+//        {
+//            dbContext.Database.Migrate();
+//        }
+//        dbContext.EnsureSeeded();
 
-}
-catch (Exception ex)
-{
-}
+//    }
+//    catch (Exception ex)
+//    {
+//    }
+//}
+
 
 if (builder.Environment.IsDevelopment())
 {

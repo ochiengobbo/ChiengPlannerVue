@@ -123,6 +123,11 @@ namespace ChiengPlannerVue.Utils
                         .Select(s => s.Value)
                         .ToList();
         }
+
+        private static string GetRoleDisplay(List<string> roles)
+        {
+            return roles.FirstOrDefault();
+        }
     }
 
     public static class ClaimPrincipalExtention
@@ -151,10 +156,10 @@ namespace ChiengPlannerVue.Utils
             return lastNameClaim != null ? lastNameClaim.Value : string.Empty;
         }
 
-        public static string GetIdentifier(this ClaimsPrincipal principal)
+        public static int GetIdentifier(this ClaimsPrincipal principal)
         {
             var id = principal.FindFirst(Constants.ClaimTypeIdentifier);
-            return id != null ? id.Value : string.Empty;
+            return id != null ? Int32.Parse(id.Value) : 0;
         }
 
         public static string GetUserName(this ClaimsPrincipal principal)
@@ -183,15 +188,15 @@ namespace ChiengPlannerVue.Utils
             return roleType != null ? roleType.Value : string.Empty;
         }
 
-        public static string GetUserId(this ClaimsPrincipal principal)
+        public static int GetUserId(this ClaimsPrincipal principal)
         {
             var userId = principal.FindFirst(Constants.UserID);
 
             if (userId != null)
             {
-                return userId.Value;
+                return Int32.Parse(userId.Value);
             }
-            return null;
+            return 0;
         }
         public static IEnumerable<string> GetUserRole(this ClaimsPrincipal principal)
         {

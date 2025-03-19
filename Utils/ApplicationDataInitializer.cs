@@ -1,5 +1,6 @@
 ﻿using ChiengPlannerVue.Models;
 using ChiengPlannerVue.Models.Users;
+using System.Linq.Dynamic.Core;
 
 namespace ChiengPlannerVue.Utils
 {
@@ -20,7 +21,7 @@ namespace ChiengPlannerVue.Utils
 
         private void CreateDefaultRoles()
         {
-            if (!context.Roles.Any())
+            if (!_context.Roles.Any())
             {
                 _ = new List<Role>();
                 foreach (RoleType role in Enum.GetValues(typeof(RoleType)))
@@ -37,7 +38,7 @@ namespace ChiengPlannerVue.Utils
             if (!_context.Users.Any())
             {
                 CreateDefaultRoles();
-                var _Role -_context.Roles.Where("it.Name = @@", RoleType.__.GetDescription()).FirstOrDefault();
+                var _Role = _context.Roles.Where("it.Name = @@", RoleType.Admin.GetDescription()).FirstOrDefault();
 
                 var roles = new List<UserRole>();
                 foreach (var role in _context.Roles)

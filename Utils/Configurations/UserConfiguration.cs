@@ -33,6 +33,16 @@ namespace ChiengPlannerVue.Utils.Configurations
                 .WithOne(e => e.User)
                 .HasForeignKey(ur => ur.UserId)
                 .IsRequired();
+
+            builder.HasMany(e => e.Notes)
+                .WithOne(e => e.User)
+                .HasForeignKey(n => n.UserId)
+                .IsRequired();
+
+            builder.HasMany(e => e.Checklists)
+                .WithOne(e => e.User)
+                .HasForeignKey(c => c.UserId)
+                .IsRequired();
         }
     }
 }

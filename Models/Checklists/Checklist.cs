@@ -1,4 +1,6 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using ChiengPlannerVue.Models.Users;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ChiengPlannerVue.Models.Checklists
 {
@@ -14,7 +16,9 @@ namespace ChiengPlannerVue.Models.Checklists
         }
         [Key]
         public int ChecklistId { get; set; }
-        public int? UserId { get; set; }
+        public int UserId { get; set; }
+        [ForeignKey("UserId")]
+        public virtual User User { get; set; }
         public string Name { get; set; }
         public DateTime CreatedDate { get; set; }
         public DateTime? ModifiedDate { get; set; }

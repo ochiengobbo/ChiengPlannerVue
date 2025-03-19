@@ -1,6 +1,8 @@
 ﻿@model ChiengPlannerVue.Models.Users.RegisterViewModel
 
 @{
+    ViewData["Title"] = "Register";
+    Layout = "~/Views/Shared/_Layout";
 }
 
 <form asp-controller="Account" asp-action="Register" asp-route-returnurl="@ViewData["ReturnUrl"]" method="post" class="form-horizontal">
