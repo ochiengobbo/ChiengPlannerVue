@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
+using System.Text.RegularExpressions;
 
 namespace ChiengPlannerVue.Controllers
 {
@@ -28,21 +29,22 @@ namespace ChiengPlannerVue.Controllers
 
         [HttpGet]
         [AllowAnonymous]
-        public async Task<IActionResult> SignIn(string? returnurl = null)
+        public async Task<IActionResult> SignIn(string? returnurl = null, string? successMsg = null)
         {
             if (HttpContext.User is not null)
             {
                 if (HttpContext.User.Identity.IsAuthenticated)
                 {
                     if (string.IsNullOrEmpty(returnurl))
-                        return RedirectToAction("AllIndex", "CLG");
+                        return RedirectToAction("Index", "Home");
                     else
                         return Redirect(returnurl);
                 }
                     
                 await HttpContext.SignOutAsync(IdentityConstants.ExternalScheme);
             }
-            return View();
+            var vm = new SignInViewModel() { SuccessMsg = successMsg };
+            return View(vm);
         }
 
         [HttpPost]
@@ -112,21 +114,21 @@ namespace ChiengPlannerVue.Controllers
                 }
                 else
                 {
-                    message = "Invalid password";
+                    message = "Invalid Password";
                 }
             }
 
-            message = "Invalid username or password.";
+            message = "Invalid Username or Password.";
             model.AddError(message);
             return View(model);
         }
 
         [HttpGet]
         [AllowAnonymous]
-        public async Task<IActionResult> SignOut()
+        public async Task<IActionResult> SignOut(string? returnurl)
         {
             await HttpContext.SignOutAsync(IdentityConstants.ApplicationScheme);
-            return View();
+            return RedirectToAction("SignIn", "Account", new { returnUrl = returnurl, successMsg = "You have been succesfully signed out" });
         }
 
         [HttpGet]
@@ -144,13 +146,18 @@ namespace ChiengPlannerVue.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> Register(RegisterViewModel model, string returnurl = null)
         {
-            if (ModelState.IsValid)
+            var match = model.Password.IsAlphanumericSymbolPassword();
+            var exists = _userService.UserExistsWithUserName(model.UserName);
+            if (ModelState.IsValid && match && !exists)
             {
                 var user = new User
                 {
                     UserName = model.UserName,
                     FirstName = model.FirstName,
-                    LastName = model.LastName
+                    LastName = model.LastName,
+                    Email = model.UserName,
+                    CreatedDate = DateTime.Now,
+                    IsActive = true,
                 };
                 try
                 {
@@ -180,7 +187,7 @@ namespace ChiengPlannerVue.Controllers
                         //                                 "contact us, please visit our website here. STLPG_Review respects your privacy <br />" +
                         //                                 "All trademarks are the property of their respective owners</div>");
                         _userService.AddToOldPasswords(savedUserRecord, savedUserRecord.PasswordHash);
-                        return RedirectToAction("SignIn", "Account", new {returnUrl = returnurl});
+                        return RedirectToAction("SignIn", "Account", new {returnUrl = returnurl, successMsg = "Your account has been successfully created! Please sign in using your Email and Password"});
                     }
                     else
                     {
@@ -192,6 +199,14 @@ namespace ChiengPlannerVue.Controllers
             else
             {
                 model.AddError("Failed to register user. Please try again later.");
+                if (!match)
+                {
+                    model.AlphaNumericPasswordErrorMsg = "Password must contain at least one letter, digit, and a non alphanumeric symbol \"!@#$%^&*?<>(){{}}\"";
+                }
+                if (exists)
+                {
+                    model.ExistingUserMsg = "A User with this Email Address already exists. Please use another Email or contact the developer at obboochieng@gmail.com";
+                }
             }
             return View(model);
 

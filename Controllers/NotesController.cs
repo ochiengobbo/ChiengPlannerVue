@@ -15,9 +15,11 @@ using ChiengPlannerVue.Services.Interfaces;
 using ChiengPlannerVue.Models.Users;
 using Microsoft.AspNetCore.Identity;
 using ChiengPlannerVue.Utils;
+using Microsoft.AspNetCore.Authorization;
 
 namespace ChiengPlannerVue.Controllers
 {
+    [Authorize]
     public class NotesController : Controller
     {
         private static string PICTURECONTAINER = "pictures";
@@ -42,10 +44,11 @@ namespace ChiengPlannerVue.Controllers
         public IActionResult Index(int? id)
         {
             var vm = new NotesModel();
-            var notesCount = _notesService.NotesCount();
+            var userId = HttpContext.User.GetIdentifier();
+            var notesCount = _notesService.NotesCount(userId);
             if (!id.HasValue && notesCount > 0)
             {
-                vm.Notes = _notesService.GetNotes().OrderByDescending(x => x.ModifiedDate).ToList();
+                vm.Notes = _notesService.GetNotesbyUserId(userId).OrderByDescending(x => x.ModifiedDate).ToList();
                 var recentNote = vm.Notes.First();
                 vm.NotesId = recentNote.NotesId;
                 vm.Title = recentNote.Title;
@@ -54,7 +57,7 @@ namespace ChiengPlannerVue.Controllers
             }
             else if (id.HasValue && notesCount > 0)
             {
-                vm.Notes = _notesService.GetNotes().OrderByDescending(x => x.ModifiedDate).ToList();
+                vm.Notes = _notesService.GetNotesbyUserId(userId).OrderByDescending(x => x.ModifiedDate).ToList();
                 var note = _notesService.GetNoteById(id.Value);
                 vm.NotesId = note.NotesId;
                 vm.Title = note.Title;
@@ -63,9 +66,10 @@ namespace ChiengPlannerVue.Controllers
             }
             else
             {
-                return RedirectToAction("EditNote");
+                return RedirectToAction("EditNote", new { userId = userId });
             }
             CheckForDeletedNoteSessionString();
+            vm.UserId = userId;
             return View(vm);
         }
 
@@ -73,7 +77,8 @@ namespace ChiengPlannerVue.Controllers
         public IActionResult EditNote(int? id)
         {
             var vm = new NotesModel();
-            vm.Notes = _notesService.GetNotes();
+            var userId = HttpContext.User.GetIdentifier();
+            vm.Notes = _notesService.GetNotesbyUserId(userId);
             if(id.HasValue && _notesService.NoteExists(id.Value))
             {
                 var note = _notesService.GetNoteById(id.Value);
@@ -82,6 +87,7 @@ namespace ChiengPlannerVue.Controllers
                 vm.Body = note.Body;
                 vm.PlainText = note.PlainText;
             }
+            vm.UserId = userId;
             CheckForDeletedNoteSessionString();
             return View(vm);
         }
@@ -103,8 +109,7 @@ namespace ChiengPlannerVue.Controllers
             }
             else
             {
-                var userId = HttpContext.User.GetIdentifier();
-                id = _notesService.AddNote(userId, vm.Title, vm.Body, vm.PlainText);
+                id = _notesService.AddNote(vm.UserId, vm.Title, vm.Body, vm.PlainText);
             }
             return Json(new { success = true, id = id }, new System.Text.Json.JsonSerializerOptions());
         }

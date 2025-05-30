@@ -1,4 +1,7 @@
 ﻿@model ChiengPlannerVue.Models.Checklists.ChecklistViewModel;
+@{
+    ViewData["Title"] = "Checklists";
+}
 <style>
     .page-size {
         width: 90%;
@@ -33,6 +36,7 @@
         border-bottom: 1px solid rgb(122, 6, 150, 0.5);
         top: 30%;
         width: 50%;
+        z-index: 10 !important;
     }
 
     .checklist-tab-list {
@@ -63,6 +67,11 @@
         width: 100%;
         height: 100%;
     }
+
+        .checklist-tab-button :hover {
+            color: rgb(122, 6, 150, 0.5);
+            background-color: lightgray;
+        }
 
     .checklist-tab-bottom-line {
         position: absolute;
@@ -257,7 +266,9 @@
         opacity: 1;
     }
 
-
+    .success-modal.in {
+        opacity: 1;
+    }
 
     .checklist-card {
         margin: 2%;
@@ -347,7 +358,7 @@
         margin-top: 10%;
         margin-left: 5%;
         margin-bottom: -10%;
-        display: infline-flex;
+        display: inline-flex;
     }
 
     .chieng-modal-close {
@@ -373,7 +384,7 @@
 
 </style>
 <div id="errorModal" class="error-modal modal" data-backdrop="false" role="dialog">
-    <div class="modal-dialog modal-dialog-centered modal-sm">
+    <div class="modal-dialog modal-sm mt-3">
         <div class="modal-content bg-danger">
             <div class="modal-body text-white">
                 <div style="float: right;">
@@ -408,6 +419,33 @@
         </div>
     </div>
 </div>
+<div id="successModal" class="success-modal modal" data-backdrop="false" role="dialog">
+    <div class="modal-dialog modal-sm mt-3">
+        <div class="modal-content bg-success">
+            <div class="modal-body text-white">
+                <div style="float: right;">
+                    <button type="button" id="successClose" class="close" aria-label="Close" style="color: white;border: none;">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <p id="successMsg" class="d-inline"></p>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="deleteWarningModal" class="modal" role="dialog">
+    <div class="modal-dialog modal-dialog-centered modal-sm">
+        <div class="modal-content bg-warning">
+            <div class="modal-body text-white">
+                <p class="d-inline"><b><small>Are you sure you want to delete this Checklist? You won't be able to recover it.</small></b></p>
+            </div>
+            <div class="modal-footer" style="border-top: 0px;margin-top: -25px;">
+                <button type="button" id="continueDelete" class="btn btn-danger">Ok</button>
+                <button type="button" id="cancelDelete" class="btn btn-success">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
 
 
 <div class="page-size">
@@ -417,15 +455,31 @@
     </div>
 
     <div class="checklist-tabs">
-        <ul class="checklist-tab-list">
-            <li class="checklist-tab-section ct-list-selected">
-                <button id="ActiveChecklists" class="checklist-tab-button"><b>Active</b></button>
-            </li>
+        @if (Model.Active)
+        {
+            <ul class="checklist-tab-list">
+                <li id="ActiveChecklists" class="checklist-tab-section ct-list-selected">
+                    <button class="checklist-tab-button"><b>Active</b></button>
+                </li>
 
-            <li class="checklist-tab-section">
-                <button id="CompletedChecklists" class="checklist-tab-button"><b>Completed</b></button>
-            </li>
-        </ul>
+                <li id="CompletedChecklists" class="checklist-tab-section">
+                    <button class="checklist-tab-button"><b>Completed</b></button>
+                </li>
+            </ul>
+        }
+        else
+        {
+            <ul class="checklist-tab-list">
+                <li id="ActiveChecklists" class="checklist-tab-section">
+                    <button class="checklist-tab-button"><b>Active</b></button>
+                </li>
+
+                <li id="CompletedChecklists" class="checklist-tab-section ct-list-selected">
+                    <button class="checklist-tab-button"><b>Completed</b></button>
+                </li>
+            </ul>
+        }
+
     </div>
     @*<hr class="checklist-tab-bottom-line" />*@
     <div id="DisplayChecklists" class="display-checklists">
@@ -463,12 +517,16 @@
             // Determines if there has been any data modifications that require a reload
             var reloadChecklists = false;
 
+            var completedChecklist = false;
+
+            var deleteChecklistId = 0;
+
             $('#ActiveChecklists').on('click', function () {
-                if ($(this).hasClass("selected-tab")) {
+                if ($(this).hasClass("ct-list-selected")) {
                 }
                 else {
-                    $(this).addClass("selected-tab");
-                    $("#CompletedChecklists").removeClass("selected-tab");
+                    $(this).addClass("ct-list-selected");
+                    $("#CompletedChecklists").removeClass("ct-list-selected");
                     var completed = false;
                     $.ajax({
                         type: "GET",
@@ -489,11 +547,11 @@
                 }
             })
             $('#CompletedChecklists').on('click', function () {
-                if ($(this).hasClass("selected-tab")) {
+                if ($(this).hasClass("ct-list-selected")) {
                 }
                 else {
-                    $(this).addClass("selected-tab");
-                    $("#ActiveChecklists").removeClass("selected-tab");
+                    $(this).addClass("ct-list-selected");
+                    $("#ActiveChecklists").removeClass("ct-list-selected");
                     var completed = true;
                     $.ajax({
                         type: "GET",
@@ -515,7 +573,7 @@
             })
             $('#DisplayChecklists').on('click', '#ShowMore', function () {
                 var completed = false;
-                if ($('#CompletedChecklists').hasClass("selected-tab")) {
+                if ($('#CompletedChecklists').hasClass("ct-list-selected")) {
                     completed = true;
                 }
                 $.ajax({
@@ -537,6 +595,8 @@
             })
             $('#DisplayChecklists').on('click', '.edit-checklist', function () {
                 var id = $(this).attr("data-id")
+                var taskTextTitle = $(this).parent().siblings('.text-card-title');
+                Completed(id, taskTextTitle, true)
                 AddOrEditChecklist(id)
                 Tasks(id)
                 // Show Tasks display
@@ -547,10 +607,17 @@
                 $('#AddOrEditModal').modal('show');
             })
 
-            $('#DisplayChecklists').on('click', '.delete-checklist', function () {
-                var id = $(this).attr("data-id")
-                DeleteChecklist(id)
-                
+            $('#DisplayChecklists').on('click', '.remove-checklist', function () {
+                deleteChecklistId = $(this).attr("data-id")
+                $('#deleteWarningModal').modal('show');
+            })
+
+            $('#continueDelete').on('click', function () {
+                DeleteChecklist(deleteChecklistId)
+            })
+
+            $('#cancelDelete').on('click', function () {
+                $('#deleteWarningModal').modal('hide');
             })
 
 
@@ -560,6 +627,22 @@
                 setTimeout(function () {
                     $("#errorModal").modal('hide');
                 }, 500);
+            });
+            $('#successClose').on('click', function () {
+                $('#successModal').css({ 'transition': '' })
+                $('#successModal').fadeOut('slow');
+                setTimeout(function () {
+                    $("#successModal").modal('hide');
+                }, 500);
+            });
+            $('#successModal').on('shown.bs.modal', function (e) {
+                setTimeout(function () {
+                    $('#successModal').css({ 'transition': '' })
+                    $('#successModal').fadeOut('slow');
+                    setTimeout(function () {
+                        $("#successModal").modal('hide');
+                    }, 500);
+                }, 5000);
             });
             $('#addOrEditClose').on('click', function () {
                 $(document.activeElement).trigger('blur')
@@ -579,8 +662,18 @@
 
                 if (reloadChecklists) {
                     var completed = false;
-                    if ($('#CompletedChecklists').hasClass("selected-tab")) {
+                    if ($('#CompletedChecklists').hasClass("ct-list-selected") || completedChecklist) {
                         completed = true;
+                        if (!$('#CompletedChecklists').hasClass("ct-list-selected")) {
+                            $("#CompletedChecklists").addClass("ct-list-selected");
+                        }
+                        $("#ActiveChecklists").removeClass("ct-list-selected");
+                    }
+                    else {
+                        if (!$("#ActiveChecklists").hasClass("ct-list-selected")) {
+                            $("#ActiveChecklists").addClass("ct-list-selected");
+                        }
+                        $("#CompletedChecklists").removeClass("ct-list-selected");
                     }
                     $.ajax({
                         type: "GET",
@@ -659,6 +752,7 @@
                         '</div>' +
                         '</li>';
                     $('#TaskListItems').append(task)
+                    $('#successMsg').html('Task has been created!')
                     // Disable Add Task Button and all Edit Buttons until task input is completed
                     $(this).addClass('add-task-button-inactive')
                     $(this).removeClass('add-task-button')
@@ -726,12 +820,16 @@
                 $('#AddTask').removeClass('add-task-button')
                 $('#AddTask').addClass('add-task-button-inactive')
                 DisableEditButton($('.edit-task'))
+                $('#successMsg').html('Task has been edited!')
             })
 
             $('#Tasks').on('click', '.delete-task', function () {
                 // Grab list node to which the clicked button belongs to.
                 var list = $(this).parent().parent();
                 var taskInput = $(this).parent().siblings("input[type=text]");
+                if (taskInput.length == 0){
+                    taskInput = $(this).parent().siblings("input[type=checkbox]");
+                }
                 DeleteTasks($(taskInput).attr("data-id"), list)
                 taskNameModified = false;
             })
@@ -740,34 +838,36 @@
                 if ($(this).prop('checked')) {
                     var taskText = $(this).siblings('p');
                     var taskButton = $(this).siblings('div').children('.edit-task');
-                    var taskTextTitle = taskText.parent().parent().parent().parent().parent().sibling('.chieng-modal-close');
+                    var taskTextTitle = taskText.parent().parent().parent().parent().parent().siblings('.chieng-modal-close');
                     // TO DO: Ajax function to mark task as complete.
                     MarkTasks($(taskText).attr('id'), taskText, taskButton, taskTextTitle, true, true)
                     // Within Ajax func, add "Completed" badge ".completed-badge" to modal if all tasks are completed
+                    reloadChecklists = true;
                 }
                 else {
                     var taskText = $(this).siblings('p');
                     var taskButton = $(this).siblings('div').children('.edit-task-inactive');
-                    var taskTextTitle = taskText.parent().parent().parent().parent().parent().sibling('.chieng-modal-close');
+                    var taskTextTitle = taskText.parent().parent().parent().parent().parent().siblings('.chieng-modal-close');
                     // TO DO: Ajax function to mark task as complete.
                     MarkTasks($(taskText).attr('id'), taskText, taskButton, taskTextTitle, false, true)
                     // Within Ajax func, remove "Completed" badge ".completed-badge" from modal if checklist was previously completed.
+                    reloadChecklists = true;
                 }
             })
 
             $('#DisplayChecklists').on('click', 'input[type=checkbox]', function () {
                 if ($(this).prop('checked')) {
                     var taskText = $(this).siblings('p');
-                    var taskTextTitle = taskText.parent().parent().parent().sibling('.text-card-title');
+                    var taskTextTitle = taskText.parent().parent().parent().siblings('.text-card-title');
                     // TO DO: Ajax function to mark task as complete.
-                    MarkTasks($(taskText).attr('id'), taskText, taskTextTitle, null, true, false)
+                    MarkTasks($(taskText).attr('id'), taskText, null, taskTextTitle, true, false)
                     // Within Ajax func, add "Completed" badge ".completed-badge" to modal if all tasks are completed
                 }
                 else {
                     var taskText = $(this).siblings('p');
-                    var taskTextTitle = taskText.parent().parent().parent().sibling('.text-card-title');
+                    var taskTextTitle = taskText.parent().parent().parent().siblings('.text-card-title');
                     // TO DO: Ajax function to mark task as complete.
-                    MarkTasks($(taskText).attr('id'), taskText, taskTextTitle, null, true, false)
+                    MarkTasks($(taskText).attr('id'), taskText, null, taskTextTitle, false, false)
                     // Within Ajax func, remove "Completed" badge ".completed-badge" from modal if checklist was previously completed.
                 }
             })
@@ -824,6 +924,10 @@
                         // After saving ChecklistName, change 'Create' button to 'Save' if not already done -- BEGIN
                         if (button.html() != 'Save') {
                             button.html('Save')
+                            $('#successMsg').html('<b><small>Checklist has been created!</small></b>');
+                        }
+                        else {
+                            $('#successMsg').html('<b><small>Checklist has been saved!</small></b>');
                         }
 
                         // Show Tasks display
@@ -832,10 +936,16 @@
                             $('#Tasks').css("display", "block")
                         }
                     }
+                    else {
+                        $('#successMsg').html('<b><small>Checklist has been saved!</small></b>');
+                    }
 
                     // Reset SaveChecklist button to inactive because Checklist name has been saved and there have been no further modifications
                     button.removeClass('save-checklist-button')
                     button.addClass('save-checklist-button-inactive')
+
+                    $("#successModal").css({ 'transition': 'opacity 3s' });
+                    $('#successModal').modal('show');
                 },
                 error: function () {
                     $("#errorModal").css({ 'transition': 'opacity 3s' });
@@ -846,35 +956,48 @@
         }
 
         function DeleteChecklist(id) {
+            $('#deleteWarningModal').modal('hide');
             $.ajax({
                 type: "POST",
                 url: "@Url.Action("DeleteChecklist", "Checklists")",
-                data: { id: id },
+                data: { checklistId: id },
                 success: function (data) {
-                    var completed = false;
-                    if ($('#CompletedChecklists').hasClass("selected-tab")) {
-                        completed = true;
-                    }
-                    $.ajax({
-                        type: "GET",
-                        url: "@Url.Action("DisplayChecklists", "Checklists")",
-                        data: { completed: completed },
-                        success: function (data) {
-                            $('#DisplayChecklists').html(data)
-                            offset = @Model.PageLimit;
-                            var checklistCardTasks = $('.task-text-card')
-                            TruncateTasks(checklistCardTasks);
-                        },
-                        error: function () {
-                            $("#errorModal").css({ 'transition': 'opacity 3s' });
-                            $('#errorMsg').html('<b><small>There was an error retrieving your checklists, please try again</small></b>');
-                            $('#errorModal').modal('show');
+                    if (data.success){
+                        var completed = false;
+                        if ($('#CompletedChecklists').hasClass("ct-list-selected")) {
+                            completed = true;
                         }
-                    })
+                        var msg = data.message
+                        $.ajax({
+                            type: "GET",
+                            url: "@Url.Action("DisplayChecklists", "Checklists")",
+                            data: { completed: completed },
+                            success: function (data) {
+                                $('#DisplayChecklists').html(data)
+                                offset = @Model.PageLimit;
+                                var checklistCardTasks = $('.task-text-card')
+                                TruncateTasks(checklistCardTasks);
+                                $("#errorModal").css({ 'transition': 'opacity 3s' });
+                                $('#errorMsg').html(msg);
+                                $('#errorModal').modal('show');
+                            },
+                            error: function () {
+                                $("#errorModal").css({ 'transition': 'opacity 3s' });
+                                $('#errorMsg').html('<b><small>There was an error retrieving your checklists, please try again</small></b>');
+                                $('#errorModal').modal('show');
+                            }
+                        })
+                    }
+                    else {
+                        $("#errorModal").css({ 'transition': 'opacity 3s' });
+                        $('#errorMsg').html(data.message);
+                        $('#errorModal').modal('show');
+                    }
+                    
                 },
                 error: function () {
                     $("#errorModal").css({ 'transition': 'opacity 3s' });
-                    $('#errorMsg').html('<b><small>There was an error creating your Checklist, please try again</small></b>');
+                    $('#errorMsg').html('<b><small>There was an error deleting your Checklist, please try again</small></b>');
                     $('#errorModal').modal('show');
                 }
             });
@@ -923,6 +1046,8 @@
                     $('#AddTask').addClass('add-task-button')
                     EnableEditButton($('.edit-task-inactive'))
 
+                    $("#successModal").css({ 'transition': 'opacity 3s' });
+                    $('#successModal').modal('show');
                 },
                 error: function () {
                     $("#errorModal").css({ 'transition': 'opacity 3s' });
@@ -939,11 +1064,58 @@
                 url: "@Url.Action("MarkTask", "Checklists")",
                 data: { id: id, check: check },
                 success: function (data) {
-                    if (checked) {
-                        DisableEditButton(button);
+                    if (check) {
+                        if (modal){
+                            DisableEditButton(button);
+                        }
                         $(text).addClass('checked-task');
+                        if (data.completed) {
+                            var span = '';
+                            if (modal) {
+                                span = '<span class="completed-tag-modal">COMPLETED</span>'
+                                $(textTitle).prepend(span)
+                                completedChecklist = true
+                            }
+                            else {
+                                span = '<span class="completed-tag-card">COMPLETED</span>'
+                                $(textTitle).append(span)
+                            }
+                        }
+
+                        $("#successModal").css({ 'transition': 'opacity 3s' });
+                        $('#successMsg').html('Checklist has been completed!')
+                        $('#successModal').modal('show');
+                    }
+                    else {
+                        completedChecklist = false;
+                        if (modal){
+                            EnableEditButton(button);
+                        }
                         $(text).removeClass('checked-task');
-                        if (data.complete) {
+                            if (modal) {
+                                $(textTitle).children().remove('.completed-tag-modal')
+                            }
+                            else {
+                                $(textTitle).children().remove('.completed-tag-card')
+                            }
+                    }
+                    reloadChecklists = true;
+                },
+                error: function () {
+                    $("#errorModal").css({ 'transition': 'opacity 3s' });
+                    $('#errorMsg').html('<b><small>There was an error marking your Task, please try again</small></b>');
+                    $('#errorModal').modal('show');
+                }
+            });
+        }
+
+        function Completed(id, textTitle, modal){
+            $.ajax({
+                type: "GET",
+                url: "@Url.Action("CompletedChecklist", "Checklists")",
+                data: { id: id },
+                success: function (data) {
+                    if (data.completed) {
                             var span = '';
                             if (modal) {
                                 span = '<span class="completed-tag-modal">COMPLETED</span>'
@@ -954,24 +1126,10 @@
                                 $(textTitle).append(span)
                             }
                         }
-                    }
-                    else {
-                        EnableEditButton(button);
-                        $(text).removeClass('checked-task');
-                        if (data.complete) {
-                            if (modal) {
-                                $(textTitle).children.remove('completed-tag-modal')
-                            }
-                            else {
-                                $(textTitle).children.remove('completed-tag-card')
-                            }
-                        }
-                    }
-                    
-                },
+                    },
                 error: function () {
                     $("#errorModal").css({ 'transition': 'opacity 3s' });
-                    $('#errorMsg').html('<b><small>There was an error marking your Task, please try again</small></b>');
+                    $('#errorMsg').html('<b><small>There was an retrieving data, please try again</small></b>');
                     $('#errorModal').modal('show');
                 }
             });
@@ -981,7 +1139,7 @@
             $.ajax({
                 type: "POST",
                 url: "@Url.Action("DeleteTask", "Checklists")",
-                data: { id: id },
+                data: { taskId: id },
                 success: function (data) {
                     // Remove list element
                     $(list).remove()
@@ -1034,5 +1192,5 @@
             }
         }
     </script>
-    <script type="text/javascript" src="~/js/notes-index.bundle.js" asp-append-version="true"></script>
+<script type="text/javascript" src="~/js/notes-index.bundle.js" asp-append-version="true"></script>
 }

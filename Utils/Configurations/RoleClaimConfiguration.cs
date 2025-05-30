@@ -9,7 +9,6 @@ namespace ChiengPlannerVue.Utils.Configurations
         public void Configure(EntityTypeBuilder<RoleClaim> builder)
         {
             builder.ToTable("RoleClaim");
-            builder.Property(p => p.RoleId).HasColumnName("RoleId");
         }
     }
 }

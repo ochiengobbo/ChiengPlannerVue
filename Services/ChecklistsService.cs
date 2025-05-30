@@ -25,6 +25,12 @@ namespace ChiengPlannerVue.Services
             return checklists.ToList();
         }
 
+        public List<Checklist> GetChecklistsByUserId(int userId)
+        {
+            var checklists = _context.Checklists.Where(x => x.UserId == userId).Include(x => x.Tasks);
+            return checklists.ToList();
+        }
+
         public Checklist GetChecklistById(int id)
         {
             return _context.Checklists.Where(x => x.ChecklistId == id).Include(x => x.Tasks).First();
@@ -88,7 +94,7 @@ namespace ChiengPlannerVue.Services
 
         public ChiengPlannerVue.Models.Checklists.Task GetTaskById(int id)
         {
-            return _context.Tasks.Include(x => x.Checklist).Where(x => x.TaskId == id).First();
+            return _context.Tasks.Include(x => x.Checklist).Include(x => x.Checklist.Tasks).Where(x => x.TaskId == id).First();
         }
 
         public ChiengPlannerVue.Models.Checklists.Task GetTaskByGuid(string guid)
@@ -138,14 +144,17 @@ namespace ChiengPlannerVue.Services
             task.Completed = check;
             task.ModifiedDate = modifiedDate;
             _context.SaveChanges();
-            var tasks = task.Checklist.Tasks.Where(x => x.TaskId != taskId);
-            if (tasks.Count() == 0 && prevStatus)
+            var tasks = task.Checklist.Tasks.Where(x => x.TaskId != taskId).ToList();
+            if (tasks.Count() == 0 && check)
             {
                 return true;
             }
             else if (tasks.Count() > 0)
             {
-                return !tasks.Any(x => x.Completed == false);
+                var completedChecklist = check && !tasks.Any(x => x.Completed == false);
+                task.Checklist.Completed = completedChecklist;
+                _context.SaveChanges();
+                return completedChecklist;
             }
             else
             {

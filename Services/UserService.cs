@@ -10,29 +10,27 @@ namespace ChiengPlannerVue.Services
     public class UserService : IUserService
     {
         private ChiengPlannerContext _context;
-        private readonly ApplicationContext _userContext;
 
 
-        public UserService(ChiengPlannerContext context, ApplicationContext userContext)
+        public UserService(ChiengPlannerContext context)
         {
             _context = context;
-            _userContext = userContext;
         }
 
         public bool UserExists(int id)
         {
-            return _userContext.Users.Any(u => u.Id == id);
+            return _context.Users.Any(u => u.Id == id);
         }
 
         public bool UserExistsWithUserName(string userName)
         {
-            return _userContext.Users.Any(u => u.UserName == userName);
+            return _context.Users.Any(u => u.UserName == userName);
         }
 
         public User CreateUser(User user)
         {
-            user = _userContext.Users.Add(user).Entity;
-            _userContext.SaveChanges();
+            user = _context.Users.Add(user).Entity;
+            _context.SaveChanges();
 
             return user;
         }
@@ -47,21 +45,21 @@ namespace ChiengPlannerVue.Services
             dbUser.PhoneNumber = user.PhoneNumber;
             dbUser.ModifiedBy = user.ModifiedBy;
 
-            _userContext.SaveChanges();
+            _context.SaveChanges();
             return dbUser;
         }
 
         public bool DeleteUser(int id)
         {
-            var user = _userContext.Users.First(i => i.Id == id);
-            _userContext.Users.Remove(user);
-            _userContext.SaveChanges();
+            var user = _context.Users.First(i => i.Id == id);
+            _context.Users.Remove(user);
+            _context.SaveChanges();
             return true;
         }
 
         public User GetUserByUserName(string userName)
         {
-            var user = _userContext.Users.Where(u => u.UserName == userName)
+            var user = _context.Users.Where(u => u.UserName == userName)
                         .Include(u => u.UserRoles).ThenInclude(ur => ur.Role)
                         .First();
             return user;
@@ -74,7 +72,7 @@ namespace ChiengPlannerVue.Services
 
         public User GetUser(int id)
         {
-            return _userContext.Users.Where(u => u.Id == id)
+            return _context.Users.Where(u => u.Id == id)
                 .Include(u => u.UserRoles).ThenInclude(ur => ur.Role)
                 .Include(u => u.UserRoles)
                 .First();
@@ -82,7 +80,7 @@ namespace ChiengPlannerVue.Services
 
         public List<OldPassword> GetOldPasswords(User user)
         {
-            return _userContext.OldPasswords.Where(u => u.UserId == user.Id).ToList();
+            return _context.OldPasswords.Where(u => u.UserId == user.Id).ToList();
         }
 
         public void AddToOldPasswords(User user, string pwHash)
@@ -93,8 +91,8 @@ namespace ChiengPlannerVue.Services
                 UserId = user.Id,
                 CreatedDate = DateTime.Now
             };
-            _userContext.OldPasswords.Add(pwRecord);
-            _userContext.SaveChanges();
+            _context.OldPasswords.Add(pwRecord);
+            _context.SaveChanges();
         }
     }
 }

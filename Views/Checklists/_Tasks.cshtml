@@ -14,12 +14,23 @@
             @foreach (var task in Model)
             {
                 <li class="task task-border-bottom">
-                    <input type="checkbox" class="task-checkbox" data-id="@task.TaskId" />
-                    <p class="task-text" id="@task.TaskId">@task.Name</p>
-                    <div class="save-delete-task-buttons">
-                        <button class="edit-task"><i class="fa-solid fa-edit"></i></button>
-                        <button class="delete-task"><i class="fa-solid fa-trash-can"></i></button>
-                    </div>
+                    @if (!task.Completed)
+                    {
+                        <input type="checkbox" class="task-checkbox" data-id="@task.TaskId" />
+                        <p class="task-text" id="@task.TaskId">@task.Name</p>
+                        <div class="save-delete-task-buttons">
+                            <button class="edit-task"><i class="fa-solid fa-edit"></i></button>
+                            <button class="delete-task"><i class="fa-solid fa-trash-can"></i></button>
+                        </div>
+                    } else
+                    {
+                        <input type="checkbox" class="task-checkbox" data-id="@task.TaskId" checked/>
+                        <p class="task-text checked-task" id="@task.TaskId">@task.Name</p>
+                        <div class="save-delete-task-buttons">
+                            <button class="edit-task-inactive"><i class="fa-solid fa-edit"></i></button>
+                            <button class="delete-task"><i class="fa-solid fa-trash-can"></i></button>
+                        </div>
+                    }
                 </li>
             }
         </ul>

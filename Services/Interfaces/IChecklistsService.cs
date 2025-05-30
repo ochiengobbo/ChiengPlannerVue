@@ -6,6 +6,7 @@ namespace ChiengPlannerVue.Services.Interfaces
     public interface IChecklistsService
     {
         List<Checklist> GetChecklists();
+        List<Checklist> GetChecklistsByUserId(int userId);
         Checklist GetChecklistById(int id);
         Checklist GetChecklistByGuid(string guid);
         int ChecklistsCount();

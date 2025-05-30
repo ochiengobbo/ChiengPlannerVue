@@ -21,7 +21,7 @@ namespace ChiengPlannerVue.Models.Users
         public virtual ICollection<Note> Notes {  get; set; }
         public virtual ICollection<Checklist> Checklists {  get; set; }
 
-        public string ModifiedBy { get; set; }
+        public string? ModifiedBy { get; set; }
         public string FullName { get { return $"{FirstName} {LastName}"; } }
 
         public List<string> GetRoles()

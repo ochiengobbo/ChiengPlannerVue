@@ -3,7 +3,7 @@
     <div class="container-fluid">
         <a class="navbar-brand" href="#">Chieng Planner</a>
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            <ul class="navbar-nav me-auto">
                 <li class="nav-item">
                     <a class="nav-link" asp-controller="Home" asp-action="Index" asp-route-id="0" id="homeNavLink">Home</a>
                 </li>
@@ -17,36 +17,40 @@
                 </li>
             </ul>
 
-            <div class="navbar-nav me-auto mb-2 mb-lg-0">
-                <ul class="">
+            <div class="navbar-nav me-auto" style="display:contents;">
+                <ul class="" style="list-style:none;margin-top: 15px;display:inline-flex;">
+                    @if (User.Identity.IsAuthenticated)
+                    {
+                        <li class="nav-item" style="margin-top: 5px;">
+                            @User.GetFullName()
+                            <div style="border-left: 1px solid gray;height: 30px;float: right;margin-left: 5px;margin-right: 5px;margin-top: 0px;"></div>
+                        </li>
+                    }
                     <li class="nav-item">
-                       <!-- TO-DO: Spell Out Full Name in Simplest Manner-->                           
-                    </li>
-
-                    <li class="nav-item">
-                    <div class="dropdown">
-                        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <span><i class="fa fa-user fa-lg"></i></span>
-                        </button>
-                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                <a class="dropdown-item" href="#">Update Profile</a>
+                        <div class="dropdown">
+                            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false"
+                                    style="background: #7a0696;"
+                                    data-bs-offset="10,20">
+                                <span><i class="fa fa-user fa-lg"></i></span>
+                            </button>
+                            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton">
+                                <li><a class="dropdown-item" href="#">Update Profile</a></li>
                                 <!--@Html.ActionLink("Update Profile", "UpdateProfile", "Account", null)-->
-                            @if (User.Identity.IsAuthenticated)
-                            {
-                                    <a class="dropdown-item" href="#">Change Password</a>
-                                    <!--@Html.ActionLink("Change Password", "ChangePassword", "Account", null, new { @class = "usa-nav_link" })-->
-                                    <a class="dropdown-item" href="#">Update Profile</a>
-                                    <!--@Html.ActionLink("Update Profile", "UpdateProfile", "Account", null, new { @class = "usa-nav_link" })-->
-                                    <a class="dropdown-item" href="#">Sign Out</a>
-                                    <!--@Html.ActionLink("Sign Out", "SignOut", "Account", null, new { @class = "usa-nav_link" })-->
-                            }
-                            else
-                            {
-                                    <a class="dropdown-item" href="#">Sign In</a>
-                                    <!--@Html.ActionLink("Sign In", "SignIn", "Account", null, new { @class = "usa-nav_link" })-->
-                            }
+                                @if (User.Identity.IsAuthenticated)
+                                {
+                                    <li><a class="dropdown-item" href="#">Change Password</a></li>
+                                    <!--<li>@Html.ActionLink("Change Password", "ChangePassword", "Account", null, new { @class = "usa-nav_link" })</li>-->
+                                    <li><a class="dropdown-item" href="#">Update Profile</a></li>
+                                    <!--<li>@Html.ActionLink("Update Profile", "UpdateProfile", "Account", null, new { @class = "usa-nav_link" })</li>-->
+                                    <li><a class="dropdown-item" href="@Url.Action("SignOut","Account")">Sign Out</a></li>
+                                }
+                                else
+                                {
+                                    <li><a class="dropdown-item" href="#">Sign In</a></li>
+                                    <!--<li>@Html.ActionLink("Sign In", "SignIn", "Account", null, new { @class = "usa-nav_link" })</li>-->
+                                }
+                            </ul>
                         </div>
-                    </div>
                     </li>
                 </ul>
             </div>

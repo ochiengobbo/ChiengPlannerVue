@@ -13,7 +13,7 @@
         border-right: 2px solid #dddddd;
         flex-shrink: 0;
         padding: 1em;
-        width: 250px;
+        width: 22.5%;
     }
 
     .notes-add {
@@ -33,8 +33,12 @@
             background: #500263;
         }
 
+    .notes-list {}
+
     .notes-list-item {
         cursor: pointer;
+        padding-left: 10px;
+        padding-right: 10px;
     }
 
     .notes-list-item--selected {
@@ -91,7 +95,7 @@
 </style>
 
 <div class="notes-sidebar">
-    <a asp-controller="Notes" asp-action="EditNote" asp-route-userId="@Model.UserId" class="notes-add" type="button" style="text-align: center;"><i class="fa-solid fa-plus"></i></a>
+    <a asp-controller="Notes" asp-action="EditNote" class="notes-add" type="button" style="text-align: center;"><i class="fa-solid fa-plus"></i></a>
     <div class="notes-list">
         @foreach (var note in Model.Notes)
         {

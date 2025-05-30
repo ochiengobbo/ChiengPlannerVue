@@ -2,82 +2,61 @@
 
 @{
     ViewData["Title"] = "Register";
-    Layout = "~/Views/Shared/_Layout";
 }
 
 <form asp-controller="Account" asp-action="Register" asp-route-returnurl="@ViewData["ReturnUrl"]" method="post" class="form-horizontal">
-    <h1>Create Account</h1>
-    <hr />
-
-    @if (!Model.IsEditMode)
-    {
-        <div class="alert alert-warning">
-            <p class="text-justify"><strong>Password Policy: </strong> Password must have at least @TempData["PasswordRequiredLength"] characters and contain the following: Upper Case Letters, Lower Case Letters, Number and Symbols.</p>
+    <div class="card card-container w-75" style="margin-top:.5%; left: 14%;padding: 2%;background-color: rgba(0,0,0,.125);">
+        <h4 class="text-center">Register</h4>
+        <br />
+        <div class="input-group mb-5">
+            <div class="w-100">
+                <input type="text" asp-for="UserName" class="form-control" placeholder="Email" style="height:60px;" />
+                <span asp-validation-for="UserName" class="text-danger"></span>
+                @if (!string.IsNullOrEmpty(Model.ExistingUserMsg))
+                {
+                    <span class="text-danger">@Model.ExistingUserMsg</span>
+                }
+            </div>
         </div>
-    }
-
-    <div asp-validation-summary="All" class="text-danger"></div>
-    <input asp-for="IsEditMode" type="hidden" />
-
-    @*
-    @if (Model.IsEditMode)
-    {
-        <input asp-for="UserId" type="hidden" />
-        <input asp-for="Username" type="hidden" />
-    }
-    *@
-
-    <div class="row">
-        <div class="col-md-12 form-group required">
-            <label asp-for="UserName" class="control-label"></label>
-            <input asp-for="UserName" class="form-control" readonly />
-            <span asp-validation-for="UserName" class="text-danger"></span>
-        </div>
-    </div>
-
-    <div class="row">
-        <div class="col-md-6">
-            <div class="form-group required">
-                <label asp-for="FirstName" class="control-label"></label>
-                <input asp-for="FirstName" type="text" class="form-control" />
+        <div class="input-group mb-5">
+            <div style="width: 49.5%;margin-right: 1%;">
+                <input asp-for="FirstName" type="text" class="form-control" placeholder="First Name" style="height:60px;" />
                 <span asp-validation-for="FirstName" class="text-danger"></span>
             </div>
-        </div>
-        <div class="form-group required col-md-6">
-            <label asp-for="LastName" class="control-label"></label>
-            <input asp-for="LastName" type="text" class="form-control" />
-            <span asp-validation-for="LastName" class="text-danger"></span>
-        </div>
-    </div>
-
-    @if (!Model.IsEditMode)
-    {
-        <div class="row">
-            <div class="col-md-6">
-                <div class="form-group required">
-                    <label asp-for="Password" class="control-label"></label>
-                    <input asp-for="Password" class="form-control" type="password" />
-                    <span asp-validation-for="Password" class="text-danger"></span>
-                </div>
+            <div style="width: 49.5%;">
+                <input asp-for="LastName" type="text" class="form-control" placeholder="Last Name" style="height:60px;" />
+                <span asp-validation-for="LastName" class="text-danger"></span>
             </div>
-            <div class="form-group required col-md-6">
-                <label asp-for="ConfirmPassword" class="control-label"></label>
-                <input asp-for="ConfirmPassword" type="password" class="form-control" />
+        </div>
+        <div class="input-group mb-5">
+            <div class="w-100">
+                <input asp-for="Password" class="form-control" type="password" placeholder="Password" style="height:60px;" />
+                <span asp-validation-for="Password" class="text-danger"></span>
+                @if (!string.IsNullOrEmpty(Model.AlphaNumericPasswordErrorMsg))
+                {
+                    <p class="text-danger">@Model.AlphaNumericPasswordErrorMsg</p>
+                }
+            </div>
+        </div>
+        <div class="input-group mb-5">
+            <div class="w-100">
+                <input asp-for="ConfirmPassword" type="password" class="form-control" placeholder="Confirm Password" style="height:60px;" />
                 <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
             </div>
         </div>
-    }
-    <div class="row form-group text-right">
-        <div class="col-md-12">
-            @if (Model.IsEditMode)
-            {
-                <button type="submit" class="btn btn-outline-primary">Create</button>
-            }
-            else
-            {
-                <button type="submit" class="btn btn-outline-primary">Register</button>
-            }
-        </div>
+
+        @if (Model.IsEditMode)
+        {
+            <button class="btn btn-lg btn-success btn-block btn-signin mt-2" type="submit" style="width: 100%;padding: 15px;">
+                Create Account
+            </button>
+        }
+        else
+        {
+            <button class="btn btn-lg btn-success btn-block btn-signin mt-2" type="submit" style="width: 100%;padding: 15px;">
+                Save
+            </button>
+        }
     </div>
 </form>
 @section Scripts {

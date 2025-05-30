@@ -5,14 +5,17 @@
     var deletedNote = ViewData["DeletedNote"] == null ? false : true;
 }
 
+
 <div id="errorModal" class="modal" data-backdrop="false" role="dialog">
-    <div class="modal-dialog modal-dialog-centered modal-sm">
-        <div class="modal-content bg-danger">
-            <div class="modal-body text-white">
-                <p id="errorMsg" class="d-inline"></p>
-                <button type="button" id="errorClose" class="close" aria-label="Close" style="color: white;">
+    <div class="modal-dialog modal-dialog-centered modal-sm" style="max-width: 450px;">
+        <div class="modal-content bg-danger" style="width: 100%;padding: 15px;">
+            <div class="modal-header" style="border-bottom: none;margin-bottom: -40px;display: block;">
+                <button type="button" id="errorClose" class="close" aria-label="Close" style="color: white;border: none;float: right;position: relative;z-index: 50 !important;">
                     <span aria-hidden="true">&times;</span>
                 </button>
+            </div>
+            <div class="modal-body text-white">
+                <p id="errorMsg" class="d-inline"></p>
             </div>
 
         </div>
@@ -48,13 +51,15 @@
 </div>
 
 <div id="deletedNoteSuccessModal" class="modal" data-backdrop="false" role="dialog">
-    <div class="modal-dialog modal-sm">
-        <div class="modal-content bg-success">
-            <div class="modal-body text-white">
-                <p class="d-inline">Note was succesfully deleted.</p>
-                <button type="button" id="deletedNoteClose" class="close" aria-label="Close" style="color: white;">
+    <div class="modal-dialog modal-sm" style="max-width: 450px;">
+        <div class="modal-content bg-success" style="width: 100%;padding: 10px;">
+            <div class="modal-header" style="border-bottom: none;margin-bottom: -5-0px;display: block;">
+                <button type="button" id="deletedNoteClose" class="close" aria-label="Close" style="color: white;border: none;float: right;position: relative;z-index: 50 !important;">
                     <span aria-hidden="true">&times;</span>
                 </button>
+            </div>
+            <div class="modal-body text-white">
+                <p class="d-inline">Note was succesfully deleted.</p>
             </div>
 
         </div>
@@ -73,6 +78,7 @@
     <script type="text/javascript">
         var vm = @Html.Raw(@Model.ToJson());
         var notesId = vm.notesId;
+        var userId = vm.userId;
         var selectedNote = null;
         var deleteNoteId = 0;
         var noteDeleted = @deletedNote.ToJson();
@@ -109,7 +115,7 @@
                 var formData = {
                     Title: $('#noteTitle').val(),
                     Body: $('.tiptap').html(),
-                    UserId: 1,
+                    UserId: userId,
                     NotesId: notesId,
                     PlainText: $('.tiptap').text()
                 }

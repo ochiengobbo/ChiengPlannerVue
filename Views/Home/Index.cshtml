@@ -4,10 +4,22 @@
 @{
     ViewData["Title"] = "Home Page";
 }
+<style>
+    .home-page-nav {
+        color: #7a0696;
+        border: solid 1px #7a0696;
+    }
+
+        .home-page-nav:hover {
+            background: #490470;
+            border-color: #490470;
+            color: white;
+        }
+</style>
 <div style="text-align: center; margin-top: 20%;">
     <h1>Chieng Planner</h1>
     <div class="d-inline" id="navLinks">
-        <a asp-controller="Notes" asp-action="Index" style="color: #7a0696;">Notes</a>
-        <a asp-controller="Checklists" asp-action="Index" style="color: #7a0696;">Checklists</a>
+        <a asp-controller="Notes" asp-action="Index" class="btn home-page-nav">Notes</a>
+        <a asp-controller="Checklists" class="btn home-page-nav" asp-action="Index">Checklists</a>
     </div>
 </div>

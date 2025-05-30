@@ -20,14 +20,12 @@ builder.Configuration.AddJsonFile("appsettings.json", optional: false, reloadOnC
 builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<ChiengPlannerContext>(options =>
             options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultDBConnection")));
-builder.Services.AddDbContext<ApplicationContext>(options =>
-            options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultDBConnection")));
 builder.Services.AddTransient<INotesService, NotesService>();
 builder.Services.AddTransient<IChecklistsService, ChecklistsService>();
 builder.Services.AddTransient<IUserService, UserService>();
 builder.Services.Configure<AzureConnection>(builder.Configuration.GetSection("AzureConnection"));
 builder.Services.AddIdentity<User, Role>()
-    .AddEntityFrameworkStores<ApplicationContext>()
+    .AddEntityFrameworkStores<ChiengPlannerContext>()
     .AddRoleStore<RoleStore<Role, ChiengPlannerContext, int, UserRole, RoleClaim>>()
     .AddDefaultTokenProviders();
 
@@ -51,7 +49,7 @@ builder.Services.ConfigureApplicationCookie(options =>
     options.LoginPath = "/Account/SignIn";
     options.LogoutPath = "/Account/SignOut";
     options.Cookie.HttpOnly = true;
-    // options.ExpireTimeSpan = TimeSpan.FromMinutes(30);
+    options.ExpireTimeSpan = TimeSpan.FromMinutes(180);
     options.Cookie.MaxAge = TimeSpan.FromHours(24);
     options.AccessDeniedPath = "/Account/AccessDenied";
     options.Cookie.Name = "ChiengPlanner.Identity";

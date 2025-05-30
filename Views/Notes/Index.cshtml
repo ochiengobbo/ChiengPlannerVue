@@ -1,7 +1,7 @@
 ﻿@model ChiengPlannerVue.Models.Notes.NotesModel;
 @using ChiengPlannerVue.Utils
 @{
-    ViewData["Title"] = "Notes Index";
+    ViewData["Title"] = "Notes";
     var deletedNote = ViewData["DeletedNote"] == null ? false : true;
 }
 <div id="deleteWarningModal" class="modal" role="dialog">
@@ -18,13 +18,15 @@
     </div>
 </div>
 <div id="deletedNoteSuccessModal" class="modal" data-backdrop="false" role="dialog">
-    <div class="modal-dialog modal-sm">
-        <div class="modal-content bg-success">
-            <div class="modal-body text-white">
-                <p class="d-inline">Note was succesfully deleted.</p>
-                <button type="button" id="deletedNoteClose" class="close" aria-label="Close" style="color: white;">
+    <div class="modal-dialog modal-sm" style="max-width: 450px;">
+        <div class="modal-content bg-warning" style="width: 100%;padding: 15px;">
+            <div class="modal-header" style="border-bottom: none;margin-bottom: -40px;display: block;">
+                <button type="button" id="deletedNoteClose" class="close" aria-label="Close" style="color: white;border: none;float: right;position: relative;z-index: 50 !important;">
                     <span aria-hidden="true">&times;</span>
                 </button>
+            </div>
+            <div class="modal-body text-white">
+                <p class="d-inline">Note was succesfully deleted.</p>
             </div>
 
         </div>
@@ -44,6 +46,7 @@
         var vm = @Html.Raw(Model.ToJson());
         var deleteNoteId = 0;
         var notesId = @Model.NotesId;
+        var userId = @Model.UserId;
         var noteDeleted = @deletedNote.ToJson();
         $(document).ready(function () {
             $('#deletedNoteSuccessModal').on('shown.bs.modal', function (e) {

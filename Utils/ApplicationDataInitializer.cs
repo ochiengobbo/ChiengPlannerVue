@@ -6,8 +6,8 @@ namespace ChiengPlannerVue.Utils
 {
     public class ApplicationDataInitializer
     {
-        private readonly ApplicationContext _context;
-        public ApplicationDataInitializer(ApplicationContext context)
+        private readonly ChiengPlannerContext _context;
+        public ApplicationDataInitializer(ChiengPlannerContext context)
         {
             _context = context;
         }

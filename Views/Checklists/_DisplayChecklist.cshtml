@@ -12,7 +12,7 @@
                         <button type="button" class="add-task-button remove-checklist" data-id="@checklist.ChecklistId" style="background-color: red"><i class="fa-solid fa-trash"></i></button>
                         <button type="button" class="add-task-button edit-checklist" data-id="@checklist.ChecklistId"><i class="fa-solid fa-edit"></i></button>
                     </div>
-                    <div style=" margin-top: 10%;margin-left: 5%;margin-bottom: -10%;">
+                    <div class="text-card-title">
                         <p>@checklist.Name</p>
                     </div>
                     <br />
@@ -42,10 +42,15 @@
             {
                 <div class="checklist-card display-card-scrollbar">
                     <div style="float: right;padding: 8px;">
-                        <button type="button" id="EditChecklist" class="add-task-button" data-id="@checklist.ChecklistId"><i class="fa-solid fa-edit"></i></button>
+                        <button type="button" class="add-task-button remove-checklist" data-id="@checklist.ChecklistId" style="background-color: red"><i class="fa-solid fa-trash"></i></button>
+                        <button type="button" class="add-task-button edit-checklist" data-id="@checklist.ChecklistId"><i class="fa-solid fa-edit"></i></button>
                     </div>
                     <div class="text-card-title">
                         <p>@checklist.Name</p>
+                        @if (checklist.Completed)
+                        {
+                            <span class="completed-tag-card">COMPLETED</span>
+                        }
                     </div>
                     <br />
                     <hr style="border-color: black; width: 90%" />
@@ -54,8 +59,16 @@
                             @foreach (var task in checklist.Tasks)
                             {
                                 <li class="task task-border-bottom">
-                                    <input type="checkbox" class="task-checkbox-card" data-id="@task.TaskId">
-                                    <p class="task-text-card">@task.Name</p>
+                                    @if (!task.Completed)
+                                    {
+                                        <input type="checkbox" class="task-checkbox-card" data-id="@task.TaskId">
+                                        <p class="task-text-card" id="@task.TaskId">@task.Name</p>
+                                    }
+                                    else
+                                    {
+                                        <input type="checkbox" class="task-checkbox-card" data-id="@task.TaskId" checked>
+                                        <p class="task-text-card checked-task" id="@task.TaskId">@task.Name</p>
+                                    }
                                 </li>
                             }
                         </ul>

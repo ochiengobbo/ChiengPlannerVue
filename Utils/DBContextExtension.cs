@@ -25,7 +25,7 @@ namespace ChiengPlannerVue.Utils
             return !total.Except(applied).Any();
         }
 
-        public static void EnsureSeeded(this ApplicationContext context)
+        public static void EnsureSeeded(this ChiengPlannerContext context)
         {
             ApplicationDataInitializer dataInitializer = new ApplicationDataInitializer(context);
             dataInitializer.Initialize();

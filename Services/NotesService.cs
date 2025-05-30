@@ -1,5 +1,6 @@
 ﻿using ChiengPlannerVue.Models;
 using ChiengPlannerVue.Models.Notes;
+using ChiengPlannerVue.Models.Users;
 using ChiengPlannerVue.Services.Interfaces;
 
 namespace ChiengPlannerVue.Services
@@ -18,6 +19,11 @@ namespace ChiengPlannerVue.Services
             return _context.Notes.ToList();
         }
 
+        public List<Note> GetNotesbyUserId(int userId)
+        {
+            return _context.Notes.Where(x => x.UserId == userId).ToList();
+        }
+
         public Note GetNoteById(int id)
         {
             return _context.Notes.Where(x => x.NotesId == id).First();
@@ -28,9 +34,9 @@ namespace ChiengPlannerVue.Services
             return _context.Notes.Where(x => string.Equals(x.Guid, guid)).First();
         }
 
-        public int NotesCount()
+        public int NotesCount(int userId)
         {
-            return _context.Notes.Count();
+            return _context.Notes.Where(x => x.UserId == userId).Count();
         }
 
         public bool NoteExists(int id)

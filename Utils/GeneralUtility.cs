@@ -8,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Cryptography;
+using System.Text.RegularExpressions;
 
 namespace ChiengPlannerVue.Utils
 {
@@ -206,6 +207,15 @@ namespace ChiengPlannerVue.Utils
             }
             return newText.ToString();
         }
+
+        public static bool IsAlphanumericSymbolPassword(this string text)
+        {
+            var charMatch = Regex.Match(text, @"[a-zA-z]").Success;
+            var digitMatch = Regex.Match(text, @"[\d]").Success;
+            var symbolMatch = Regex.Match(text, @"[!@#$%^&\*\?<>\(\){}_\-+=]").Success;
+
+            return (charMatch && digitMatch && symbolMatch);
+        } 
     }
 
     public static class EnumExtension

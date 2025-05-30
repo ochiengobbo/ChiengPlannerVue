@@ -16,9 +16,11 @@ using ChiengPlannerVue.Models.Checklists;
 using ChiengPlannerVue.Services;
 using System.Threading.Tasks;
 using ChiengPlannerVue.Utils;
+using Microsoft.AspNetCore.Authorization;
 
 namespace ChiengPlannerVue.Controllers
 {
+    [Authorize]
     public class ChecklistsController : Controller
     {
         private ChiengPlannerContext _context;
@@ -37,8 +39,10 @@ namespace ChiengPlannerVue.Controllers
         public IActionResult Index(int? id)
         {
             var vm = new ChecklistViewModel();
-            vm.Checklists = _checklistsService.GetChecklists().OrderByDescending(x => x.ModifiedDate).ToList();
+            var userId = HttpContext.User.GetIdentifier();
+            vm.Checklists = _checklistsService.GetChecklistsByUserId(userId).Where(x => !x.Completed).OrderByDescending(x => x.ModifiedDate).ToList();
             vm.PageLimit = PAGE_LIMIT;
+            vm.Active = true;
             return View(vm);
         }
 
@@ -75,13 +79,15 @@ namespace ChiengPlannerVue.Controllers
         [HttpGet]
         public IActionResult DisplayChecklists(bool completed = false, int offset = 0)
         {
-            var vm = new ChecklistViewModel();
-            vm.Checklists = _checklistsService.GetChecklists().Where(x => x.Completed == completed).OrderByDescending(x => x.ModifiedDate).ToList();
+            var vm = new ChecklistViewModel(); 
+            var userId = HttpContext.User.GetIdentifier();
+            vm.Checklists = _checklistsService.GetChecklistsByUserId(userId).Where(x => x.Completed == completed).OrderByDescending(x => x.ModifiedDate).ToList();
             vm.PageLimit = PAGE_LIMIT + offset;
             if (offset != 0 && vm.Checklists.Count() > PAGE_LIMIT)
             {
                 vm.Checklists = vm.Checklists.GetRange(offset, (vm.Checklists.Count() - offset));
             }
+            vm.Active = !completed;
             return PartialView("_DisplayChecklist", vm);
         }
 
@@ -134,7 +140,7 @@ namespace ChiengPlannerVue.Controllers
                 var errorMsg = "";
                 if (!_checklistsService.TaskExists(taskId))
                 {
-                    errorMsg = "<b>Task does not exist!</b>";
+                    errorMsg = "<b><small>Task does not exist!</small></b>";
                     return Json(new { success = false, message = errorMsg }, new System.Text.Json.JsonSerializerOptions());
                 }
                 _checklistsService.DeleteTask(taskId);
@@ -156,12 +162,12 @@ namespace ChiengPlannerVue.Controllers
                 var errorMsg = "";
                 if (!_checklistsService.ChecklistExists(checklistId))
                 {
-                    errorMsg = "<b>Checklist does not exist!</b>";
+                    errorMsg = "<b><small>Checklist does not exist!</small></b>";
                     return Json(new { success = false, message = errorMsg }, new System.Text.Json.JsonSerializerOptions());
                 }
                 _checklistsService.DeleteChecklist(checklistId);
                 HttpContext.Session.SetString("_DeletedChecklist", "true");
-                return Json(new { success = true }, new System.Text.Json.JsonSerializerOptions());
+                return Json(new { success = true, message = "<b><small>Your Checklist has been deleted!</small></b>" }, new System.Text.Json.JsonSerializerOptions());
             }
             catch (Exception ex) { }
             return Json(new { success = true, checklistId = checklistId }, new System.Text.Json.JsonSerializerOptions());
@@ -181,7 +187,7 @@ namespace ChiengPlannerVue.Controllers
                 }
                 else
                 {
-                    errorMsg = "<b>Task does not exist!</b>";
+                    errorMsg = "<b><small>Task does not exist!</small></b>";
                     return Json(new { success = false, message = errorMsg }, new System.Text.Json.JsonSerializerOptions());
                 }
                 return Json(new { success = true, completed = completed }, new System.Text.Json.JsonSerializerOptions());
@@ -189,6 +195,30 @@ namespace ChiengPlannerVue.Controllers
             }
             catch (Exception ex) { }
             return Json(new { success = true, taskId = id }, new System.Text.Json.JsonSerializerOptions());
+
+        }
+
+        [HttpGet]
+        public IActionResult CompletedChecklist(int id)
+        {
+            try
+            {
+                var errorMsg = "";
+                var completed = false;
+                if (_checklistsService.ChecklistExists(id))
+                {
+                    completed = _checklistsService.GetChecklistById(id).Completed;
+                }
+                else
+                {
+                    errorMsg = "<b><small>Checklist does not exist!</small></b>";
+                    return Json(new { success = false, message = errorMsg }, new System.Text.Json.JsonSerializerOptions());
+                }
+                return Json(new { success = true, completed = completed }, new System.Text.Json.JsonSerializerOptions());
+
+            }
+            catch (Exception ex) { }
+            return Json(new { success = true, id = id }, new System.Text.Json.JsonSerializerOptions());
 
         }
     }

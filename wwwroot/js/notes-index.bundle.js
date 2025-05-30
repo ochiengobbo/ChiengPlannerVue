@@ -891,17 +891,17 @@ const _hoisted_2 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElemen
   }
 })], -1 /* HOISTED */);
 const _hoisted_3 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
-  class: "container mx-auto",
+  class: "container",
   style: {
     "margin-top": "2rem",
     "margin-bottom": "2rem"
   }
 }, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
   id: "saveNote",
-  class: "btn btn-outline-dark p-1"
+  class: "btn btn-outline-dark ms-1 me-1"
 }, "Save"), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
   id: "deleteNoteBtn",
-  class: "btn btn-outline-danger p-1",
+  class: "btn btn-outline-danger ms-1 me-1",
   style: {
     "display": "none"
   }

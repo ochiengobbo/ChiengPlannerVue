@@ -1,4 +1,4 @@
-﻿<div class="card card-container">
+﻿<div class="card card-container w-50 top-50" style="left: 25%;padding: 2%;background-color: rgba(0,0,0,.125);">
     <form asp-controller="Account" asp-action="SignIn" asp-route-returnurl="@ViewData["ReturnUrl"]" method="post">
         <h4 class="text-center">Sign In</h4>
         <br />
@@ -6,7 +6,7 @@
         <div class="input-group mb-3">
             <div class="input-group prepend">
                 <span class="input-group text">
-                    <i class="fas fa-user"></i>
+                    <i class="fas fa-user" aria-hidden="true" style="padding: 5px;"></i>
                 </span>
             </div>
             <!--<input type="text" asp-for="Username" class="form-control" />

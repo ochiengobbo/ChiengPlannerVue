@@ -152,7 +152,7 @@
                 <input class="form-control-sm p-1 bg-light" id="imageWidth" type="number" placeholder="Width"
                     style="border: gray;width: 60px;" />
                 <input class="form-control-sm p-1 bg-light" id="imageHeight" type="number" placeholder="Height"
-                    style="border: gray;width: 60px;" />
+                    style="border: gray;width: 70px;" />
                 <label for="image" id="imgButton" class="btn btn-light"><svg-icon type="mdi"
                         :path=" img "></svg-icon></label>
                 <input id="imageInput" name="image" type="file" hidden />
@@ -165,7 +165,7 @@
                 <input class="form-control-sm p-1 bg-light" id="videoWidth" type="number" placeholder="Width"
                     style="border: gray;width: 60px;" />
                 <input class="form-control-sm p-1 bg-light" id="videoHeight" type="number" placeholder="Height"
-                    style="border: gray;width: 60px;" />
+                    style="border: gray;width: 70px;" />
                 <label for="video" id="videoButton" class="btn btn-light"><svg-icon type="mdi"
                         :path=" video "></svg-icon></label>
                 <input id="videoUrl" name="vidUrl" type="text" hidden />

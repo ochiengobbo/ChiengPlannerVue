@@ -11,8 +11,9 @@ namespace ChiengPlannerVue.Models.Users
         [StringLength(50)]
         [Display(Name = "Last Name")]
         public string LastName { get; set; }
-        [Required(ErrorMessage = "Username is Required")]
+        [Required(ErrorMessage = "Email is Required")]
         [StringLength(75)]
+        [RegularExpression(@"([\w]+)@([a-zA-z]+)\.([a-zA-z]+)", ErrorMessage = "You must use a valid Email")]
         [Display(Name = "Username")]
         public string UserName { get; set; }
         [Required]
@@ -25,6 +26,7 @@ namespace ChiengPlannerVue.Models.Users
         [Compare("Password", ErrorMessage = "The Password and Confirmation Password do not match")]
         public string ConfirmPassword { get; set; }
         public bool IsEditMode {  get; set; }
+
 
         //TO-DO: Email and Phone Number w/ 2fa
         //
