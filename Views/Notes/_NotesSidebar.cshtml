@@ -91,7 +91,7 @@
 </style>
 
 <div class="notes-sidebar">
-    <a asp-controller="Notes" asp-action="EditNote" class="notes-add" type="button" style="text-align: center;"><i class="fa-solid fa-plus"></i></a>
+    <a asp-controller="Notes" asp-action="EditNote" asp-route-userId="@Model.UserId" class="notes-add" type="button" style="text-align: center;"><i class="fa-solid fa-plus"></i></a>
     <div class="notes-list">
         @foreach (var note in Model.Notes)
         {
