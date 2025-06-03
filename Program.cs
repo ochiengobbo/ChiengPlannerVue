@@ -23,7 +23,6 @@ builder.Services.AddDbContext<ChiengPlannerContext>(options =>
 builder.Services.AddTransient<INotesService, NotesService>();
 builder.Services.AddTransient<IChecklistsService, ChecklistsService>();
 builder.Services.AddTransient<IUserService, UserService>();
-builder.Services.Configure<AzureConnection>(builder.Configuration.GetSection("AzureConnection"));
 builder.Services.AddIdentity<User, Role>()
     .AddEntityFrameworkStores<ChiengPlannerContext>()
     .AddRoleStore<RoleStore<Role, ChiengPlannerContext, int, UserRole, RoleClaim>>()

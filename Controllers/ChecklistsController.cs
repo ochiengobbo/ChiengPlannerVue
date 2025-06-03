@@ -24,14 +24,12 @@ namespace ChiengPlannerVue.Controllers
     public class ChecklistsController : Controller
     {
         private ChiengPlannerContext _context;
-        private readonly AzureConnection _connection;
         private readonly IChecklistsService _checklistsService;
         private static int PAGE_LIMIT = 3;
 
-        public ChecklistsController(ChiengPlannerContext context, IOptions<AzureConnection> connection, IChecklistsService checklistsService)
+        public ChecklistsController(ChiengPlannerContext context, IChecklistsService checklistsService)
         {
             _context = context;
-            _connection = connection.Value;
             _checklistsService = checklistsService;
         }
 

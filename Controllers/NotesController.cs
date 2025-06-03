@@ -25,19 +25,21 @@ namespace ChiengPlannerVue.Controllers
         private static string PICTURECONTAINER = "pictures";
         private static string VIDEOCONTAINER = "videos";
         private static string LOCALDIR = "C:\\Users\\Ochie\\source\\img\\";
+        private static string AZURECONNECTION = "";
         private ChiengPlannerContext _context;
-        private readonly AzureConnection _connection;
         private readonly INotesService _notesService;
         private readonly UserManager<User> _userManager;
         private readonly IUserService _userService;
+        private readonly IConfiguration _config
 
-        public NotesController(ChiengPlannerContext context, IOptions<AzureConnection> connection, INotesService notesService, UserManager<User> userManager, IUserService userService)
+        public NotesController(ChiengPlannerContext context, INotesService notesService, UserManager<User> userManager, IUserService userService, IConfiguration config)
         {
             _context = context;
-            _connection = connection.Value;
             _notesService = notesService;
             _userManager = userManager;
             _userService = userService;
+            _config = config;
+            AZURECONNECTION = config["AzureConnection"];
         }
 
         [HttpGet]
