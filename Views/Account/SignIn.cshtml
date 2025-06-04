@@ -25,6 +25,8 @@
         </div>
         
     }
+    <p>@Model.AzureConnection</p>
+    <p>@Model.DBConnection</p>
     <form asp-controller="Account" asp-action="SignIn" asp-route-return="@Context.Request.Query["returnUrl"]" method="post" class="">
         <div class="input-group mb-3">
             <div class="input-group-prepend">

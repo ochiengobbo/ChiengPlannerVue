@@ -18,13 +18,19 @@ namespace ChiengPlannerVue.Controllers
         private readonly IUserService _userService;
         private readonly SignInManager<User> _signInManager;
         private ChiengPlannerContext _context;
+        private readonly IConfiguration _config;
+        private static string AZURECONNECTION;
+        private static string DBCONNECTION;
 
-        public AccountController(ChiengPlannerContext context, UserManager<User> userManager, SignInManager<User> signInManager, IUserService userService)
+        public AccountController(ChiengPlannerContext context, UserManager<User> userManager, SignInManager<User> signInManager, IUserService userService, IConfiguration config)
         {
             _context = context;
             _userManager = userManager;
             _signInManager = signInManager;
             _userService = userService;
+            _config = config;
+            AZURECONNECTION = config["AzureConnection"];
+            DBCONNECTION = config["DefaultDBConnection"];
         }
 
         [HttpGet]
@@ -43,7 +49,7 @@ namespace ChiengPlannerVue.Controllers
                     
                 await HttpContext.SignOutAsync(IdentityConstants.ExternalScheme);
             }
-            var vm = new SignInViewModel() { SuccessMsg = successMsg };
+            var vm = new SignInViewModel() { SuccessMsg = successMsg, AzureConnection = AZURECONNECTION, DBConnection = DBCONNECTION };
             return View(vm);
         }
 

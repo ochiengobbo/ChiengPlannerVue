@@ -30,7 +30,7 @@ namespace ChiengPlannerVue.Controllers
         private readonly INotesService _notesService;
         private readonly UserManager<User> _userManager;
         private readonly IUserService _userService;
-        private readonly IConfiguration _config
+        private readonly IConfiguration _config;
 
         public NotesController(ChiengPlannerContext context, INotesService notesService, UserManager<User> userManager, IUserService userService, IConfiguration config)
         {
@@ -217,11 +217,11 @@ namespace ChiengPlannerVue.Controllers
                 BlobContainerClient container;
                 if (isImage)
                 {
-                    container = new BlobContainerClient(_connection.AzureStorageConnection, PICTURECONTAINER);
+                    container = new BlobContainerClient(AZURECONNECTION, PICTURECONTAINER);
                 }
                 else
                 {
-                    container = new BlobContainerClient(_connection.AzureStorageConnection, VIDEOCONTAINER);
+                    container = new BlobContainerClient(AZURECONNECTION, VIDEOCONTAINER);
                 }
 
                 // create Blob Client for current file
