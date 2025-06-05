@@ -33,6 +33,8 @@ glob.sync('./views/**/main.js').forEach(path => {
     }
 });
 
+entries['chiengplanner'] = path.join(__dirname, 'src/chiengplanner.js');
+
 module.exports = {
     entry: entries,
     mode: isProduction ? 'production' : 'development',

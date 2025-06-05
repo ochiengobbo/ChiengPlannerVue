@@ -56,17 +56,19 @@
     </form>
     <a href="@Url.Action("Register", "Account")" class="btn btn-lg btn-primary btn-block btn-signin mt-2" style="width: 100%;padding: 15px;">Create an Account</a>
 </div>
-<script>
-    $(document).ready(function () {
-        $('.pw-toggle').on('click', function () {
-            if ($('#Password').attr('type') == 'password'){
-                $('.pw-toggle').addClass('fa-eye-slash').removeClass('fa-eye')
-                $('#Password').attr('type', 'text')
-            }
-            else {
-                $('.pw-toggle').addClass('fa-eye').removeClass('fa-eye-slash')
-                $('#Password').attr('type', 'password')
-            }
+@section Scripts {
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('.pw-toggle').on('click', function () {
+                if ($('#Password').attr('type') == 'password'){
+                    $('.pw-toggle').addClass('fa-eye-slash').removeClass('fa-eye')
+                    $('#Password').attr('type', 'text')
+                }
+                else {
+                    $('.pw-toggle').addClass('fa-eye').removeClass('fa-eye-slash')
+                    $('#Password').attr('type', 'password')
+                }
+            })
         })
-    })
-</script>
+    </script>
+}
