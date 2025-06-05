@@ -19,7 +19,7 @@ builder.Configuration.AddJsonFile("appsettings.json", optional: false, reloadOnC
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<ChiengPlannerContext>(options =>
-            options.UseSqlServer(builder.Configuration["DefaultDBConnection"]));
+            options.UseSqlite(builder.Configuration["DBConnectionSqlite"]));
 builder.Services.AddTransient<INotesService, NotesService>();
 builder.Services.AddTransient<IChecklistsService, ChecklistsService>();
 builder.Services.AddTransient<IUserService, UserService>();
