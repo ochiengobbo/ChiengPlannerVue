@@ -11,7 +11,5 @@ namespace ChiengPlannerVue.Models.Users
         [Required]
         [DataType(DataType.Password)]
         public string Password { get; set; }
-        public string AzureConnection {  get; set; }
-        public string DBConnection { get; set; }
     }
 }
