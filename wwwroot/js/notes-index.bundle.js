@@ -451,7 +451,7 @@ const _hoisted_16 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createEleme
   placeholder: "Height",
   style: {
     "border": "gray",
-    "width": "60px"
+    "width": "70px"
   }
 }, null, -1 /* HOISTED */);
 const _hoisted_17 = {
@@ -492,7 +492,7 @@ const _hoisted_22 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createEleme
   placeholder: "Height",
   style: {
     "border": "gray",
-    "width": "60px"
+    "width": "70px"
   }
 }, null, -1 /* HOISTED */);
 const _hoisted_23 = {
