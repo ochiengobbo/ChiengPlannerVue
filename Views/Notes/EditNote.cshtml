@@ -170,7 +170,9 @@
                         }
                     },
                     error: function () {
-                        toastr.error('Failed to upload image, please try again')
+                        $("#errorModal").css({ 'transition': 'opacity 3s' });
+                            $('#errorMsg').html('<b>Failed to upload image, please try again</b>');
+                            $('#errorModal').modal('show');
                     },
                 });
                 $("#imageInput").val('');
