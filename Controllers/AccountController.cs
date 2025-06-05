@@ -49,7 +49,7 @@ namespace ChiengPlannerVue.Controllers
                     
                 await HttpContext.SignOutAsync(IdentityConstants.ExternalScheme);
             }
-            var vm = new SignInViewModel() { SuccessMsg = successMsg, AzureConnection = AZURECONNECTION, DBConnection = DBCONNECTION };
+            var vm = new SignInViewModel() { SuccessMsg = successMsg };
             return View(vm);
         }
 
