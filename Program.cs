@@ -23,10 +23,9 @@ builder.Configuration.AddJsonFile("appsettings.json", optional: false, reloadOnC
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
-var sqliteConnection = string.Format("Data Source={0}", Path.Combine(Path.Combine(Environment.CurrentDirectory, "SQLite"), "ChiengPlanner.sqlite"));
 builder.Services.AddDbContext<ChiengPlannerContext>(options =>
-            options.UseSqlite(sqliteConnection));
-logger.LogInformation(string.Format("Connecting to SQLite DB Using Connection String: {0}", sqliteConnection));
+            options.UseSqlite(builder.Configuration["DBConnectionSqlite"]));
+logger.LogInformation(string.Format("Connecting to SQLite DB Using Connection String: {0}", builder.Configuration["DBConnectionSqlite"]));
 builder.Services.AddTransient<INotesService, NotesService>();
 builder.Services.AddTransient<IChecklistsService, ChecklistsService>();
 builder.Services.AddTransient<IUserService, UserService>();
