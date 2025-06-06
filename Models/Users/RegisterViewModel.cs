@@ -13,7 +13,7 @@ namespace ChiengPlannerVue.Models.Users
         public string LastName { get; set; }
         [Required(ErrorMessage = "Email is Required")]
         [StringLength(75)]
-        [RegularExpression(@"([\w]+)@([a-zA-z]+)\.([a-zA-z]+)", ErrorMessage = "You must use a valid Email")]
+        [RegularExpression(@"([\w\-\.]+)@([a-zA-z]+)\.([a-zA-z]+)", ErrorMessage = "You must use a valid Email")]
         [Display(Name = "Username")]
         public string UserName { get; set; }
         [Required]

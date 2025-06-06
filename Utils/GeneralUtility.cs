@@ -210,9 +210,13 @@ namespace ChiengPlannerVue.Utils
 
         public static bool IsAlphanumericSymbolPassword(this string text)
         {
-            var charMatch = Regex.Match(text, @"[a-zA-z]").Success;
-            var digitMatch = Regex.Match(text, @"[\d]").Success;
-            var symbolMatch = Regex.Match(text, @"[!@#$%^&\*\?<>\(\){}_\-+=]").Success;
+            var charMatch = false; var digitMatch = false; var symbolMatch = false;
+            if (!string.IsNullOrEmpty(text))
+            {
+                charMatch = Regex.Match(text, @"[a-zA-z]").Success;
+                digitMatch = Regex.Match(text, @"[\d]").Success;
+                symbolMatch = Regex.Match(text, @"[!@#$%^&\*\?<>\(\){}_\-+=.]").Success;
+            }
 
             return (charMatch && digitMatch && symbolMatch);
         } 
