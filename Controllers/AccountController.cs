@@ -71,60 +71,67 @@ namespace ChiengPlannerVue.Controllers
                 returnUrl = "";
             }
             User? user = null;
-
-            user = await _userManager.FindByNameAsync(model.UserName);
-            if (user != null)
+            try
             {
-
-                if (!user.IsActive)
+                user = await _userManager.FindByNameAsync(model.UserName);
+                if (user != null)
                 {
-                    message = "Your account is not active. Please contact me at obboochieng@gmail.com";
-                    model.AddError(message);
-                    return View(model);
-                }
-                //    Eventually Implement
-                //if (!_userManager.IsEmailConfirmedAsync(user).Result)
-                //{
 
-                //    message = "Your email is not confirmed. Please confirm your email and try again.";
-                //    model.AddError(message);
-                //    string confirmationToken = _userManager.GenerateEmailConfirmationTokenAsync(user).Result;
-                //    string confirmationLink = Url.Action("ConfirmEmail", "Account", new
-                //    {
-                //        userid = user.Id,
-                //        token = confirmationToken
-                //    },
-                //       protocol: HttpContext.Request.Scheme);
+                    if (!user.IsActive)
+                    {
+                        message = "Your account is not active. Please contact me at obboochieng@gmail.com";
+                        model.AddError(message);
+                        return View(model);
+                    }
+                    //    Eventually Implement
+                    //if (!_userManager.IsEmailConfirmedAsync(user).Result)
+                    //{
 
-                //    await _emailSender.SendEmailAsync(user.Email,
-                //                                     "Important: STLPG_Review Confirm your email address",
-                //                                     "You're almost done — just click the link below to" +
-                //                                     " verify your email address and you're all set.<br /> " +
-                //                                     "Then, you can use your email address as your " +
-                //                                     " STLPG_Review username to log in to your account online <br /> "
-                //                                     + "<a href = " + confirmationLink + " target=\"_blank\">Verify My Email Address</a>" + "<br /><br />" +
-                //                                     "<div style='background-color:#f0f0f0;'>Please do not reply to this email, it is not monitored. If you'd like to <br />" +
-                //                                     "contact us, please visit our website here. STLPG_Review respects your privacy <br />" +
-                //                                     "All trademarks are the property of their respective owners</div>");
-                //    return View(model);
-                //}
-                var result = await _signInManager.PasswordSignInAsync(user, model.Password, true, false);
+                    //    message = "Your email is not confirmed. Please confirm your email and try again.";
+                    //    model.AddError(message);
+                    //    string confirmationToken = _userManager.GenerateEmailConfirmationTokenAsync(user).Result;
+                    //    string confirmationLink = Url.Action("ConfirmEmail", "Account", new
+                    //    {
+                    //        userid = user.Id,
+                    //        token = confirmationToken
+                    //    },
+                    //       protocol: HttpContext.Request.Scheme);
 
-                if (result.Succeeded)
-                {
-                    // TO-DO: Add logging
-                    // _audit.AddLogSingIn(user, message, true);
-                    var roles = _userManager.GetRolesAsync(user).Result;
-                    await HttpContext.SignInApplicationAsync(IdentityConstants.ApplicationScheme, user, roles.ToList());
-                    return RedirectToAction("Index", "Home");
+                    //    await _emailSender.SendEmailAsync(user.Email,
+                    //                                     "Important: STLPG_Review Confirm your email address",
+                    //                                     "You're almost done — just click the link below to" +
+                    //                                     " verify your email address and you're all set.<br /> " +
+                    //                                     "Then, you can use your email address as your " +
+                    //                                     " STLPG_Review username to log in to your account online <br /> "
+                    //                                     + "<a href = " + confirmationLink + " target=\"_blank\">Verify My Email Address</a>" + "<br /><br />" +
+                    //                                     "<div style='background-color:#f0f0f0;'>Please do not reply to this email, it is not monitored. If you'd like to <br />" +
+                    //                                     "contact us, please visit our website here. STLPG_Review respects your privacy <br />" +
+                    //                                     "All trademarks are the property of their respective owners</div>");
+                    //    return View(model);
+                    //}
+                    var result = await _signInManager.PasswordSignInAsync(user, model.Password, true, false);
+
+                    if (result.Succeeded)
+                    {
+                        // TO-DO: Add logging
+                        // _audit.AddLogSingIn(user, message, true);
+                        var roles = _userManager.GetRolesAsync(user).Result;
+                        await HttpContext.SignInApplicationAsync(IdentityConstants.ApplicationScheme, user, roles.ToList());
+                        return RedirectToAction("Index", "Home");
+                    }
+                    else
+                    {
+                        message = "Invalid Password";
+                    }
                 }
-                else
-                {
-                    message = "Invalid Password";
-                }
+
+                message = "Invalid Username or Password.";
+                model.AddError(message);
+                return View(model);
             }
+            catch (Exception ex) { }
 
-            message = "Invalid Username or Password.";
+            message = "Internal error. Please try again or contact me at obboochieng@gmail.com";
             model.AddError(message);
             return View(model);
         }
