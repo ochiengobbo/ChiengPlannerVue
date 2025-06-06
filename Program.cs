@@ -9,8 +9,12 @@ using ChiengPlannerVue.Models.Users;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
 using ChiengPlannerVue.Utils;
+using Microsoft.Extensions.Logging;
 
 var builder = WebApplication.CreateBuilder(args);
+
+using ILoggerFactory factory = LoggerFactory.Create(builder => builder.AddConsole());
+ILogger logger = factory.CreateLogger("Program");
 
 builder.Configuration.AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
     .AddUserSecrets(Assembly.GetExecutingAssembly(), true)
@@ -18,8 +22,11 @@ builder.Configuration.AddJsonFile("appsettings.json", optional: false, reloadOnC
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+
+var sqliteConnection = string.Format("Data Source={0}", Path.Combine(Environment.CurrentDirectory, "ChiengPlanner.sqlite"));
 builder.Services.AddDbContext<ChiengPlannerContext>(options =>
-            options.UseSqlite(builder.Configuration["DBConnectionSqlite"]));
+            options.UseSqlite(sqliteConnection));
+logger.LogInformation(string.Format("Connecting to SQLite DB Using Connection String: {0}", sqliteConnection));
 builder.Services.AddTransient<INotesService, NotesService>();
 builder.Services.AddTransient<IChecklistsService, ChecklistsService>();
 builder.Services.AddTransient<IUserService, UserService>();
