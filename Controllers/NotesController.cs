@@ -153,8 +153,7 @@ namespace ChiengPlannerVue.Controllers
         {
             // store resized image in local directory for now
             // also delete image prior to saving
-            var filePath = LOCALDIR + file.FileName;
-            System.IO.File.Delete(filePath);
+            var filePath = Path.Combine(Directory.GetCurrentDirectory(), @"wwwroot\images", file.FileName);
             System.Drawing.Image img = Image.FromStream(file.OpenReadStream());
             if(width == 0)
                 width = 300;
@@ -162,7 +161,9 @@ namespace ChiengPlannerVue.Controllers
                 height = 300;
             System.Drawing.Image resizeImg = ResizeImage(new Bitmap(img), new Size(width, height));
             resizeImg.Save(filePath);
-            var url = UploadFileToAzureStorage(file.FileName, filePath, true);
+            var url = UploadFileToAzureStorage(file, file.FileName, true);
+            // Store to wwwroot folder to have file path to
+            System.IO.File.Delete(filePath);
             return Json(new { success = true, url = url }, new System.Text.Json.JsonSerializerOptions());
         }
 
@@ -171,15 +172,7 @@ namespace ChiengPlannerVue.Controllers
         {
             // store resized image in local directory for now
             // also delete image prior to saving
-            var filePath = LOCALDIR + file.FileName;
-            System.IO.File.Delete(filePath);
-            using (var videoStream = System.IO.File.Create(filePath))
-            {
-                var oldVideoStream = file.OpenReadStream();
-                oldVideoStream.Seek(0, SeekOrigin.Begin);
-                oldVideoStream.CopyTo(videoStream);
-            }
-            var url = UploadFileToAzureStorage(file.FileName, filePath, false, true);
+            var url = UploadFileToAzureStorage(file, file.FileName, false, true);
             return Json(new { success = true, url = url }, new System.Text.Json.JsonSerializerOptions());
         }
 
@@ -210,7 +203,7 @@ namespace ChiengPlannerVue.Controllers
             return (System.Drawing.Image)b;
         }
 
-        public string UploadFileToAzureStorage(string fileName, string filePath, bool isImage = false, bool isVideo = false)
+        public string UploadFileToAzureStorage(IFormFile file, string filePath, bool isImage = false, bool isVideo = false)
         {
             try
             {
@@ -225,10 +218,14 @@ namespace ChiengPlannerVue.Controllers
                 }
 
                 // create Blob Client for current file
-                var blob = container.GetBlobClient(fileName);
+                var blob = container.GetBlobClient(file.FileName);
+
 
                 // upload File to container, overwriting if file already exists
-                blob.Upload(filePath, true);
+                if (isVideo)
+                    blob.Upload(file.OpenReadStream());
+                else
+                    blob.Upload(filePath, true);
 
                 // return the uri to blob file
                 return blob.Uri.ToString();
