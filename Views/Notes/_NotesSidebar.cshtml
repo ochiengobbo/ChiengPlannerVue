@@ -37,8 +37,6 @@
 
     .notes-list-item {
         cursor: pointer;
-        padding-left: 10px;
-        padding-right: 10px;
         width: 100%;
     }
 
@@ -101,7 +99,7 @@
         @foreach (var note in Model.Notes)
         {
             <div class="notes-list-item d-inline-flex" data-id=@note.NotesId>
-                <div style="width: 100%;">
+                <div style="width: 85%;">
                     <div class="notes-small-title"><b>@note.Title</b></div>
                     @if (note.PlainText.Length > 120)
                     {
