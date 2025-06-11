@@ -157,7 +157,6 @@
         border: none;
         margin-left: 20%;
         border-radius: 5px;
-        padding: 5%;
     }
 
         .save-task:hover {
@@ -180,7 +179,6 @@
         border: none;
         margin-left: 20%;
         border-radius: 5px;
-        padding: 5%;
     }
 
         .edit-task:hover {
@@ -201,8 +199,7 @@
         background: none;
         border: none;
         border-radius: 5px;
-        margin-left: 20%;
-        padding: 5%;
+        margin-left: 10%;
     }
 
         .delete-task:hover {
@@ -225,8 +222,9 @@
 
     .save-delete-task-buttons {
         float: right;
-        margin-right: 3%;
-        width: 14%;
+        margin-right: 1%;
+        width: 30%;
+        margin-top: 5%
     }
 
     .task {
@@ -234,7 +232,6 @@
         display: inline-flex;
         width: 100%;
         justify-content: space-between;
-        height: 30px;
     }
 
     .task-border-bottom {
@@ -244,6 +241,7 @@
     .task-text {
         width: 80%;
         padding: 1%;
+        margin-top: 5%;
     }
 
     .checked-task {
@@ -1035,7 +1033,7 @@
                     // Replace Task Input with <p> tag containing the Name of the Task
                     input.replaceWith(taskText)
 
-                    checkbox.removeProp('hidden')
+                    checkbox.attr('hidden', false)
                     $(list).addClass('task-border-bottom')
                     // Replace Checkmark with Edit button
                     button.removeClass('save-task')
