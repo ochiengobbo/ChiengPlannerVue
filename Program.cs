@@ -98,7 +98,12 @@ else
     builder.Services.AddMvc().AddSessionStateTempDataProvider();
 }
 
-builder.Services.AddSession();
+builder.Services.AddSession(options =>
+{
+    options.Cookie.Name = ".ChiengPlanner.Session";
+    options.IdleTimeout = TimeSpan.FromMinutes(120);
+    options.Cookie.IsEssential = true;
+});
 
 var app = builder.Build();
 

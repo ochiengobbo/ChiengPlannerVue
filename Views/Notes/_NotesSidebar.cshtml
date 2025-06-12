@@ -52,17 +52,31 @@
     }
 
     .notes-small-title {
-        font-size: 1.2em;
+        font-size: 1em;
     }
 
     .notes-small-body {
         padding: 0 10px;
+        font-size: .7em;
     }
 
     .notes-small-updated {
         color: #aaaaaa;
         font-style: italic;
         text-align: right;
+        font-size: .7em;
+    }
+
+    .delete-note-sidebar {
+        text-align: center;
+        font-size: small;
+        border: none;
+        /* width: 5%; */
+        /*margin: -10px;*/
+    }
+
+    .button-side-note-sidebar {
+        margin-top: 10%;
     }
 
     /*.notes__preview {
@@ -103,7 +117,7 @@
                     <div class="notes-small-title"><b>@note.Title</b></div>
                     @if (note.PlainText.Length > 120)
                     {
-                        <div class="notes-small-body">@(note.PlainText.Substring(0, 120) + "...")</div>
+                        <div class="notes-small-body">@(note.PlainText.Substring(0, 50) + "...")</div>
                     }
                     else
                     {
@@ -111,8 +125,8 @@
                     }
                     <div class="notes-small-updated">@note.ModifiedDate</div>
                 </div>
-                <div style="margin-top: 35px;">
-                    <button class="btn btn-outline-dark text-danger delete-note-sidebar" type="button" style="text-align: center;" data-id=@note.NotesId>
+                <div class="button-side-note-sidebar">
+                    <button class="btn btn-light text-danger delete-note-sidebar" type="button" data-id=@note.NotesId>
                         <i class="fa-solid fa-trash-can"></i>
                     </button>
                 </div>
