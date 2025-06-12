@@ -34,19 +34,15 @@
                                 <span><i class="fas fa-user"></i></span>
                             </button>
                             <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton">
-                                <li><a class="dropdown-item" href="#">Update Profile</a></li>
                                 <!--@Html.ActionLink("Update Profile", "UpdateProfile", "Account", null)-->
                                 @if (User.Identity.IsAuthenticated)
                                 {
-                                    <li><a class="dropdown-item" href="#">Change Password</a></li>
                                     <!--<li>@Html.ActionLink("Change Password", "ChangePassword", "Account", null, new { @class = "usa-nav_link" })</li>-->
-                                    <li><a class="dropdown-item" href="#">Update Profile</a></li>
                                     <!--<li>@Html.ActionLink("Update Profile", "UpdateProfile", "Account", null, new { @class = "usa-nav_link" })</li>-->
                                     <li><a class="dropdown-item" href="@Url.Action("SignOut","Account")">Sign Out</a></li>
                                 }
                                 else
                                 {
-                                    <li><a class="dropdown-item" href="#">Sign In</a></li>
                                     <!--<li>@Html.ActionLink("Sign In", "SignIn", "Account", null, new { @class = "usa-nav_link" })</li>-->
                                 }
                             </ul>
