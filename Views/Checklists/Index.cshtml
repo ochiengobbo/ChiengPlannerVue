@@ -386,7 +386,7 @@
     }
 
 </style>
-<div id="errorModal" class="error-modal modal" data-backdrop="false" role="dialog">
+<div id="errorModal" class="error-modal modal" data-bs-backdrop="false" role="dialog">
     <div class="modal-dialog modal-sm mt-3">
         <div class="modal-content bg-danger">
             <div class="modal-body text-white">
@@ -422,7 +422,7 @@
         </div>
     </div>
 </div>
-<div id="successModal" class="success-modal modal" data-backdrop="false" role="dialog">
+<div id="successModal" class="success-modal modal" data-bs-backdrop="false" role="dialog">
     <div class="modal-dialog modal-sm mt-3">
         <div class="modal-content bg-success">
             <div class="modal-body text-white">
@@ -793,8 +793,9 @@
                 var list = $(this).parent().parent();
                 var taskName = taskInput.val();
                 var editButtonHtml = '<i class="fa-solid fa-edit"></i>';
+                var taskTextTitle = taskInput.parent().parent().parent().parent().parent().siblings('.chieng-modal-close');
                 // Save Task to DB and make dynamic changes if Task creation/modification succeeds
-                SaveTasks($(taskInput).attr("data-id"), $(taskInput).val(), $(taskInput), $(this), $(taskCheckbox), list, editButtonHtml)
+                SaveTasks($(taskInput).attr("data-id"), $(taskInput).val(), $(taskInput), $(this), $(taskCheckbox), list, editButtonHtml, taskTextTitle)
                 taskNameModified = false;
                 reloadChecklists = true;
             })
@@ -1027,7 +1028,7 @@
             })
         }
 
-        function SaveTasks(id, name, input, button, checkbox, list, edit) {
+        function SaveTasks(id, name, input, button, checkbox, list, edit, textTitle) {
             var checklistId = $('#ChecklistId').val()
             $.ajax({
                 type: "POST",
@@ -1048,6 +1049,7 @@
                     $('#AddTask').removeClass('add-task-button-inactive')
                     $('#AddTask').addClass('add-task-button')
                     EnableEditButton($('.edit-task-inactive'))
+                    $(textTitle).children().remove('.completed-tag-modal')
 
                     $("#successModal").css({ 'transition': 'opacity 3s' });
                     $('#successModal').modal('show');
@@ -1084,10 +1086,6 @@
                                 $(textTitle).append(span)
                             }
                         }
-
-                        $("#successModal").css({ 'transition': 'opacity 3s' });
-                        $('#successMsg').html('Checklist has been completed!')
-                        $('#successModal').modal('show');
                     }
                     else {
                         completedChecklist = false;
@@ -1105,7 +1103,7 @@
                     reloadChecklists = true;
                 },
                 error: function () {
-                    $("#errorModal").css({ 'transition': 'opacity 3s' });
+                    $("#errorModal").css({ 'transition': 'opacity 1s' });
                     $('#errorMsg').html('<b><small>There was an error marking your Task, please try again</small></b>');
                     $('#errorModal').modal('show');
                 }

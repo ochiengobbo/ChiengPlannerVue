@@ -123,6 +123,7 @@ namespace ChiengPlannerVue.Services
             task.DueDate = dueDate;
             task.Guid = Guid.NewGuid().ToString();
             checklist.Tasks.Add(task);
+            checklist.Completed = false;
             _context.SaveChanges();
             return GetTaskByGuid(task.Guid).TaskId;
         }
@@ -147,6 +148,8 @@ namespace ChiengPlannerVue.Services
             var tasks = task.Checklist.Tasks.Where(x => x.TaskId != taskId).ToList();
             if (tasks.Count() == 0 && check)
             {
+                task.Checklist.Completed = check;
+                _context.SaveChanges();
                 return true;
             }
             else if (tasks.Count() > 0)
