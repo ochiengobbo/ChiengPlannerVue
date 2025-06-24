@@ -2,17 +2,18 @@
 using ChiengPlannerVue.Models.Users;
 using ChiengPlannerVue.Services.Interfaces;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System.Reflection;
 
 namespace ChiengPlannerVue.Services
 {
-    public class UserService : IUserService
+    public class UserService : UserStore<User, Role, ChiengPlannerContext, int, UserClaim, UserRole, UserLogin, UserToken, RoleClaim>, IUserService
     {
         private ChiengPlannerContext _context;
 
 
-        public UserService(ChiengPlannerContext context)
+        public UserService(ChiengPlannerContext context) : base(context)
         {
             _context = context;
         }

@@ -5,10 +5,11 @@ using System.Reflection.Metadata;
 using ChiengPlannerVue.Utils.Configurations;
 using ChiengPlannerVue.Models.Users;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.AspNetCore.DataProtection.EntityFrameworkCore;
 
 namespace ChiengPlannerVue.Models
 {
-    public class ChiengPlannerContext : IdentityDbContext<User, Role, int, UserClaim, UserRole, UserLogin, RoleClaim, UserToken>
+    public class ChiengPlannerContext : IdentityDbContext<User, Role, int, UserClaim, UserRole, UserLogin, RoleClaim, UserToken>, IDataProtectionKeyContext
     {
         public DbSet<User> ApplicationUsers { get; set; }
         public DbSet<Role> ApplicationRoles { get; set; }
@@ -18,6 +19,7 @@ namespace ChiengPlannerVue.Models
         public DbSet<Note> Notes { get; set; }
         public DbSet<Checklist> Checklists { get; set; }
         public DbSet<ChiengPlannerVue.Models.Checklists.Task> Tasks { get; set; }
+        public DbSet<DataProtectionKey> DataProtectionKeys { get; set; }
         public ChiengPlannerContext(DbContextOptions<ChiengPlannerContext> options) : base(options)
         {
 

@@ -52,6 +52,28 @@
     <script type="text/javascript" src="~/js/runtime.bundle.js" asp-append-version="true"></script>
     <script type="text/javascript" src="~/js/core.bundle.js" asp-append-version="true"></script>
     <script type="text/javascript" src="~/js/vendor.bundle.js" asp-append-version="true"></script>
+    @if (Context.User != null && Context.User.Identity.IsAuthenticated)
+    {
+        <script type="text/javascript">
+            $(document).ready(function () {
+                        window.setInterval(function() {
+                            $.ajax({
+                                type: "GET",
+                                url: "@Url.Action("RefreshSession", "Home")",
+                                data: { },
+                                success: function (data) {
+                                    console.log("Session Refreshed")
+                                },
+                                error: function () {
+                                    console.log("Session Refresh Failed")
+                                }
+                            })
+            }, 300000);
+            });
+        </script>
+    }
+    
+
     @RenderSection("Scripts", required: false)
 </body>
 </html>

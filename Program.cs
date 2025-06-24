@@ -10,6 +10,12 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
 using ChiengPlannerVue.Utils;
 using Microsoft.Extensions.Logging;
+using Microsoft.AspNetCore.DataProtection;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
+using Microsoft.Extensions.Options;
+using Microsoft.AspNetCore.Authentication.Cookies;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -31,8 +37,11 @@ builder.Services.AddTransient<IChecklistsService, ChecklistsService>();
 builder.Services.AddTransient<IUserService, UserService>();
 builder.Services.AddIdentity<User, Role>()
     .AddEntityFrameworkStores<ChiengPlannerContext>()
-    .AddRoleStore<RoleStore<Role, ChiengPlannerContext, int, UserRole, RoleClaim>>()
+    .AddUserManager<UserManager<User>>()
+    .AddUserStore<UserService>()
     .AddDefaultTokenProviders();
+
+builder.Services.Configure<SecurityStampValidatorOptions>(o => o.ValidationInterval = TimeSpan.FromHours(double.Parse(builder.Configuration["SecurityValidationTimeSpan"])));
 
 builder.Services.Configure<IdentityOptions>(options =>
 {
@@ -54,17 +63,11 @@ builder.Services.ConfigureApplicationCookie(options =>
     options.LoginPath = "/Account/SignIn";
     options.LogoutPath = "/Account/SignOut";
     options.Cookie.HttpOnly = true;
-    options.ExpireTimeSpan = TimeSpan.FromMinutes(180);
-    options.Cookie.MaxAge = TimeSpan.FromHours(24);
+    options.SlidingExpiration = true;
+    options.ExpireTimeSpan = TimeSpan.FromMinutes(double.Parse(builder.Configuration["IdleTimeout"]));
+    options.Cookie.MaxAge = TimeSpan.FromHours(double.Parse(builder.Configuration["MaxCookieAge"]));
     options.AccessDeniedPath = "/Account/AccessDenied";
-    options.Cookie.Name = "ChiengPlanner.Identity";
-}
-
-);
-
-builder.Services.Configure<DataProtectionTokenProviderOptions>(options =>
-{
-    options.TokenLifespan = TimeSpan.FromHours(100);
+    options.Cookie.Name = ".ChiengPlanner.Identity";
 }
 
 );
@@ -98,12 +101,94 @@ else
     builder.Services.AddMvc().AddSessionStateTempDataProvider();
 }
 
+
+builder.Services.AddMemoryCache();
+
+builder.Services.AddDistributedMemoryCache();
+
 builder.Services.AddSession(options =>
 {
-    options.Cookie.Name = ".ChiengPlanner.Session";
-    options.IdleTimeout = TimeSpan.FromMinutes(120);
+    options.IdleTimeout = TimeSpan.FromMinutes(double.Parse(builder.Configuration["IdleTimeout"]));
     options.Cookie.IsEssential = true;
+    options.Cookie.HttpOnly = true;
+    options.Cookie.Name = ".ChiengPlanner.SessionCookie";
 });
+
+var message = "";
+
+builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+    .AddCookie(options =>
+    {
+        options.Cookie.Name = ".ChiengPlanner.Identity.Authentication";
+        options.Cookie.MaxAge = TimeSpan.FromHours(double.Parse(builder.Configuration["MaxCookieAge"]));
+        options.SlidingExpiration = true;
+        options.LoginPath = "/Account/SignIn/";
+        options.AccessDeniedPath = "/Account/SignOut/";
+        options.ExpireTimeSpan = TimeSpan.FromMinutes(double.Parse(builder.Configuration["IdleTimeout"]));
+    });
+//            .AddJwtBearer(x =>
+//            {
+//                x.RequireHttpsMetadata = false;
+//                x.SaveToken = true;
+//                x.TokenValidationParameters = new TokenValidationParameters
+//                {
+//                    ValidateIssuer = true,
+//                    ValidateAudience = false,
+//                    ValidateIssuerSigningKey = true,
+//                    ValidIssuer = builder.Configuration["Jwt:Issuer"],
+//                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes("Jwt:Key"))
+//                };
+//                x.Events = new JwtBearerEvents
+//                {
+//                    OnAuthenticationFailed = ctx =>
+//                    {
+//                        ctx.Response.StatusCode = StatusCodes.Status401Unauthorized;
+//                        message += "From OnAuthenticationFailed:\n";
+//                        message += ChiengPlannerVue.Utils.ExceptionUtilityFunctions.FlattenException(ctx.Exception);
+//                        logger.LogInformation(message);
+//                        return Task.CompletedTask;
+//                    },
+
+//                    OnChallenge = ctx =>
+//                    {
+//                        message += "From OnChallenge:\n";
+//                        ctx.Response.StatusCode = StatusCodes.Status401Unauthorized;
+//                        ctx.Response.ContentType = "text/plain";
+//                        logger.LogInformation(message);
+//                        return ctx.Response.WriteAsync(message);
+//                    },
+
+//                    OnMessageReceived = ctx =>
+//                    {
+//                        message = "From OnMessageReceived:\n";
+//                        ctx.Request.Headers.TryGetValue("Authorization", out var BearerToken);
+//                        if (BearerToken.Count == 0)
+//                            BearerToken = "no Bearer token sent\n";
+//                        message += "Authorization Header sent: " + BearerToken + "\n";
+//                        return Task.CompletedTask;
+//                    },
+//                    OnTokenValidated = ctx =>
+//                    {
+//                        logger.LogInformation("token: " + ctx.SecurityToken.ToString());
+//                        return Task.CompletedTask;
+//                    }
+//                };
+//            });
+
+
+
+
+builder.Services.AddAuthorization();
+
+builder.Services.Configure<DataProtectionTokenProviderOptions>(options =>
+{
+    options.TokenLifespan = TimeSpan.FromHours(100);
+}
+);
+
+//builder.Services.AddDataProtection()
+//    .PersistKeysToDbContext<ChiengPlannerContext>()
+//    .SetDefaultKeyLifetime(TimeSpan.FromDays(30));
 
 var app = builder.Build();
 
@@ -113,6 +198,10 @@ if (!app.Environment.IsDevelopment())
     app.UseExceptionHandler("/Home/Error");
 }
 
+// turn on PII logging
+// Microsoft.IdentityModel.Logging.IdentityModelEventSource.ShowPII = true;
+
+app.UseHttpsRedirection();
 app.UseStaticFiles(new StaticFileOptions
 {
     OnPrepareResponse = context =>
@@ -137,10 +226,13 @@ app.UseStaticFiles(new StaticFileOptions
 });
 
 app.UseRouting();
-
+app.UseAuthentication();
 app.UseAuthorization();
-
 app.UseSession();
+
+app.MapRazorPages();
+
+//app.UseHttpsRedirection();
 
 app.MapControllerRoute(
     name: "default",

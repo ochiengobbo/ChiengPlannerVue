@@ -6,6 +6,8 @@ using ChiengPlannerVue.Models.Users;
 using ChiengPlannerVue.Services.Interfaces;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using ChiengPlannerVue.Services;
+using ChiengPlannerVue.Utils;
 
 namespace ChiengPlannerVue.Controllers
 {
@@ -33,6 +35,13 @@ namespace ChiengPlannerVue.Controllers
         public IActionResult Privacy()
         {
             return View();
+        }
+
+        [HttpGet]
+        public IActionResult RefreshSession()
+        {
+            return Json(new { success = true }, new System.Text.Json.JsonSerializerOptions());
+
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
