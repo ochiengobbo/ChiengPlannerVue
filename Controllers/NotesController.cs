@@ -160,13 +160,20 @@ namespace ChiengPlannerVue.Controllers
             try
             {
                 var filePath = Path.Combine(Directory.GetCurrentDirectory(), @"images", file.FileName);
-                System.Drawing.Image img = Image.FromStream(file.OpenReadStream());
-                if (width == 0)
-                    width = 300;
-                if (height == 0)
-                    height = 300;
-                System.Drawing.Image resizeImg = ResizeImage(new Bitmap(img), new Size(width, height));
-                resizeImg.Save(filePath);
+                using (Image img = Image.FromStream(file.OpenReadStream()))
+                {
+                    if (width == 0)
+                        width = 300;
+                    if (height == 0)
+                        height = 300;
+                    using (Bitmap bmp = new Bitmap(img))
+                    {
+                        using (Image resizeImg = ResizeImage(bmp, new Size(width, height)))
+                        {
+                            resizeImg.Save(filePath);
+                        }
+                    }
+                }
                 url = UploadFileToAzureStorage(file, filePath, true);
                 // Store to wwwroot folder to have file path to
                 System.IO.File.Delete(filePath);
