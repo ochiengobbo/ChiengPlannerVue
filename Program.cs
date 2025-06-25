@@ -30,8 +30,8 @@ builder.Configuration.AddJsonFile("appsettings.json", optional: false, reloadOnC
 builder.Services.AddControllersWithViews();
 
 builder.Services.AddDbContext<ChiengPlannerContext>(options =>
-            options.UseSqlite(builder.Configuration["DBConnectionSqlite"]));
-logger.LogInformation(string.Format("Connecting to SQLite DB Using Connection String: {0}", builder.Configuration["DBConnectionSqlite"]));
+            options.UseSqlServer(builder.Configuration["DefaultDBConnection"]));
+//logger.LogInformation(string.Format("Connecting to SQLite DB Using Connection String: {0}", builder.Configuration["DBConnectionSqlite"]));
 builder.Services.AddTransient<INotesService, NotesService>();
 builder.Services.AddTransient<IChecklistsService, ChecklistsService>();
 builder.Services.AddTransient<IUserService, UserService>();

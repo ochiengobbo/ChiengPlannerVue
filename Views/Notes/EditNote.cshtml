@@ -4,17 +4,26 @@
     ViewData["Title"] = "Edit Note";
     var deletedNote = ViewData["DeletedNote"] == null ? false : true;
 }
+<style>
+    .error-modal.in {
+        opacity: 1;
+    }
+
+    .success-modal.in {
+        opacity: 1;
+    }
+</style>
 
 
-<div id="errorModal" class="modal" data-backdrop="false" role="dialog">
-    <div class="modal-dialog modal-dialog-centered modal-sm" style="max-width: 450px;">
-        <div class="modal-content bg-danger" style="width: 100%;padding: 15px;">
-            <div class="modal-header" style="border-bottom: none;margin-bottom: -40px;display: block;">
-                <button type="button" id="errorClose" class="close" aria-label="Close" style="color: white;border: none;float: right;position: relative;z-index: 50 !important;">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
+<div id="errorModal" class="error-modal modal" data-bs-backdrop="false" role="dialog">
+    <div class="modal-dialog modal-sm mt-3">
+        <div class="modal-content bg-danger">
             <div class="modal-body text-white">
+                <div style="float: right;">
+                    <button type="button" id="errorClose" class="close" aria-label="Close" style="color: white;border: none;">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
                 <p id="errorMsg" class="d-inline"></p>
             </div>
 
@@ -38,9 +47,9 @@
 
 <div id="deleteWarningModal" class="modal" role="dialog">
     <div class="modal-dialog modal-dialog-centered modal-sm">
-        <div class="modal-content bg-danger">
+        <div class="modal-content bg-warning">
             <div class="modal-body text-white">
-                <p class="d-inline"><b><small>Are you sure you want to delete this note? You won't be able to recover it.</small></b></p>
+                <p class="d-inline"><b><small>Are you sure you want to delete this Note? You won't be able to recover it.</small></b></p>
             </div>
             <div class="modal-footer" style="border-top: 0px;margin-top: -25px;">
                 <button type="button" id="continueDelete" class="btn btn-danger">Ok</button>
@@ -50,7 +59,7 @@
     </div>
 </div>
 
-<div id="deletedNoteSuccessModal" class="modal" data-backdrop="false" role="dialog">
+<div id="deletedNoteSuccessModal" class="success-modal modal" data-backdrop="false" role="dialog">
     <div class="modal-dialog modal-sm" style="max-width: 450px;">
         <div class="modal-content bg-success" style="width: 100%;padding: 10px;">
             <div class="modal-header" style="border-bottom: none;margin-bottom: -5-0px;display: block;">
@@ -59,9 +68,8 @@
                 </button>
             </div>
             <div class="modal-body text-white">
-                <p class="d-inline">Note was succesfully deleted.</p>
+                <p id="successMsg" class="d-inline"></p>
             </div>
-
         </div>
     </div>
 </div>

@@ -11,18 +11,21 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _node_modules_bootstrap__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../node_modules/bootstrap */ "./node_modules/bootstrap/dist/js/bootstrap.esm.js");
 /* harmony import */ var _fortawesome_fontawesome_free__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @fortawesome/fontawesome-free */ "./node_modules/@fortawesome/fontawesome-free/js/fontawesome.js");
 /* harmony import */ var _fortawesome_fontawesome_free__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_fortawesome_fontawesome_free__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var jquery__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js");
-/* harmony import */ var jquery__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(jquery__WEBPACK_IMPORTED_MODULE_2__);
-/* harmony import */ var _node_modules_bootstrap_dist_css_bootstrap_css__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../node_modules/bootstrap/dist/css/bootstrap.css */ "./node_modules/bootstrap/dist/css/bootstrap.css");
-/* harmony import */ var _node_modules_fortawesome_fontawesome_free_css_all_css__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../node_modules/@fortawesome/fontawesome-free/css/all.css */ "./node_modules/@fortawesome/fontawesome-free/css/all.css");
-/* harmony import */ var _chiengplanner_css__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! .//chiengplanner.css */ "./src/chiengplanner.css");
+/* harmony import */ var jquery_ui__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! jquery-ui */ "./node_modules/jquery-ui/ui/widget.js");
+/* harmony import */ var jquery_ui__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(jquery_ui__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var jquery__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js");
+/* harmony import */ var jquery__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(jquery__WEBPACK_IMPORTED_MODULE_3__);
+/* harmony import */ var _node_modules_bootstrap_dist_css_bootstrap_css__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../node_modules/bootstrap/dist/css/bootstrap.css */ "./node_modules/bootstrap/dist/css/bootstrap.css");
+/* harmony import */ var _node_modules_fortawesome_fontawesome_free_css_all_css__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../node_modules/@fortawesome/fontawesome-free/css/all.css */ "./node_modules/@fortawesome/fontawesome-free/css/all.css");
+/* harmony import */ var _chiengplanner_css__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! .//chiengplanner.css */ "./src/chiengplanner.css");
 // JS Dependencies: Popper, Bootstrap & JQuery
 
 
 
 
+
 // export for others scripts to use
-window.$ = jquery__WEBPACK_IMPORTED_MODULE_2__;
+window.$ = jquery__WEBPACK_IMPORTED_MODULE_3__;
 //window.jQuery = jQuery;
 
 // CSS Dependencies: Bootstrap & Bootstrap icons
