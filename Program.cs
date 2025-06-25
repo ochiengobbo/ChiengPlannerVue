@@ -22,9 +22,12 @@ var builder = WebApplication.CreateBuilder(args);
 using ILoggerFactory factory = LoggerFactory.Create(builder => builder.AddConsole());
 ILogger logger = factory.CreateLogger("Program");
 
+
 builder.Configuration.AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
     .AddUserSecrets(Assembly.GetExecutingAssembly(), true)
     .AddEnvironmentVariables();
+
+builder.Services.AddSingleton(typeof(ILogger), logger);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
