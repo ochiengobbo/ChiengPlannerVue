@@ -2,7 +2,7 @@
 import '@popperjs/core';
 import '../node_modules/bootstrap';
 import '@fortawesome/fontawesome-free'
-import 'jquery-ui'
+import 'jquery-ui/dist/jquery-ui'
 import * as $ from 'jquery';
 // export for others scripts to use
 window.$ = $;

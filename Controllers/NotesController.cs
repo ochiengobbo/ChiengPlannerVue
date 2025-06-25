@@ -153,7 +153,7 @@ namespace ChiengPlannerVue.Controllers
         {
             // store resized image in local directory for now
             // also delete image prior to saving
-            var filePath = Path.Combine(Directory.GetCurrentDirectory(), @"wwwroot\images", file.FileName);
+            var filePath = Path.Combine(Directory.GetCurrentDirectory(), @"images", file.FileName);
             System.Drawing.Image img = Image.FromStream(file.OpenReadStream());
             if(width == 0)
                 width = 300;
@@ -161,7 +161,7 @@ namespace ChiengPlannerVue.Controllers
                 height = 300;
             System.Drawing.Image resizeImg = ResizeImage(new Bitmap(img), new Size(width, height));
             resizeImg.Save(filePath);
-            var url = UploadFileToAzureStorage(file, file.FileName, true);
+            var url = UploadFileToAzureStorage(file, filePath, true);
             // Store to wwwroot folder to have file path to
             System.IO.File.Delete(filePath);
             return Json(new { success = true, url = url }, new System.Text.Json.JsonSerializerOptions());

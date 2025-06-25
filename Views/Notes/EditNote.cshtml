@@ -228,7 +228,7 @@
                 var $el = $('#toolbarMenu');
                 var isPositionFixed = ($el.css('position') == 'fixed');
                 if ($(this).scrollTop() > 200 && !isPositionFixed) {
-                    $el.css({ 'position': 'fixed', 'top': '0px', 'width': '75%' });
+                    $el.css({ 'position': 'sticky', 'top': '0px', 'width': '100%' });
                 }
                 if ($(this).scrollTop() < 150 && isPositionFixed) {
                     $el.css({ 'position': 'static', 'top': '0px', 'width': '100%' });
