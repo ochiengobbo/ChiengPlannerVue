@@ -186,9 +186,9 @@ builder.Services.Configure<DataProtectionTokenProviderOptions>(options =>
 }
 );
 
-//builder.Services.AddDataProtection()
-//    .PersistKeysToDbContext<ChiengPlannerContext>()
-//    .SetDefaultKeyLifetime(TimeSpan.FromDays(30));
+builder.Services.AddDataProtection()
+    .PersistKeysToDbContext<ChiengPlannerContext>()
+    .SetDefaultKeyLifetime(TimeSpan.FromDays(30));
 
 var app = builder.Build();
 

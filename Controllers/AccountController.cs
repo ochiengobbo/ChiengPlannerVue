@@ -207,7 +207,9 @@ namespace ChiengPlannerVue.Controllers
                         AddErrors(result, model);
                     }
                 }
-                catch (Exception ex) { }
+                catch (Exception ex) {
+                    model.ErrorMsg = "There was an error registering your account. Please try again!";
+                }
             }
             else
             {
