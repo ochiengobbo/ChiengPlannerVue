@@ -2,7 +2,7 @@
 
 The ChiengPlanner is an eponymous small project that serves as a virtual planner notebook. This project was made as an effort to streamline my organizational efforts and try to use the knowledge gained from working professionally within the .NET framework to create a full web application. Currently the ChiengPlanner consists of these features:
 
-* A **Notes** section that provides the user with a WYSIWYG text editor complete with Photo and Video upload capabilities
+* A **Notes** section that provides the user with a WYSIWYG text editor to create long descriptive Note documents
 * A **Checklist** section that allows the user to create, update, and delete Checklists and the Tasks within those Checklists.
 
 ## How To Use
