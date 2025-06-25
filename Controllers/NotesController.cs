@@ -31,8 +31,9 @@ namespace ChiengPlannerVue.Controllers
         private readonly UserManager<User> _userManager;
         private readonly IUserService _userService;
         private readonly IConfiguration _config;
+        private readonly ILogger _logger;
 
-        public NotesController(ChiengPlannerContext context, INotesService notesService, UserManager<User> userManager, IUserService userService, IConfiguration config)
+        public NotesController(ChiengPlannerContext context, INotesService notesService, UserManager<User> userManager, IUserService userService, IConfiguration config, ILogger logger)
         {
             _context = context;
             _notesService = notesService;
@@ -40,6 +41,7 @@ namespace ChiengPlannerVue.Controllers
             _userService = userService;
             _config = config;
             AZURECONNECTION = config["AzureConnection"];
+            _logger = logger;
         }
 
         [HttpGet]
@@ -153,27 +155,46 @@ namespace ChiengPlannerVue.Controllers
         {
             // store resized image in local directory for now
             // also delete image prior to saving
-            var filePath = Path.Combine(Directory.GetCurrentDirectory(), @"images", file.FileName);
-            System.Drawing.Image img = Image.FromStream(file.OpenReadStream());
-            if(width == 0)
-                width = 300;
-            if(height == 0)
-                height = 300;
-            System.Drawing.Image resizeImg = ResizeImage(new Bitmap(img), new Size(width, height));
-            resizeImg.Save(filePath);
-            var url = UploadFileToAzureStorage(file, filePath, true);
-            // Store to wwwroot folder to have file path to
-            System.IO.File.Delete(filePath);
-            return Json(new { success = true, url = url }, new System.Text.Json.JsonSerializerOptions());
+            var success = false;
+            var url = "";
+            try
+            {
+                var filePath = Path.Combine(Directory.GetCurrentDirectory(), @"images", file.FileName);
+                System.Drawing.Image img = Image.FromStream(file.OpenReadStream());
+                if (width == 0)
+                    width = 300;
+                if (height == 0)
+                    height = 300;
+                System.Drawing.Image resizeImg = ResizeImage(new Bitmap(img), new Size(width, height));
+                resizeImg.Save(filePath);
+                url = UploadFileToAzureStorage(file, filePath, true);
+                // Store to wwwroot folder to have file path to
+                System.IO.File.Delete(filePath);
+                success = !string.IsNullOrEmpty(url);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogInformation(ex.ToString());
+            }
+            
+            return Json(new { success = success, url = url }, new System.Text.Json.JsonSerializerOptions());
         }
 
         [HttpPost]
         public JsonResult SaveVideo(IFormFile file)
         {
-            // store resized image in local directory for now
-            // also delete image prior to saving
-            var url = UploadFileToAzureStorage(file, file.FileName, false, true);
-            return Json(new { success = true, url = url }, new System.Text.Json.JsonSerializerOptions());
+            var success = false;
+            var url = "";
+            try
+            {
+                url = UploadFileToAzureStorage(file, file.FileName, false, true);
+                success = !string.IsNullOrEmpty(url);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogInformation(ex.ToString());
+            }
+            return Json(new { success = success, url = url }, new System.Text.Json.JsonSerializerOptions());
         }
 
 
