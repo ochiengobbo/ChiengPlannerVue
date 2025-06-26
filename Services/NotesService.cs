@@ -51,7 +51,7 @@ namespace ChiengPlannerVue.Services
             note.Body = body;
             // Keep UserId null until Users and Authentication process is complete.
             note.UserId = userId;
-            note.PlainText = plainText;
+            note.PlainText = plainText == null ? "" : plainText;
             note.Guid = Guid.NewGuid().ToString();
             _context.Notes.Add(note);
             _context.SaveChanges();

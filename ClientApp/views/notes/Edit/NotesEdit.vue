@@ -1,13 +1,13 @@
 <template>
   <div id="app" class="mx-auto">
-    <div class="container mx-auto" style="margin-top: 2rem; margin-bottom: 2rem;">
+    <div class="container mx-auto" style="margin-top: 2rem; margin-bottom: .5rem;">
       <input class="mx-auto form-control-lg inputGroup-sizing-lg border border-secondary border-1" type="text"
         placeholder="Enter Your Title Here..." id="noteTitle" style="width: -webkit-fill-available;" />
     </div>
     <editor v-model="content" />
-    <div class="container" style="margin-top: 2rem; margin-bottom: 2rem;">
-      <button id="saveNote" class="btn btn-outline-dark ms-1 me-1">Save</button>
-      <button id="deleteNoteBtn" class="btn btn-outline-danger ms-1 me-1" style="display: none;">Delete</button>
+    <div class="container" style="margin-top: .5rem; margin-bottom: 4rem;">
+      <button id="saveNote" class="btn btn-outline-dark ms-1 me-1 mb-2">Save</button>
+      <button id="deleteNoteBtn" class="btn btn-outline-danger ms-1 me-1 mb-2" style="display: none;">Delete</button>
     </div>
   </div>
 </template>

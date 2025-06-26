@@ -42,7 +42,8 @@
                 </div>
             </section>
         </bubble-menu>
-        <section class="buttons align-items-center flex-wrap gap-4 border border-1 p-4 bg-light border-secondary" id="toolbarMenu" style="/*border-radius: 10px;*/">
+        <section class="buttons align-items-center flex-wrap gap-4 border border-1 p-4 bg-light border-secondary"
+            id="toolbarMenu" style="/*border-radius: 10px;*/">
             <div class="d-sm-inline-flex p-4" id="rightBorder">
                 <button @click="editor.chain().focus().toggleBlockquote().run()"
                     :class="{ 'btn-secondary': editor.isActive('blockquote'), 'btn-light': !editor.isActive('blockquote') }"
@@ -100,48 +101,48 @@
                     <svg-icon type="mdi" :path="rule"></svg-icon>
                 </button>
                 <button @click="editor.chain().focus().setHardBreak().run()" class="p-1 btn btn-light">
-                    <svg-icon type="mdi" :path="break"></svg-icon>
+                    <svg-icon type="mdi" :path="breaks"></svg-icon>
                 </button>
                 <button @click="editor.chain().focus().toggleBulletList().run()"
-                    :class=" { 'btn-secondary': editor.isActive('bulletList'), 'btn-light': !editor.isActive('bulletList') } "
+                    :class="{ 'btn-secondary': editor.isActive('bulletList'), 'btn-light': !editor.isActive('bulletList') }"
                     class="btn p-1">
-                    <svg-icon type="mdi" :path=" blltLst "></svg-icon>
+                    <svg-icon type="mdi" :path="blltLst"></svg-icon>
                 </button>
             </div>
             <div class="d-sm-inline-flex p-4" id="rightBorder">
                 <div class="dropdown">
                     <button class="btn-light btn dropdown-toggle" type="button" id="dropdownMenuButton"
                         data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <svg-icon type="mdi" :path=" txt "></svg-icon>
+                        <svg-icon type="mdi" :path="txt"></svg-icon>
                     </button>
                     <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                         <ul class='list-inline'>
                             <li>
                                 <button @click="editor.chain().focus().setTextAlign('left').run()"
-                                    :class=" { 'btn-secondary': editor.isActive({ textAlign: 'left' }), 'btn-light': !editor.isActive({ textAlign: 'left' }) } "
+                                    :class="{ 'btn-secondary': editor.isActive({ textAlign: 'left' }), 'btn-light': !editor.isActive({ textAlign: 'left' }) }"
                                     class="btn p-1 dropdown-item">
-                                    <svg-icon type="mdi" :path=" alignLeft "></svg-icon>
+                                    <svg-icon type="mdi" :path="alignLeft"></svg-icon>
                                 </button>
                             </li>
                             <li>
                                 <button @click="editor.chain().focus().setTextAlign('center').run()"
-                                    :class=" { 'btn-secondary': editor.isActive({ textAlign: 'center' }), 'btn-light': !editor.isActive({ textAlign: 'center' }) } "
+                                    :class="{ 'btn-secondary': editor.isActive({ textAlign: 'center' }), 'btn-light': !editor.isActive({ textAlign: 'center' }) }"
                                     class="btn p-1 dropdown-item">
-                                    <svg-icon type="mdi" :path=" alignCenter "></svg-icon>
+                                    <svg-icon type="mdi" :path="alignCenter"></svg-icon>
                                 </button>
                             </li>
                             <li>
                                 <button @click="editor.chain().focus().setTextAlign('right').run()"
-                                    :class=" { 'btn-secondary': editor.isActive({ textAlign: 'right' }), 'btn-light': !editor.isActive({ textAlign: 'right' }) } "
+                                    :class="{ 'btn-secondary': editor.isActive({ textAlign: 'right' }), 'btn-light': !editor.isActive({ textAlign: 'right' }) }"
                                     class="btn p-1 dropdown-item">
-                                    <svg-icon type="mdi" :path=" alignRight "></svg-icon>
+                                    <svg-icon type="mdi" :path="alignRight"></svg-icon>
                                 </button>
                             </li>
                             <li>
                                 <button @click="editor.chain().focus().setTextAlign('justify').run()"
-                                    :class=" { 'btn-secondary': editor.isActive({ textAlign: 'justify' }), 'btn-light': !editor.isActive({ textAlign: 'justify' }) } "
+                                    :class="{ 'btn-secondary': editor.isActive({ textAlign: 'justify' }), 'btn-light': !editor.isActive({ textAlign: 'justify' }) }"
                                     class="btn p-1 dropdown-item">
-                                    <svg-icon type="mdi" :path=" justify "></svg-icon>
+                                    <svg-icon type="mdi" :path="justify"></svg-icon>
                                 </button>
                             </li>
                         </ul>
@@ -154,25 +155,20 @@
                 <input class="form-control-sm p-1 bg-light" id="imageHeight" type="number" placeholder="Height"
                     style="border: gray;width: 70px;" />
                 <label for="image" id="imgButton" class="btn btn-light"><svg-icon type="mdi"
-                        :path=" img "></svg-icon></label>
+                        :path="img"></svg-icon></label>
                 <input id="imageInput" name="image" type="file" hidden />
                 <input id="imageUrl" name="imgUrl" type="text" hidden />
-                <button id="addImageBtn" @click=" addImage " hidden>
+                <button id="addImageBtn" @click="addImage" hidden>
                     setImage
                 </button>
             </div>
             <div class="d-sm-inline-flex p-4" id="rightBorder">
-                <input class="form-control-sm p-1 bg-light" id="videoWidth" type="number" placeholder="Width"
-                    style="border: gray;width: 60px;" />
-                <input class="form-control-sm p-1 bg-light" id="videoHeight" type="number" placeholder="Height"
-                    style="border: gray;width: 70px;" />
-                <label for="video" id="videoButton" class="btn btn-light"><svg-icon type="mdi"
-                        :path=" video "></svg-icon></label>
-                <input id="videoUrl" name="vidUrl" type="text" hidden />
-                <input id="videoInput" name="video" type="file" hidden />
-                <button id="addVideoBtn" @click=" addVideo " hidden>
-                    setImage
-                </button>
+                <input class="form-control-sm p-1 bg-light" id="width" type="number" v-model="width" placeholder="Width"
+                    min="320" max="1024" style="border: gray;width: 60px;" />
+                <input class="form-control-sm p-1 bg-light" id="height" type="number" v-model="height"
+                    placeholder="Height" min="180" max="720" style="border: gray;width: 70px;" />
+                <button id="add" @click="addVideo" class="btn btn-light"><svg-icon type="mdi"
+                        :path="video"></svg-icon></button>
             </div>
             <div class="cursor-extensions" hidden>
                 <div class="dropcursor"></div>
@@ -180,31 +176,31 @@
             </div>
             <div class="colors" hidden>
                 <button @click="editor.chain().focus().setColor('#958DF1').run()"
-                    :class=" { 'is-active': editor.isActive('textStyle', { color: '#958DF1' }) } ">
+                    :class="{ 'is-active': editor.isActive('textStyle', { color: '#958DF1' }) }">
                     purple
                 </button>
                 <button @click="editor.chain().focus().setColor('#F98181').run()"
-                    :class=" { 'is-active': editor.isActive('textStyle', { color: '#F98181' }) } ">
+                    :class="{ 'is-active': editor.isActive('textStyle', { color: '#F98181' }) }">
                     red
                 </button>
                 <button @click="editor.chain().focus().setColor('#FBBC88').run()"
-                    :class=" { 'is-active': editor.isActive('textStyle', { color: '#FBBC88' }) } ">
+                    :class="{ 'is-active': editor.isActive('textStyle', { color: '#FBBC88' }) }">
                     orange
                 </button>
                 <button @click="editor.chain().focus().setColor('#FAF594').run()"
-                    :class=" { 'is-active': editor.isActive('textStyle', { color: '#FAF594' }) } ">
+                    :class="{ 'is-active': editor.isActive('textStyle', { color: '#FAF594' }) }">
                     yellow
                 </button>
                 <button @click="editor.chain().focus().setColor('#70CFF8').run()"
-                    :class=" { 'is-active': editor.isActive('textStyle', { color: '#70CFF8' }) } ">
+                    :class="{ 'is-active': editor.isActive('textStyle', { color: '#70CFF8' }) }">
                     blue
                 </button>
                 <button @click="editor.chain().focus().setColor('#94FADB').run()"
-                    :class=" { 'is-active': editor.isActive('textStyle', { color: '#94FADB' }) } ">
+                    :class="{ 'is-active': editor.isActive('textStyle', { color: '#94FADB' }) }">
                     teal
                 </button>
                 <button @click="editor.chain().focus().setColor('#B9F18D').run()"
-                    :class=" { 'is-active': editor.isActive('textStyle', { color: '#B9F18D' }) } ">
+                    :class="{ 'is-active': editor.isActive('textStyle', { color: '#B9F18D' }) }">
                     green
                 </button>
                 <button @click="editor.chain().focus().unsetColor().run()">
@@ -212,7 +208,7 @@
                 </button>
             </div>
         </section>
-        <editor-content :editor=" editor " />
+        <editor-content :editor="editor" />
     </div>
 </template>
 
@@ -234,13 +230,14 @@
 }
 
 #toolbarMenu {
-    z-index:100;
+    z-index: 100;
 }
 </style>
-  
+
 <script>
 import Image from '@tiptap/extension-image'
 import Video from './video-extension.ts'
+import Youtube from '@tiptap/extension-youtube'
 import StarterKit from '@tiptap/starter-kit'
 import Gapcursor from '@tiptap/extension-gapcursor'
 import CodeBlockLowlight from '@tiptap/extension-code-block-lowlight'
@@ -298,7 +295,7 @@ export default {
             headTwo: mdiFormatHeader2,
             headThree: mdiFormatHeader3,
             rule: mdiMinus,
-            break: mdiFormatPageBreak,
+            breaks: mdiFormatPageBreak,
             bold: mdiFormatBold,
             code: mdiCodeArray,
             italic: mdiFormatItalic,
@@ -327,20 +324,13 @@ export default {
             }
         },
         addVideo() {
-            const src = document.getElementById('videoUrl').value;
-            var width = document.getElementById('videoWidth').value;
-            var height = document.getElementById('videoHeight').value;
+            const url = prompt('Enter YouTube URL')
 
-            if (isNaN(width) || width == "") {
-                width = 288;
-            }
-            if (isNaN(height) || height == "") {
-                height = 360;
-            }
-
-            if (src) {
-                this.editor.chain().focus().insertContent("<video src=\"" + src + "\" height=\"" + height + "\" width=\"" + width + "\"></video>").run();
-            }
+            this.editor.commands.setYoutubeVideo({
+                src: url,
+                width: Math.max(320, parseInt(this.width, 10)) || 640,
+                height: Math.max(180, parseInt(this.height, 10)) || 480,
+            })
         },
         setLink() {
             const url = document.getElementById('hyperLinkUrl').value
@@ -433,7 +423,7 @@ export default {
                         id: 'resizable',
                     }
                 }),
-                Video,
+                Youtube,
                 Link,
                 Subscript,
                 Superscript,

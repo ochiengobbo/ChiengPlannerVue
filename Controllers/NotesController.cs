@@ -4,9 +4,8 @@ using System.Web;
 using System.IO;
 using System.Text;
 using Azure.Storage.Blobs;
-using System.Drawing.Drawing2D;
-using System.Drawing;
-using System.Drawing.Imaging;
+using SixLabors.ImageSharp;
+using SixLabors.ImageSharp.Processing;
 using Microsoft.Extensions.Options;
 using ChiengPlannerVue.Models;
 using System;
@@ -83,7 +82,7 @@ namespace ChiengPlannerVue.Controllers
             var vm = new NotesModel();
             var userId = HttpContext.User.GetIdentifier();
             vm.Notes = _notesService.GetNotesbyUserId(userId);
-            if(id.HasValue && _notesService.NoteExists(id.Value))
+            if (id.HasValue && _notesService.NoteExists(id.Value))
             {
                 var note = _notesService.GetNoteById(id.Value);
                 vm.NotesId = note.NotesId;
@@ -106,7 +105,7 @@ namespace ChiengPlannerVue.Controllers
                 errorMsg = "<b>Note must have a title!</b>";
                 return Json(new { success = false, message = errorMsg }, new System.Text.Json.JsonSerializerOptions());
             }
-            if(_notesService.NoteExists(vm.NotesId))
+            if (_notesService.NoteExists(vm.NotesId))
             {
                 id = vm.NotesId;
                 _notesService.UpdateNote(vm.NotesId, vm.Title, vm.Body, vm.PlainText, DateTime.Now);
@@ -157,33 +156,31 @@ namespace ChiengPlannerVue.Controllers
             // also delete image prior to saving
             var success = false;
             var url = "";
-            try
+            if (file != null)
             {
-                var filePath = Path.Combine(Directory.GetCurrentDirectory(), @"images", file.FileName);
-                using (Image img = Image.FromStream(file.OpenReadStream()))
+                try
                 {
-                    if (width == 0)
-                        width = 300;
-                    if (height == 0)
-                        height = 300;
-                    using (Bitmap bmp = new Bitmap(img))
+                    var filePath = Path.Combine(Directory.GetCurrentDirectory(), @"images", file.FileName);
+                    using (Image img = Image.Load(file.OpenReadStream()))
                     {
-                        using (Image resizeImg = ResizeImage(bmp, new Size(width, height)))
-                        {
-                            resizeImg.Save(filePath);
-                        }
+                        if (width == 0)
+                            width = 300;
+                        if (height == 0)
+                            height = 300;
+                        img.Mutate(x => x.Resize(width, height));
+                        img.Save(filePath);
                     }
+                    url = UploadFileToAzureStorage(file, filePath, true);
+                    // Store to wwwroot folder to have file path to
+                    System.IO.File.Delete(filePath);
+                    success = !string.IsNullOrEmpty(url);
                 }
-                url = UploadFileToAzureStorage(file, filePath, true);
-                // Store to wwwroot folder to have file path to
-                System.IO.File.Delete(filePath);
-                success = !string.IsNullOrEmpty(url);
+                catch (Exception ex)
+                {
+                    _logger.LogInformation(ex.ToString());
+                }
             }
-            catch (Exception ex)
-            {
-                _logger.LogInformation(ex.ToString());
-            }
-            
+
             return Json(new { success = success, url = url }, new System.Text.Json.JsonSerializerOptions());
         }
 
@@ -192,44 +189,49 @@ namespace ChiengPlannerVue.Controllers
         {
             var success = false;
             var url = "";
-            try
+            if (file != null)
             {
-                url = UploadFileToAzureStorage(file, file.FileName, false, true);
-                success = !string.IsNullOrEmpty(url);
+
+                try
+                {
+                    url = UploadFileToAzureStorage(file, MakeValidFileName(file.FileName), false, true);
+                    success = !string.IsNullOrEmpty(url);
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogInformation(ex.ToString());
+                }
             }
-            catch (Exception ex)
-            {
-                _logger.LogInformation(ex.ToString());
-            }
+
             return Json(new { success = success, url = url }, new System.Text.Json.JsonSerializerOptions());
         }
 
 
         // Got this function from https://www.c-sharpcorner.com/UploadFile/ishbandhu2009/resize-an-image-in-C-Sharp/
-        private static System.Drawing.Image ResizeImage(System.Drawing.Image imgToResize, Size size)
-        {
-            // Get the image current width
-            int sourceWidth = imgToResize.Width;
-            // Get the image current height
-            int sourceHeight = imgToResize.Height;
-            float nPercent = 0;
-            float nPercentW = 0;
-            float nPercentH = 0;
-            // Calculate width and height with new desired size
-            nPercentW = ((float)size.Width / (float)sourceWidth);
-            nPercentH = ((float)size.Height / (float)sourceHeight);
-            nPercent = Math.Min(nPercentW, nPercentH);
-            // New Width and Height
-            int destWidth = (int)(sourceWidth * nPercent);
-            int destHeight = (int)(sourceHeight * nPercent);
-            Bitmap b = new Bitmap(destWidth, destHeight);
-            Graphics g = Graphics.FromImage((System.Drawing.Image)b);
-            g.InterpolationMode = InterpolationMode.HighQualityBicubic;
-            // Draw image with new width and height
-            g.DrawImage(imgToResize, 0, 0, destWidth, destHeight);
-            g.Dispose();
-            return (System.Drawing.Image)b;
-        }
+        //private static System.Drawing.Image ResizeImage(System.Drawing.Image imgToResize, Size size)
+        //{
+        //    // Get the image current width
+        //    int sourceWidth = imgToResize.Width;
+        //    // Get the image current height
+        //    int sourceHeight = imgToResize.Height;
+        //    float nPercent = 0;
+        //    float nPercentW = 0;
+        //    float nPercentH = 0;
+        //    // Calculate width and height with new desired size
+        //    nPercentW = ((float)size.Width / (float)sourceWidth);
+        //    nPercentH = ((float)size.Height / (float)sourceHeight);
+        //    nPercent = Math.Min(nPercentW, nPercentH);
+        //    // New Width and Height
+        //    int destWidth = (int)(sourceWidth * nPercent);
+        //    int destHeight = (int)(sourceHeight * nPercent);
+        //    Bitmap b = new Bitmap(destWidth, destHeight);
+        //    Graphics g = Graphics.FromImage((System.Drawing.Image)b);
+        //    g.InterpolationMode = InterpolationMode.HighQualityBicubic;
+        //    // Draw image with new width and height
+        //    g.DrawImage(imgToResize, 0, 0, destWidth, destHeight);
+        //    g.Dispose();
+        //    return (System.Drawing.Image)b;
+        //}
 
         public string UploadFileToAzureStorage(IFormFile file, string filePath, bool isImage = false, bool isVideo = false)
         {
@@ -248,10 +250,9 @@ namespace ChiengPlannerVue.Controllers
                 // create Blob Client for current file
                 var blob = container.GetBlobClient(file.FileName);
 
-
                 // upload File to container, overwriting if file already exists
                 if (isVideo)
-                    blob.Upload(file.OpenReadStream());
+                    blob.Upload(file.OpenReadStream(), true);
                 else
                     blob.Upload(filePath, true);
 
@@ -259,18 +260,26 @@ namespace ChiengPlannerVue.Controllers
                 return blob.Uri.ToString();
             }
             catch (Exception e) { }
-            
+
 
             return "";
         }
 
         private void CheckForDeletedNoteSessionString()
         {
-            if(!string.IsNullOrEmpty(HttpContext.Session.GetString("_DeletedNote")))
+            if (!string.IsNullOrEmpty(HttpContext.Session.GetString("_DeletedNote")))
             {
                 ViewData["DeletedNote"] = "true";
                 HttpContext.Session.SetString("_DeletedNote", "");
             }
+        }
+
+        private static string MakeValidFileName(string name)
+        {
+            string invalidChars = System.Text.RegularExpressions.Regex.Escape(new string(System.IO.Path.GetInvalidFileNameChars()));
+            string invalidRegStr = string.Format(@"([{0}]*\.+$)|([{0}]+)", invalidChars);
+
+            return System.Text.RegularExpressions.Regex.Replace(name, invalidRegStr, "_");
         }
     }
 }

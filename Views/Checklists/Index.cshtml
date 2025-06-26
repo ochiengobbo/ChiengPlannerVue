@@ -157,6 +157,7 @@
         border: none;
         margin-left: 20%;
         border-radius: 5px;
+        padding: 5%;
     }
 
         .save-task:hover {
@@ -179,6 +180,7 @@
         border: none;
         margin-left: 20%;
         border-radius: 5px;
+        padding: 5%;
     }
 
         .edit-task:hover {
@@ -218,6 +220,8 @@
         border: solid 1px;
         border-color: lightgrey;
         width: 80%;
+        margin-top: 3.5%;
+        margin-bottom: 3%;
     }
 
     .save-delete-task-buttons {
@@ -242,8 +246,8 @@
     .task-text {
         width: 80%;
         padding: 1%;
-        margin-top: 2.5%;
-        margin-bottom: 4%;
+        margin-top: 3.5%;
+        margin-bottom: 3%;
     }
 
     .checked-task {
@@ -251,8 +255,6 @@
         text-decoration-color: gray;
         color: gray;
         text-decoration-thickness: 1.5px;
-        margin-top: 3.5% !important;
-        margin-bottom: 3% !important;
     }
 
     .completed-badge {
@@ -388,7 +390,7 @@
 
 
 </style>
-<div id="errorModal" class="error-modal modal" data-bs-backdrop="false" role="dialog">
+<div id="errorModal" class="error-modal modal" role="dialog">
     <div class="modal-dialog modal-sm mt-3">
         <div class="modal-content bg-danger">
             <div class="modal-body text-white">
@@ -424,7 +426,7 @@
         </div>
     </div>
 </div>
-<div id="successModal" class="success-modal modal" data-bs-backdrop="false" role="dialog">
+<div id="successModal" class="success-modal modal" data-bs-focus="false" tabindex="-1" role="dialog">
     <div class="modal-dialog modal-sm mt-3">
         <div class="modal-content bg-success">
             <div class="modal-body text-white">
@@ -1139,6 +1141,7 @@
         }
 
         function DeleteTasks(id, list) {
+            if (id != 0){
             $.ajax({
                 type: "POST",
                 url: "@Url.Action("DeleteTask", "Checklists")",
@@ -1159,6 +1162,16 @@
                     $('#errorModal').modal('show');
                 }
             });
+            }
+            else {
+                // Remove list element
+                    $(list).remove()
+
+                    // Enable Add Task and Edit buttons
+                    $('#AddTask').addClass('add-task-button')
+                    $('#AddTask').removeClass('add-task-button-inactive')
+                    EnableEditButton($('.edit-task-inactive'))
+            }
         }
 
         function DisableEditButton(tasks) {

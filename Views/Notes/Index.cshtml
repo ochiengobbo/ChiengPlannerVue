@@ -17,18 +17,17 @@
         </div>
     </div>
 </div>
-<div id="deletedNoteSuccessModal" class="modal" data-backdrop="false" role="dialog">
-    <div class="modal-dialog modal-sm" style="max-width: 450px;">
-        <div class="modal-content bg-warning" style="width: 100%;padding: 15px;">
-            <div class="modal-header" style="border-bottom: none;margin-bottom: -40px;display: block;">
-                <button type="button" id="deletedNoteClose" class="close" aria-label="Close" style="color: white;border: none;float: right;position: relative;z-index: 50 !important;">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
+<div id="deletedNoteSuccessModal" class="success-modal modal" data-bs-focus="false" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-sm mt-3">
+        <div class="modal-content bg-success">
             <div class="modal-body text-white">
-                <p class="d-inline">Note was succesfully deleted.</p>
+                <div style="float: right;">
+                    <button type="button" id="successClose" class="close" aria-label="Close" style="color: white;border: none;">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <p id="successMsg" class="d-inline">Note was successfully deleted</p>
             </div>
-
         </div>
     </div>
 </div>
@@ -36,9 +35,9 @@
 <style>
 
 
-        .modal.in {
-            opacity: 1;
-        }
+    .modal.in {
+        opacity: 1;
+    }
 
 </style>
 @section Scripts {

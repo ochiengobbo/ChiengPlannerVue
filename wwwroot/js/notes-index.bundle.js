@@ -92,25 +92,27 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var _tiptap_extension_image__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @tiptap/extension-image */ "./node_modules/@tiptap/extension-image/dist/index.js");
 /* harmony import */ var _video_extension_ts__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./video-extension.ts */ "./components/video-extension.ts");
-/* harmony import */ var _tiptap_starter_kit__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @tiptap/starter-kit */ "./node_modules/@tiptap/starter-kit/dist/index.js");
-/* harmony import */ var _tiptap_extension_gapcursor__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @tiptap/extension-gapcursor */ "./node_modules/@tiptap/extension-gapcursor/dist/index.js");
-/* harmony import */ var _tiptap_extension_code_block_lowlight__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @tiptap/extension-code-block-lowlight */ "./node_modules/@tiptap/extension-code-block-lowlight/dist/index.js");
-/* harmony import */ var _tiptap_extension_link__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @tiptap/extension-link */ "./node_modules/@tiptap/extension-link/dist/index.js");
-/* harmony import */ var _tiptap_extension_color__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @tiptap/extension-color */ "./node_modules/@tiptap/extension-color/dist/index.js");
-/* harmony import */ var _tiptap_extension_text_style__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @tiptap/extension-text-style */ "./node_modules/@tiptap/extension-text-style/dist/index.js");
-/* harmony import */ var _tiptap_extension_subscript__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! @tiptap/extension-subscript */ "./node_modules/@tiptap/extension-subscript/dist/index.js");
-/* harmony import */ var _tiptap_extension_superscript__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! @tiptap/extension-superscript */ "./node_modules/@tiptap/extension-superscript/dist/index.js");
-/* harmony import */ var _tiptap_extension_text_align__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! @tiptap/extension-text-align */ "./node_modules/@tiptap/extension-text-align/dist/index.js");
-/* harmony import */ var _tiptap_vue_3__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(/*! @tiptap/vue-3 */ "./node_modules/@tiptap/vue-3/dist/index.js");
-/* harmony import */ var _jamescoyle_vue_icon__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! @jamescoyle/vue-icon */ "./node_modules/@jamescoyle/vue-icon/lib/svg-icon.vue");
-/* harmony import */ var _mdi_js__WEBPACK_IMPORTED_MODULE_19__ = __webpack_require__(/*! @mdi/js */ "./node_modules/@mdi/js/mdi.js");
-/* harmony import */ var highlight_js_lib_languages_css__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! highlight.js/lib/languages/css */ "./node_modules/highlight.js/es/languages/css.js");
-/* harmony import */ var highlight_js_lib_languages_javascript__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! highlight.js/lib/languages/javascript */ "./node_modules/highlight.js/es/languages/javascript.js");
-/* harmony import */ var highlight_js_lib_languages_typescript__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! highlight.js/lib/languages/typescript */ "./node_modules/highlight.js/es/languages/typescript.js");
-/* harmony import */ var highlight_js_lib_languages_xml__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! highlight.js/lib/languages/xml */ "./node_modules/highlight.js/es/languages/xml.js");
-/* harmony import */ var lowlight__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! lowlight */ "./node_modules/lowlight/lib/index.js");
-/* harmony import */ var lowlight__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! lowlight */ "./node_modules/lowlight/lib/all.js");
+/* harmony import */ var _tiptap_extension_youtube__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @tiptap/extension-youtube */ "./node_modules/@tiptap/extension-youtube/dist/index.js");
+/* harmony import */ var _tiptap_starter_kit__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @tiptap/starter-kit */ "./node_modules/@tiptap/starter-kit/dist/index.js");
+/* harmony import */ var _tiptap_extension_gapcursor__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @tiptap/extension-gapcursor */ "./node_modules/@tiptap/extension-gapcursor/dist/index.js");
+/* harmony import */ var _tiptap_extension_code_block_lowlight__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @tiptap/extension-code-block-lowlight */ "./node_modules/@tiptap/extension-code-block-lowlight/dist/index.js");
+/* harmony import */ var _tiptap_extension_link__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @tiptap/extension-link */ "./node_modules/@tiptap/extension-link/dist/index.js");
+/* harmony import */ var _tiptap_extension_color__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @tiptap/extension-color */ "./node_modules/@tiptap/extension-color/dist/index.js");
+/* harmony import */ var _tiptap_extension_text_style__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! @tiptap/extension-text-style */ "./node_modules/@tiptap/extension-text-style/dist/index.js");
+/* harmony import */ var _tiptap_extension_subscript__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! @tiptap/extension-subscript */ "./node_modules/@tiptap/extension-subscript/dist/index.js");
+/* harmony import */ var _tiptap_extension_superscript__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! @tiptap/extension-superscript */ "./node_modules/@tiptap/extension-superscript/dist/index.js");
+/* harmony import */ var _tiptap_extension_text_align__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! @tiptap/extension-text-align */ "./node_modules/@tiptap/extension-text-align/dist/index.js");
+/* harmony import */ var _tiptap_vue_3__WEBPACK_IMPORTED_MODULE_19__ = __webpack_require__(/*! @tiptap/vue-3 */ "./node_modules/@tiptap/vue-3/dist/index.js");
+/* harmony import */ var _jamescoyle_vue_icon__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! @jamescoyle/vue-icon */ "./node_modules/@jamescoyle/vue-icon/lib/svg-icon.vue");
+/* harmony import */ var _mdi_js__WEBPACK_IMPORTED_MODULE_20__ = __webpack_require__(/*! @mdi/js */ "./node_modules/@mdi/js/mdi.js");
+/* harmony import */ var highlight_js_lib_languages_css__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! highlight.js/lib/languages/css */ "./node_modules/highlight.js/es/languages/css.js");
+/* harmony import */ var highlight_js_lib_languages_javascript__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! highlight.js/lib/languages/javascript */ "./node_modules/highlight.js/es/languages/javascript.js");
+/* harmony import */ var highlight_js_lib_languages_typescript__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! highlight.js/lib/languages/typescript */ "./node_modules/highlight.js/es/languages/typescript.js");
+/* harmony import */ var highlight_js_lib_languages_xml__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! highlight.js/lib/languages/xml */ "./node_modules/highlight.js/es/languages/xml.js");
+/* harmony import */ var lowlight__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! lowlight */ "./node_modules/lowlight/lib/index.js");
+/* harmony import */ var lowlight__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(/*! lowlight */ "./node_modules/lowlight/lib/all.js");
 /* provided dependency */ var $ = __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js");
+
 
 
 
@@ -132,16 +134,16 @@ __webpack_require__.r(__webpack_exports__);
 // load all highlight.js languages
 // import { lowlight } from 'lowlight/lib/core'
 
-var lowlight = (0,lowlight__WEBPACK_IMPORTED_MODULE_16__.createLowlight)(lowlight__WEBPACK_IMPORTED_MODULE_17__.grammars);
-lowlight.register('html', highlight_js_lib_languages_xml__WEBPACK_IMPORTED_MODULE_15__["default"]);
-lowlight.register('css', highlight_js_lib_languages_css__WEBPACK_IMPORTED_MODULE_12__["default"]);
-lowlight.register('js', highlight_js_lib_languages_javascript__WEBPACK_IMPORTED_MODULE_13__["default"]);
-lowlight.register('ts', highlight_js_lib_languages_typescript__WEBPACK_IMPORTED_MODULE_14__["default"]);
+var lowlight = (0,lowlight__WEBPACK_IMPORTED_MODULE_17__.createLowlight)(lowlight__WEBPACK_IMPORTED_MODULE_18__.grammars);
+lowlight.register('html', highlight_js_lib_languages_xml__WEBPACK_IMPORTED_MODULE_16__["default"]);
+lowlight.register('css', highlight_js_lib_languages_css__WEBPACK_IMPORTED_MODULE_13__["default"]);
+lowlight.register('js', highlight_js_lib_languages_javascript__WEBPACK_IMPORTED_MODULE_14__["default"]);
+lowlight.register('ts', highlight_js_lib_languages_typescript__WEBPACK_IMPORTED_MODULE_15__["default"]);
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   components: {
-    EditorContent: _tiptap_vue_3__WEBPACK_IMPORTED_MODULE_18__.EditorContent,
-    SvgIcon: _jamescoyle_vue_icon__WEBPACK_IMPORTED_MODULE_11__["default"],
-    BubbleMenu: _tiptap_vue_3__WEBPACK_IMPORTED_MODULE_18__.BubbleMenu
+    EditorContent: _tiptap_vue_3__WEBPACK_IMPORTED_MODULE_19__.EditorContent,
+    SvgIcon: _jamescoyle_vue_icon__WEBPACK_IMPORTED_MODULE_12__["default"],
+    BubbleMenu: _tiptap_vue_3__WEBPACK_IMPORTED_MODULE_19__.BubbleMenu
   },
   props: {
     modelValue: {
@@ -154,29 +156,29 @@ lowlight.register('ts', highlight_js_lib_languages_typescript__WEBPACK_IMPORTED_
     return {
       editor: null,
       isEditable: true,
-      quote: _mdi_js__WEBPACK_IMPORTED_MODULE_19__.mdiFormatQuoteClose,
-      block: _mdi_js__WEBPACK_IMPORTED_MODULE_19__.mdiCodeBlockBraces,
-      headOne: _mdi_js__WEBPACK_IMPORTED_MODULE_19__.mdiFormatHeader1,
-      headTwo: _mdi_js__WEBPACK_IMPORTED_MODULE_19__.mdiFormatHeader2,
-      headThree: _mdi_js__WEBPACK_IMPORTED_MODULE_19__.mdiFormatHeader3,
-      rule: _mdi_js__WEBPACK_IMPORTED_MODULE_19__.mdiMinus,
-      break: _mdi_js__WEBPACK_IMPORTED_MODULE_19__.mdiFormatPageBreak,
-      bold: _mdi_js__WEBPACK_IMPORTED_MODULE_19__.mdiFormatBold,
-      code: _mdi_js__WEBPACK_IMPORTED_MODULE_19__.mdiCodeArray,
-      italic: _mdi_js__WEBPACK_IMPORTED_MODULE_19__.mdiFormatItalic,
-      strike: _mdi_js__WEBPACK_IMPORTED_MODULE_19__.mdiFormatStrikethrough,
-      sub: _mdi_js__WEBPACK_IMPORTED_MODULE_19__.mdiFormatSubscript,
-      sup: _mdi_js__WEBPACK_IMPORTED_MODULE_19__.mdiFormatSuperscript,
-      img: _mdi_js__WEBPACK_IMPORTED_MODULE_19__.mdiImage,
-      blltLst: _mdi_js__WEBPACK_IMPORTED_MODULE_19__.mdiFormatListBulleted,
-      txt: _mdi_js__WEBPACK_IMPORTED_MODULE_19__.mdiText,
-      alignLeft: _mdi_js__WEBPACK_IMPORTED_MODULE_19__.mdiFormatAlignLeft,
-      alignRight: _mdi_js__WEBPACK_IMPORTED_MODULE_19__.mdiFormatAlignRight,
-      alignCenter: _mdi_js__WEBPACK_IMPORTED_MODULE_19__.mdiFormatAlignCenter,
-      justify: _mdi_js__WEBPACK_IMPORTED_MODULE_19__.mdiFormatAlignJustify,
-      setupLink: _mdi_js__WEBPACK_IMPORTED_MODULE_19__.mdiLinkBoxVariantOutline,
-      createLink: _mdi_js__WEBPACK_IMPORTED_MODULE_19__.mdiLinkBoxVariant,
-      video: _mdi_js__WEBPACK_IMPORTED_MODULE_19__.mdiVideoBox
+      quote: _mdi_js__WEBPACK_IMPORTED_MODULE_20__.mdiFormatQuoteClose,
+      block: _mdi_js__WEBPACK_IMPORTED_MODULE_20__.mdiCodeBlockBraces,
+      headOne: _mdi_js__WEBPACK_IMPORTED_MODULE_20__.mdiFormatHeader1,
+      headTwo: _mdi_js__WEBPACK_IMPORTED_MODULE_20__.mdiFormatHeader2,
+      headThree: _mdi_js__WEBPACK_IMPORTED_MODULE_20__.mdiFormatHeader3,
+      rule: _mdi_js__WEBPACK_IMPORTED_MODULE_20__.mdiMinus,
+      breaks: _mdi_js__WEBPACK_IMPORTED_MODULE_20__.mdiFormatPageBreak,
+      bold: _mdi_js__WEBPACK_IMPORTED_MODULE_20__.mdiFormatBold,
+      code: _mdi_js__WEBPACK_IMPORTED_MODULE_20__.mdiCodeArray,
+      italic: _mdi_js__WEBPACK_IMPORTED_MODULE_20__.mdiFormatItalic,
+      strike: _mdi_js__WEBPACK_IMPORTED_MODULE_20__.mdiFormatStrikethrough,
+      sub: _mdi_js__WEBPACK_IMPORTED_MODULE_20__.mdiFormatSubscript,
+      sup: _mdi_js__WEBPACK_IMPORTED_MODULE_20__.mdiFormatSuperscript,
+      img: _mdi_js__WEBPACK_IMPORTED_MODULE_20__.mdiImage,
+      blltLst: _mdi_js__WEBPACK_IMPORTED_MODULE_20__.mdiFormatListBulleted,
+      txt: _mdi_js__WEBPACK_IMPORTED_MODULE_20__.mdiText,
+      alignLeft: _mdi_js__WEBPACK_IMPORTED_MODULE_20__.mdiFormatAlignLeft,
+      alignRight: _mdi_js__WEBPACK_IMPORTED_MODULE_20__.mdiFormatAlignRight,
+      alignCenter: _mdi_js__WEBPACK_IMPORTED_MODULE_20__.mdiFormatAlignCenter,
+      justify: _mdi_js__WEBPACK_IMPORTED_MODULE_20__.mdiFormatAlignJustify,
+      setupLink: _mdi_js__WEBPACK_IMPORTED_MODULE_20__.mdiLinkBoxVariantOutline,
+      createLink: _mdi_js__WEBPACK_IMPORTED_MODULE_20__.mdiLinkBoxVariant,
+      video: _mdi_js__WEBPACK_IMPORTED_MODULE_20__.mdiVideoBox
     };
   },
   methods: {
@@ -189,18 +191,12 @@ lowlight.register('ts', highlight_js_lib_languages_typescript__WEBPACK_IMPORTED_
       }
     },
     addVideo() {
-      const src = document.getElementById('videoUrl').value;
-      var width = document.getElementById('videoWidth').value;
-      var height = document.getElementById('videoHeight').value;
-      if (isNaN(width) || width == "") {
-        width = 288;
-      }
-      if (isNaN(height) || height == "") {
-        height = 360;
-      }
-      if (src) {
-        this.editor.chain().focus().insertContent("<video src=\"" + src + "\" height=\"" + height + "\" width=\"" + width + "\"></video>").run();
-      }
+      const url = prompt('Enter YouTube URL');
+      this.editor.commands.setYoutubeVideo({
+        src: url,
+        width: Math.max(320, parseInt(this.width, 10)) || 640,
+        height: Math.max(180, parseInt(this.height, 10)) || 480
+      });
     },
     setLink() {
       const url = document.getElementById('hyperLinkUrl').value;
@@ -247,8 +243,8 @@ lowlight.register('ts', highlight_js_lib_languages_typescript__WEBPACK_IMPORTED_
     }
   },
   mounted() {
-    this.editor = new _tiptap_vue_3__WEBPACK_IMPORTED_MODULE_18__.Editor({
-      extensions: [_tiptap_starter_kit__WEBPACK_IMPORTED_MODULE_2__["default"].configure({
+    this.editor = new _tiptap_vue_3__WEBPACK_IMPORTED_MODULE_19__.Editor({
+      extensions: [_tiptap_starter_kit__WEBPACK_IMPORTED_MODULE_3__["default"].configure({
         blockquote: true,
         bulletList: true,
         hardBreak: true,
@@ -268,16 +264,16 @@ lowlight.register('ts', highlight_js_lib_languages_typescript__WEBPACK_IMPORTED_
         code: true,
         italic: true,
         strike: true
-      }), _tiptap_extension_code_block_lowlight__WEBPACK_IMPORTED_MODULE_4__["default"].configure({
+      }), _tiptap_extension_code_block_lowlight__WEBPACK_IMPORTED_MODULE_5__["default"].configure({
         lowlight: lowlight,
         languageClassPrefix: true
-      }), _tiptap_extension_text_style__WEBPACK_IMPORTED_MODULE_7__["default"], _tiptap_extension_color__WEBPACK_IMPORTED_MODULE_6__.Color, _tiptap_extension_image__WEBPACK_IMPORTED_MODULE_0__["default"].configure({
+      }), _tiptap_extension_text_style__WEBPACK_IMPORTED_MODULE_8__["default"], _tiptap_extension_color__WEBPACK_IMPORTED_MODULE_7__.Color, _tiptap_extension_image__WEBPACK_IMPORTED_MODULE_0__["default"].configure({
         HTMLAttributes: {
           id: 'resizable'
         }
-      }), _video_extension_ts__WEBPACK_IMPORTED_MODULE_1__["default"], _tiptap_extension_link__WEBPACK_IMPORTED_MODULE_5__["default"], _tiptap_extension_subscript__WEBPACK_IMPORTED_MODULE_8__["default"], _tiptap_extension_superscript__WEBPACK_IMPORTED_MODULE_9__["default"], _tiptap_extension_text_align__WEBPACK_IMPORTED_MODULE_10__["default"].configure({
+      }), _tiptap_extension_youtube__WEBPACK_IMPORTED_MODULE_2__["default"], _tiptap_extension_link__WEBPACK_IMPORTED_MODULE_6__["default"], _tiptap_extension_subscript__WEBPACK_IMPORTED_MODULE_9__["default"], _tiptap_extension_superscript__WEBPACK_IMPORTED_MODULE_10__["default"], _tiptap_extension_text_align__WEBPACK_IMPORTED_MODULE_11__["default"].configure({
         types: ['heading', 'paragraph']
-      }), _tiptap_extension_gapcursor__WEBPACK_IMPORTED_MODULE_3__["default"]],
+      }), _tiptap_extension_gapcursor__WEBPACK_IMPORTED_MODULE_4__["default"]],
       content: this.modelValue,
       onUpdate: () => {
         // HTML
@@ -475,44 +471,7 @@ const _hoisted_20 = {
   class: "d-sm-inline-flex p-4",
   id: "rightBorder"
 };
-const _hoisted_21 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
-  class: "form-control-sm p-1 bg-light",
-  id: "videoWidth",
-  type: "number",
-  placeholder: "Width",
-  style: {
-    "border": "gray",
-    "width": "60px"
-  }
-}, null, -1 /* HOISTED */);
-const _hoisted_22 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
-  class: "form-control-sm p-1 bg-light",
-  id: "videoHeight",
-  type: "number",
-  placeholder: "Height",
-  style: {
-    "border": "gray",
-    "width": "70px"
-  }
-}, null, -1 /* HOISTED */);
-const _hoisted_23 = {
-  for: "video",
-  id: "videoButton",
-  class: "btn btn-light"
-};
-const _hoisted_24 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
-  id: "videoUrl",
-  name: "vidUrl",
-  type: "text",
-  hidden: ""
-}, null, -1 /* HOISTED */);
-const _hoisted_25 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
-  id: "videoInput",
-  name: "video",
-  type: "file",
-  hidden: ""
-}, null, -1 /* HOISTED */);
-const _hoisted_26 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+const _hoisted_21 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
   class: "cursor-extensions",
   hidden: ""
 }, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
@@ -520,7 +479,7 @@ const _hoisted_26 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createEleme
 }), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
   class: "gapcursor"
 })], -1 /* HOISTED */);
-const _hoisted_27 = {
+const _hoisted_22 = {
   class: "colors",
   hidden: ""
 };
@@ -718,7 +677,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     class: "p-1 btn btn-light"
   }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_svg_icon, {
     type: "mdi",
-    path: $data.break
+    path: $data.breaks
   }, null, 8 /* PROPS */, ["path"])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
     onClick: _cache[19] || (_cache[19] = $event => $data.editor.chain().focus().toggleBulletList().run()),
     class: (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)([{
@@ -792,66 +751,90 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       return $options.addImage && $options.addImage(...arguments);
     }),
     hidden: ""
-  }, " setImage ")]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_20, [_hoisted_21, _hoisted_22, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", _hoisted_23, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_svg_icon, {
-    type: "mdi",
-    path: $data.video
-  }, null, 8 /* PROPS */, ["path"])]), _hoisted_24, _hoisted_25, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
-    id: "addVideoBtn",
-    onClick: _cache[25] || (_cache[25] = function () {
+  }, " setImage ")]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_20, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
+    class: "form-control-sm p-1 bg-light",
+    id: "width",
+    type: "number",
+    "onUpdate:modelValue": _cache[25] || (_cache[25] = $event => _ctx.width = $event),
+    placeholder: "Width",
+    min: "320",
+    max: "1024",
+    style: {
+      "border": "gray",
+      "width": "60px"
+    }
+  }, null, 512 /* NEED_PATCH */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, _ctx.width]]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
+    class: "form-control-sm p-1 bg-light",
+    id: "height",
+    type: "number",
+    "onUpdate:modelValue": _cache[26] || (_cache[26] = $event => _ctx.height = $event),
+    placeholder: "Height",
+    min: "180",
+    max: "720",
+    style: {
+      "border": "gray",
+      "width": "70px"
+    }
+  }, null, 512 /* NEED_PATCH */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, _ctx.height]]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
+    id: "add",
+    onClick: _cache[27] || (_cache[27] = function () {
       return $options.addVideo && $options.addVideo(...arguments);
     }),
-    hidden: ""
-  }, " setImage ")]), _hoisted_26, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_27, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
-    onClick: _cache[26] || (_cache[26] = $event => $data.editor.chain().focus().setColor('#958DF1').run()),
+    class: "btn btn-light"
+  }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_svg_icon, {
+    type: "mdi",
+    path: $data.video
+  }, null, 8 /* PROPS */, ["path"])])]), _hoisted_21, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_22, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
+    onClick: _cache[28] || (_cache[28] = $event => $data.editor.chain().focus().setColor('#958DF1').run()),
     class: (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)({
       'is-active': $data.editor.isActive('textStyle', {
         color: '#958DF1'
       })
     })
   }, " purple ", 2 /* CLASS */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
-    onClick: _cache[27] || (_cache[27] = $event => $data.editor.chain().focus().setColor('#F98181').run()),
+    onClick: _cache[29] || (_cache[29] = $event => $data.editor.chain().focus().setColor('#F98181').run()),
     class: (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)({
       'is-active': $data.editor.isActive('textStyle', {
         color: '#F98181'
       })
     })
   }, " red ", 2 /* CLASS */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
-    onClick: _cache[28] || (_cache[28] = $event => $data.editor.chain().focus().setColor('#FBBC88').run()),
+    onClick: _cache[30] || (_cache[30] = $event => $data.editor.chain().focus().setColor('#FBBC88').run()),
     class: (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)({
       'is-active': $data.editor.isActive('textStyle', {
         color: '#FBBC88'
       })
     })
   }, " orange ", 2 /* CLASS */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
-    onClick: _cache[29] || (_cache[29] = $event => $data.editor.chain().focus().setColor('#FAF594').run()),
+    onClick: _cache[31] || (_cache[31] = $event => $data.editor.chain().focus().setColor('#FAF594').run()),
     class: (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)({
       'is-active': $data.editor.isActive('textStyle', {
         color: '#FAF594'
       })
     })
   }, " yellow ", 2 /* CLASS */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
-    onClick: _cache[30] || (_cache[30] = $event => $data.editor.chain().focus().setColor('#70CFF8').run()),
+    onClick: _cache[32] || (_cache[32] = $event => $data.editor.chain().focus().setColor('#70CFF8').run()),
     class: (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)({
       'is-active': $data.editor.isActive('textStyle', {
         color: '#70CFF8'
       })
     })
   }, " blue ", 2 /* CLASS */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
-    onClick: _cache[31] || (_cache[31] = $event => $data.editor.chain().focus().setColor('#94FADB').run()),
+    onClick: _cache[33] || (_cache[33] = $event => $data.editor.chain().focus().setColor('#94FADB').run()),
     class: (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)({
       'is-active': $data.editor.isActive('textStyle', {
         color: '#94FADB'
       })
     })
   }, " teal ", 2 /* CLASS */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
-    onClick: _cache[32] || (_cache[32] = $event => $data.editor.chain().focus().setColor('#B9F18D').run()),
+    onClick: _cache[34] || (_cache[34] = $event => $data.editor.chain().focus().setColor('#B9F18D').run()),
     class: (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)({
       'is-active': $data.editor.isActive('textStyle', {
         color: '#B9F18D'
       })
     })
   }, " green ", 2 /* CLASS */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
-    onClick: _cache[33] || (_cache[33] = $event => $data.editor.chain().focus().unsetColor().run())
+    onClick: _cache[35] || (_cache[35] = $event => $data.editor.chain().focus().unsetColor().run())
   }, " unsetColor ")])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_editor_content, {
     editor: $data.editor
   }, null, 8 /* PROPS */, ["editor"])])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true);
@@ -879,7 +862,7 @@ const _hoisted_2 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElemen
   class: "container mx-auto",
   style: {
     "margin-top": "2rem",
-    "margin-bottom": "2rem"
+    "margin-bottom": ".5rem"
   }
 }, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
   class: "mx-auto form-control-lg inputGroup-sizing-lg border border-secondary border-1",
@@ -893,15 +876,15 @@ const _hoisted_2 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElemen
 const _hoisted_3 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
   class: "container",
   style: {
-    "margin-top": "2rem",
-    "margin-bottom": "2rem"
+    "margin-top": ".5rem",
+    "margin-bottom": "4rem"
   }
 }, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
   id: "saveNote",
-  class: "btn btn-outline-dark ms-1 me-1"
+  class: "btn btn-outline-dark ms-1 me-1 mb-2"
 }, "Save"), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
   id: "deleteNoteBtn",
-  class: "btn btn-outline-danger ms-1 me-1",
+  class: "btn btn-outline-danger ms-1 me-1 mb-2",
   style: {
     "display": "none"
   }
@@ -1013,7 +996,7 @@ ___CSS_LOADER_EXPORT___.push([module.id, `/*Tooltip div styling */
 }
 #toolbarMenu {
   z-index: 100;
-}`, "",{"version":3,"sources":["webpack://./components/Editor.vue","webpack://./Editor.vue"],"names":[],"mappings":"AACA,uBAAA;AACA;EACI,aAAA;EACA,YAAA;EACA,YAAA;EACA,sBAAA;EACA,sBAAA;EACA,4BAAA;EACA,gCAAA;ACAJ;ADGA;EACI,iCAAA;ACAJ;ADGA;EACI,YAAA;ACAJ","sourcesContent":["\r\n/*Tooltip div styling */\r\n.hyperlink-div {\r\n    display: none;\r\n    width: 250px;\r\n    z-index: 101;\r\n    background-color: #fff;\r\n    border: 3px solid #666;\r\n    padding: 12px 12px 12px 12px;\r\n    border-radius: 0px 25px 0px 25px;\r\n}\r\n\r\n#rightBorder {\r\n    border-right: 2px solid lightgray;\r\n}\r\n\r\n#toolbarMenu {\r\n    z-index:100;\r\n}\r\n","/*Tooltip div styling */\n.hyperlink-div {\n  display: none;\n  width: 250px;\n  z-index: 101;\n  background-color: #fff;\n  border: 3px solid #666;\n  padding: 12px 12px 12px 12px;\n  border-radius: 0px 25px 0px 25px;\n}\n\n#rightBorder {\n  border-right: 2px solid lightgray;\n}\n\n#toolbarMenu {\n  z-index: 100;\n}"],"sourceRoot":""}]);
+}`, "",{"version":3,"sources":["webpack://./components/Editor.vue","webpack://./Editor.vue"],"names":[],"mappings":"AACA,uBAAA;AACA;EACI,aAAA;EACA,YAAA;EACA,YAAA;EACA,sBAAA;EACA,sBAAA;EACA,4BAAA;EACA,gCAAA;ACAJ;ADGA;EACI,iCAAA;ACAJ;ADGA;EACI,YAAA;ACAJ","sourcesContent":["\r\n/*Tooltip div styling */\r\n.hyperlink-div {\r\n    display: none;\r\n    width: 250px;\r\n    z-index: 101;\r\n    background-color: #fff;\r\n    border: 3px solid #666;\r\n    padding: 12px 12px 12px 12px;\r\n    border-radius: 0px 25px 0px 25px;\r\n}\r\n\r\n#rightBorder {\r\n    border-right: 2px solid lightgray;\r\n}\r\n\r\n#toolbarMenu {\r\n    z-index: 100;\r\n}\r\n","/*Tooltip div styling */\n.hyperlink-div {\n  display: none;\n  width: 250px;\n  z-index: 101;\n  background-color: #fff;\n  border: 3px solid #666;\n  padding: 12px 12px 12px 12px;\n  border-radius: 0px 25px 0px 25px;\n}\n\n#rightBorder {\n  border-right: 2px solid lightgray;\n}\n\n#toolbarMenu {\n  z-index: 100;\n}"],"sourceRoot":""}]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
