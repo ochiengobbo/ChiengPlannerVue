@@ -160,7 +160,8 @@ namespace ChiengPlannerVue.Controllers
             {
                 try
                 {
-                    var filePath = Path.Combine(Directory.GetCurrentDirectory(), @"images", file.FileName);
+                    var directoryPath = Path.Combine(Directory.GetCurrentDirectory(), @"images");
+                    var filePath = Path.Combine(directoryPath, file.FileName);
                     using (Image img = Image.Load(file.OpenReadStream()))
                     {
                         if (width == 0)
@@ -168,6 +169,10 @@ namespace ChiengPlannerVue.Controllers
                         if (height == 0)
                             height = 300;
                         img.Mutate(x => x.Resize(width, height));
+                        if (!Directory.Exists(directoryPath))
+                        {
+                            Directory.CreateDirectory(directoryPath);
+                        }
                         img.Save(filePath);
                     }
                     url = UploadFileToAzureStorage(file, filePath, true);
