@@ -1,7 +1,7 @@
 <template>
   <div id="app" class="mx-auto">
     <div class="container mx-auto" style="margin-top: 2rem; margin-bottom: .5rem;">
-      <input class="mx-auto form-control-lg inputGroup-sizing-lg border border-secondary border-1" type="text"
+      <input class="mx-auto form-control-lg inputGroup-sizing-lg border border-secondary border-1 col-xl-12" type="text"
         placeholder="Enter Your Title Here..." id="noteTitle" style="width: -webkit-fill-available;" />
     </div>
     <editor v-model="content" />

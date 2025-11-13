@@ -834,7 +834,7 @@ const _hoisted_2 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElemen
     "margin-bottom": ".5rem"
   }
 }, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
-  class: "mx-auto form-control-lg inputGroup-sizing-lg border border-secondary border-1",
+  class: "mx-auto form-control-lg inputGroup-sizing-lg border border-secondary border-1 col-xl-12",
   type: "text",
   placeholder: "Enter Your Title Here...",
   id: "noteTitle",
